@@ -3,14 +3,14 @@ import PropTypes from 'prop-types';
 
 function Button(props) {
   return (
-    <button className="Button">
+    <button onClick={props.onClick} className="Button">
       {props.label}
     </button>
   );
 }
 
 Button.propTypes = {
-  loginComponent: PropTypes.object,
+  label: PropTypes.string,
   onClick: PropTypes.func
 }
 
