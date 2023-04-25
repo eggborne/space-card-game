@@ -1,0 +1,7 @@
+.Button {
+  padding: 0 1rem;
+  font-family: inherit;
+  font-size: inherit;
+  height: 4rem;
+  min-width: 6rem;
+}
