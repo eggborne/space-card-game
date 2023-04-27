@@ -3,6 +3,7 @@
   --main-width: 100vw;
   --header-height: 4rem;
   --footer-height: 2.5rem;
+  --expanded-footer-height: 6rem;
 
   --button-standard: rgb(145, 145, 145);
   --button-green: rgb(9, 88, 9);

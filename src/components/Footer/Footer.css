@@ -7,9 +7,14 @@
   align-items: center;
   justify-content: center;
   font-size: 90%;
+  transition: all 200ms ease;
 }
 
 .Footer a {
   margin: 0 0.325rem;
   color: orange;
+}
+
+.Footer button {
+  width: 60%;
 }

@@ -3,7 +3,14 @@ import PropTypes from 'prop-types';
 
 function Button(props) {
   return (
-    <button style={{ backgroundColor: `var(--button-${props.color || 'standard'})` }} tabIndex={props.tabIndex} onClick={props.onClick} className="Button">
+    <button
+      tabIndex={props.tabIndex}
+      onClick={props.onClick}
+      className="Button"
+      style={{
+        backgroundColor: `var(--button-${props.color || 'standard'})`
+      }}
+    >
       {props.label}
     </button>
   );
@@ -14,6 +21,6 @@ Button.propTypes = {
   label: PropTypes.string,
   color: PropTypes.string,
   onClick: PropTypes.func
-}
+};
 
 export default Button;

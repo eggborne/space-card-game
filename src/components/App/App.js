@@ -27,7 +27,7 @@ function App() {
       <GameModeSelectScreen 
         showing={phase === 'game-mode-select'}
       />
-      <Footer />
+      <Footer phase={phase} />
     </div>
   );
 }
