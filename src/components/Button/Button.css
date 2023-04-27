@@ -1,7 +1,7 @@
 .Button {
-  padding: 0 1rem;
+  box-sizing: padding-box;
+  padding: 1rem 0;
   font-family: inherit;
   font-size: inherit;
-  height: 4rem;
   min-width: 6rem;
 }

@@ -7,13 +7,12 @@ import LoginArea from '../LoginArea/LoginArea';
 
 function App() {
 
+  document.documentElement.style.setProperty('--actual-height', window.innerHeight + 'px');
+
   return (
     <div className="App">
       <Header />
-      <TitleScreen 
-        loginComponent={<LoginArea />}
-      
-      />
+      <TitleScreen />
       <Footer />
     </div>
   );

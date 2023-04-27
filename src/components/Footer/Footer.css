@@ -1,11 +1,12 @@
 .Footer {
+  padding: 1rem 0;
   align-self: stretch;
   background-color: #555;
   color: #bbb;
-  height: var(--footer-height);
   display: flex;
   align-items: center;
   justify-content: center;
+  font-size: 90%;
 }
 
 .Footer a {

@@ -1,0 +1,37 @@
+.LoginRegisterForm {
+  background: green;
+  display: flex;
+  width: 18rem;
+  overflow: hidden;
+}
+
+.LoginRegisterForm > form {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1rem;
+  padding: 1.25rem;
+  background: rgb(76, 59, 28);
+  min-width: 18rem;
+  transition: transform 300ms ease;
+}
+
+.LoginRegisterForm > form input {
+  padding: 0.5rem;
+  font-style: inherit;
+  font-size: inherit;
+}
+
+.LoginRegisterForm > form > .form-button-area {
+  flex-grow: 1;
+  display: flex;
+  align-items: flex-end;
+}
+
+.LoginRegisterForm button {
+  width: 14rem;
+}
+
+.LoginRegisterForm.register > form {
+  transform: translateX(-18rem);
+}

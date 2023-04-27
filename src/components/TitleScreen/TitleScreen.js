@@ -1,11 +1,12 @@
 import './TitleScreen.css';
 import Button from '../Button/Button';
 import PropTypes from 'prop-types';
+import LoginArea from '../LoginArea/LoginArea';
 
 function TitleScreen(props) {
   return (
     <div className="TitleScreen">
-      {props.loginComponent}
+      <LoginArea />
       <Button label='Options' />
       <Button label='How to Play' />
       <Button label='High Scores' />
