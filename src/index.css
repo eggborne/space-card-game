@@ -1,7 +1,12 @@
 :root {
   --actual-height: 100vh;
+  --main-width: 100vw;
   --header-height: 4rem;
   --footer-height: 2.5rem;
+
+  --button-standard: rgb(145, 145, 145);
+  --button-green: rgb(9, 88, 9);
+  --button-orange: rgb(157, 126, 33);
 }
 
 *, * *, * * *, * * * * {
@@ -16,7 +21,35 @@ body {
     sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  min-height: var(--actual-height);
+  height: var(--actual-height);
   min-height: var(--actual-height);
   max-height: var(--actual-height);
+}
+
+button {
+  color: #ddd;
+  font-family: inherit;
+  font-size: inherit;
+  font-weight: bold;
+}
+
+input, select {
+  font-family: inherit;
+  font-size: inherit;
+}
+
+#root {
+  display: flex;
+  justify-content: center;
+}
+
+@media screen and (min-width: 768px) {
+  :root {
+    --main-width: 60vw;
+  }
+}
+@media screen and (min-width: 1024px) {
+  :root {
+    --main-width: 50vw;
+  }
 }

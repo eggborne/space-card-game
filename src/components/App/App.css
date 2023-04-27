@@ -1,6 +1,7 @@
 .App {
   background-color: #111;
   color: #ddd;
+  width: var(--main-width);
   height: var(--actual-height);
   display: flex;
   flex-direction: column;

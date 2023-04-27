@@ -22,14 +22,17 @@
   width: 50%;
   height: 4rem;
   background-color: rgb(99, 108, 80);
-  border-top: 0;
+  color: rgb(184, 184, 184);
   display: flex;
   align-items: center;
   justify-content: center;
   font-weight: bold;
+  transition: background-color 200ms ease;
 }
 
 .LoginArea .bottom-button-area .tab-button.selected {
   background-color: olivedrab;
+  color: #ddd;
   border: 2px solid orange;
+  border-top: rgb(99, 108, 80);
 }
