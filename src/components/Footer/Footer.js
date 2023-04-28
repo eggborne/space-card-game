@@ -12,7 +12,7 @@ function Footer(props) {
         :
         props.phase === 'game-mode-select' ?
         <>
-          <Button color='green' label='OK' />
+          <Button className='main-footer-button' color='green' label='OK' />
         </>
         :
         <>blargh</>

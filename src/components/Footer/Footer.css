@@ -1,4 +1,8 @@
 .Footer {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: var(--main-width);
   padding: 1rem 0;
   align-self: stretch;
   background-color: #555;
@@ -15,6 +19,6 @@
   color: orange;
 }
 
-.Footer button {
-  width: 60%;
+.Footer .Button.main-footer-button {
+  width: 40%;
 }

@@ -7,6 +7,7 @@ import GameModeSelectScreen from '../GameModeSelectScreen/GameModeSelectScreen';
 
 function App() {
   const [phase, setPhase] = useState('title');
+  const [gameMode, setGameMode] = useState('Quick Match');
 
   function handleClickLogIn(user) {
     if (user.password) {
@@ -15,6 +16,10 @@ function App() {
       // do guest player stuff
       setPhase('game-mode-select');
     }
+  }
+
+  function handleSwitchGameMode(newMode) {
+    setGameMode(newMode);
   }
 
   return (
@@ -26,6 +31,8 @@ function App() {
       />
       <GameModeSelectScreen 
         showing={phase === 'game-mode-select'}
+        gameMode={gameMode}
+        switchGameMode={handleSwitchGameMode}
       />
       <Footer phase={phase} />
     </div>

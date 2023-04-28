@@ -5,3 +5,7 @@
   font-size: inherit;
   min-width: 6rem;
 }
+
+.Footer .Button {
+  width: 45%;
+}
