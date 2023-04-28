@@ -9,7 +9,7 @@ const StyledFooter = styled.footer`
   width: var(--main-width);
   padding: 1rem 0;
   align-self: stretch;
-  background-color: #555;
+  background-color: var(--footer-color);
   color: #bbb;
   display: flex;
   align-items: center;
@@ -32,6 +32,7 @@ const FooterBackButton = styled(Button)`
   padding-right: 0;
   min-width: unset;
   width: 18%;
+  max-width: 5rem;
   background-color: #747474;
 `;
 
@@ -51,6 +52,7 @@ function Footer(props) {
         </>
         : props.phase === 'game-board-showing' ?
           <>
+            <FooterBackButton onClick={props.onClickBackToGameSelect} className='Button footer-back-button' label='<'/>
             footer for game board!
           </>
           :
@@ -64,6 +66,7 @@ function Footer(props) {
 
 Footer.propTypes = {
   onClickBackToTitle: PropTypes.func,
+  onClickBackToGameSelect: PropTypes.func,
   onClickAcceptGameMode: PropTypes.func,
 };
 

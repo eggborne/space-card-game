@@ -7,6 +7,7 @@ import GameBoard from '../GameScreen/GameScreen';
 import styled from 'styled-components';
 
 const StyledApp = styled.main`
+  position: relative;
   background-color: #111;
   color: #ddd;
   width: var(--main-width);
@@ -20,12 +21,16 @@ const StyledApp = styled.main`
 function App() {
   const [phase, setPhase] = useState('title');
   const [gameMode, setGameMode] = useState('Quick Match');
+  const [user, setUser] = useState({});
 
   function handleClickLogIn(user) {
     if (user.password) {
-      // do user log in stuff
+      // do user login stuff with user.userName and user.password
     } else {
       // do guest player stuff
+      setUser({
+        userName: user.userName
+      })
       setPhase('game-mode-select');
     }
   }
@@ -49,7 +54,9 @@ function App() {
 
   return (
     <StyledApp >
-      <Header />
+      <Header 
+        userName={user.userName}
+      />
       <TitleScreen 
         showing={phase === 'title'}
         handleClickLogIn={handleClickLogIn}
@@ -66,6 +73,7 @@ function App() {
       <Footer 
         phase={phase}
         onClickBackToTitle={() => setPhase('title')}
+        onClickBackToGameSelect={() => setPhase('game-mode-select')}
         onClickAcceptGameMode={handleAcceptGameMode}
       />
     </StyledApp>

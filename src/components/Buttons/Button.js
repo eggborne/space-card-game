@@ -2,6 +2,10 @@ import PropTypes from 'prop-types';
 import styled from 'styled-components';
 
 const StyledButton = styled.button`
+  border-radius: calc(var(--border-radius) / 2);
+  border-style: solid;
+  border-color: #00000077;
+  border-width: 0.2rem;
   color: #ddd;  
   font-family: inherit;
   font-size: inherit;
@@ -10,6 +14,12 @@ const StyledButton = styled.button`
   font-family: inherit;
   font-size: inherit;
   min-width: 6rem;
+  cursor: pointer;
+
+  &:hover {
+    border-color: #00ff00aa
+  }
+
   &.main-footer {
     width: 45%;
   }

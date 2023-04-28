@@ -4,6 +4,10 @@
   --header-height: 4rem;
   --footer-height: 2.5rem;
   --expanded-footer-height: 6rem;
+  --border-radius: 1rem;
+
+  --header-color: #555;
+  --footer-color: #555;
 
   --button-standard: rgb(145, 145, 145);
   --button-green: rgb(9, 88, 9);
@@ -15,7 +19,7 @@
 }
 
 body {
-  background-color: red;
+  background-color: rgb(22, 7, 23);
   margin: 0;
   font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
     'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
@@ -25,11 +29,13 @@ body {
   height: var(--actual-height);
   min-height: var(--actual-height);
   max-height: var(--actual-height);
+  overflow: hidden;
 }
 
 input, select {
   font-family: inherit;
   font-size: inherit;
+  border-radius: calc(var(--border-radius) / 4);
 }
 
 h1, h2, h3, h4 {

@@ -6,7 +6,7 @@ import styled from 'styled-components';
 const StyledLoginArea = styled.div`
   position: relative;
   background-color: olivedrab;
-  border-radius: 0.25rem;
+  border-radius: var(--border-radius);
   grid-column-start: 1;
   grid-column-end: 3;
   display: flex;
@@ -30,14 +30,27 @@ const StyledLoginArea = styled.div`
       align-items: center;
       justify-content: center;
       font-weight: bold;
-      transition: background-color 200ms ease;
+      cursor: pointer;
+      transition: all 100ms ease;
+
+      &:first-of-type {
+        border-bottom-left-radius: var(--border-radius);
+        border-right: 0 !important;
+      }
+      &:last-of-type {
+        border-bottom-right-radius: var(--border-radius);
+        border-left: 0 !important;
+      }
 
       &.selected {
         background-color: olivedrab;
         color: #ddd;
-        border: 2px solid orange;
-        border-top: rgb(99, 108, 80);
       }
+    }
+
+    & .tab-button:not(.selected):hover {
+      border: 0.25rem solid gray;
+      border-top: 0;
     }
   }
 `;

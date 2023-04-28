@@ -4,7 +4,7 @@ import PropTypes from 'prop-types';
 import styled from 'styled-components';
 
 const StyledLoginRegisterForm = styled.div`
-  background: green;
+  border-radius: var(--border-radius);
   display: flex;
   width: 18rem;
   overflow: hidden;
@@ -20,7 +20,7 @@ const StyledLoginRegisterForm = styled.div`
     gap: 1rem;
     padding: 1.25rem;
     padding-bottom: 2rem;
-    background: rgb(76, 59, 28);
+    // background: rgb(76, 59, 28);
     min-width: 18rem;
     transition: transform 300ms ease;
 
@@ -47,14 +47,13 @@ function LoginRegisterForm(props) {
   const [playingAsGuest, setPlayingAsGuest] = useState(true);
 
   function handleInputChange(e) {
-    console.log('e', e)
     setPlayingAsGuest(!e.target.value);
   }
 
   function handleLogIn(e) {
     e.preventDefault();
     const user = {
-      userName: e.target.userName.value || 'Guest Player',
+      userName: e.target.userName.value || 'Guest',
     }
     if (!playingAsGuest) {
       user.password = e.target.password.value;
