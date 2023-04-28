@@ -4,6 +4,7 @@ import Header from '../Header/Header';
 import Footer from '../Footer/Footer';
 import TitleScreen from '../TitleScreen/TitleScreen';
 import GameModeSelectScreen from '../GameModeSelectScreen/GameModeSelectScreen';
+import GameBoard from '../GameBoard/GameBoard';
 
 function App() {
   const [phase, setPhase] = useState('title');
@@ -22,6 +23,19 @@ function App() {
     setGameMode(newMode);
   }
 
+  function handleAcceptGameMode() {
+    console.log('gm is', gameMode)
+    // if campaign
+      // show deck select > opponent select > start
+    // if quick match
+      // start
+    if (gameMode === 'Campaign') {
+      
+    } else if (gameMode === 'Quick Match') {
+      setPhase('game-board-showing')
+    }
+  }
+
   return (
     <div className="App">
       <Header />
@@ -34,7 +48,15 @@ function App() {
         gameMode={gameMode}
         switchGameMode={handleSwitchGameMode}
       />
-      <Footer phase={phase} />
+      <GameBoard 
+        showing={phase === 'game-board-showing'}
+
+      />
+      <Footer 
+        phase={phase}
+        onClickBackToTitle={() => setPhase('title')}
+        onClickAcceptGameMode={handleAcceptGameMode}
+      />
     </div>
   );
 }

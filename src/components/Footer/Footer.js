@@ -1,5 +1,6 @@
 import './Footer.css';
 import Button from '../Button/Button';
+import PropTypes from 'prop-types';
 
 function Footer(props) {
   const footerStyle = {
@@ -12,13 +13,25 @@ function Footer(props) {
         :
         props.phase === 'game-mode-select' ?
         <>
-          <Button className='main-footer-button' color='green' label='OK' />
+          <button onClick={props.onClickBackToTitle} className='Button footer-back-button'>{'<'}</button>
+          <Button onClick={props.onClickAcceptGameMode} color='green' label='OK' />
         </>
-        :
-        <>blargh</>
+        : props.phase === 'game-board-showing' ?
+          <>
+            footer for game board!
+          </>
+          :
+          <>
+            blargh
+          </>
       }
     </footer>
   );
 }
+
+Footer.propTypes = {
+  onClickBackToTitle: PropTypes.func,
+  onClickAcceptGameMode: PropTypes.func,
+};
 
 export default Footer;

@@ -1,0 +1,13 @@
+.GameBoard {
+  padding: 1rem;
+  align-self: stretch;
+  background-color: rgb(13, 71, 16);
+  color: #eee;
+  flex-grow: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 2rem;
+  padding-bottom: var(--expanded-footer-height);
+}
