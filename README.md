@@ -1,4 +1,22 @@
-# Getting Started with Create React App
+# Space Card Game
+#### Capstone Project for Epicodus
+### by Mike Donovan
+
+## Description
+
+A sci-fi-themed card game made with React.
+
+## Technologies Used
+* React
+* JavaScript
+* HTML
+* CSS
+* NPM
+* Webpack
+
+<!-- ## Component Diagram
+
+![Figma component diagram](./public/figma_component_diagram.png); -->
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
