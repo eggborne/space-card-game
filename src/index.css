@@ -3,11 +3,17 @@
   --main-width: 100vw;
   --header-height: 4rem;
   --footer-height: 2.5rem;
+  --hamburger-bar-height: 0.5rem;
   --expanded-footer-height: 6rem;
+  --hamburger-height: 4rem;
   --border-radius: 1rem;
 
   --header-color: #555;
   --footer-color: #555;
+
+  --hamburger-bg-color: #222;
+  --hamburger-open-bg-color: rgb(80, 8, 8);
+  --hamburger-bar-color: #878787;
 
   --button-standard: rgb(145, 145, 145);
   --button-green: rgb(9, 88, 9);

@@ -32,7 +32,8 @@ function Header(props) {
         <div>{props.userName}</div>
         <PlayerPortrait 
           size='calc(var(--header-height) - 1rem)' 
-          imagePath='usericon.png'
+          imagePath='images/avatarsheetlq.jpg'
+          sheetCoords={{ x: 6, y: 2 }}
         />
       </div>}
     </StyledHeader>

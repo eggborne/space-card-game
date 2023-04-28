@@ -1,6 +1,7 @@
 import Button from './Buttons/Button';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
+import Hamburger from './Hamburger';
 
 const StyledFooter = styled.footer`
   position: absolute;
@@ -13,8 +14,9 @@ const StyledFooter = styled.footer`
   color: #bbb;
   display: flex;
   align-items: center;
-  justify-content: center;
+  justify-content: flex-end;
   font-size: 90%;
+  padding: 0 1rem;
   transition: all 200ms ease;
 
   & a {
@@ -52,8 +54,8 @@ function Footer(props) {
         </>
         : props.phase === 'game-board-showing' ?
           <>
-            <FooterBackButton onClick={props.onClickBackToGameSelect} className='Button footer-back-button' label='<'/>
-            footer for game board!
+            {/* <FooterBackButton onClick={props.onClickBackToGameSelect} className='Button footer-back-button' label='<'/> */}
+            <Hamburger />
           </>
           :
           <>
