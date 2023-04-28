@@ -1,0 +1,21 @@
+1. Make a single GUEST match against 'Opponent' work
+
+    components needed:
+
+    GameScreen
+      > PlayerArea
+        > CardArea
+        > HandArea
+
+    Card (CSS for shapes usable from old project?)
+
+    Footer (when phase is 'game-board-showing')
+      > GameControlArea
+        > buttons for Stand, Draw, hamburger menu with 'quit game'
+
+2. Set up login system so as to enable App state 'userLoggedIn' to be set within handleClickLogin
+
+3. check 'userLoggedIn' to use sequence:
+  1. DeckSelectScreen (not shown to GUEST)
+  2. OpponentSelectScreen (not shown to GUEST)
+  3. GameScreen
