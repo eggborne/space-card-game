@@ -1,7 +1,46 @@
 import { useState } from 'react';
-import './LoginRegisterForm.css';
-import Button from '../Button/Button';
+import Button from '../Buttons/Button';
 import PropTypes from 'prop-types';
+import styled from 'styled-components';
+
+const StyledLoginRegisterForm = styled.div`
+  background: green;
+  display: flex;
+  width: 18rem;
+  overflow: hidden;
+
+  & button {
+    width: 14rem;
+  }
+
+  & > form {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 1rem;
+    padding: 1.25rem;
+    padding-bottom: 2rem;
+    background: rgb(76, 59, 28);
+    min-width: 18rem;
+    transition: transform 300ms ease;
+
+    & input {
+      padding: 0.5rem;
+      font-style: inherit;
+      font-size: inherit;
+    }
+
+    & > .form-button-area {
+      flex-grow: 1;
+      display: flex;
+      align-items: flex-end;
+    }
+  }
+
+  &.register > form {
+    transform: translateX(-18rem);
+  }
+`;
 
 function LoginRegisterForm(props) {
 
@@ -26,7 +65,7 @@ function LoginRegisterForm(props) {
   }
 
   return (
-    <div className={`LoginRegisterForm ${props.loginShowing}`}>
+    <StyledLoginRegisterForm className={`LoginRegisterForm ${props.loginShowing}`}>
       <form onSubmit={handleLogIn}>
         <h2>Log In</h2>
         <div><input tabIndex={props.loginShowing === 'register' ? -1 : 1} name='userName' type='text' placeholder='Name' autoComplete='username' /></div>
@@ -52,7 +91,7 @@ function LoginRegisterForm(props) {
           />
         </div>
       </form>
-    </div>
+    </StyledLoginRegisterForm>
   );
 }
 

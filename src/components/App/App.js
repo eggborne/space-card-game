@@ -1,10 +1,21 @@
-import './App.css';
 import { useState } from 'react';
-import Header from '../Header/Header';
-import Footer from '../Footer/Footer';
+import Header from '../Header';
+import Footer from '../Footer';
 import TitleScreen from '../TitleScreen/TitleScreen';
 import GameModeSelectScreen from '../GameModeSelectScreen/GameModeSelectScreen';
-import GameBoard from '../GameBoard/GameBoard';
+import GameBoard from '../GameScreen/GameBoard';
+import styled from 'styled-components';
+
+const StyledApp = styled.main`
+  background-color: #111;
+  color: #ddd;
+  width: var(--main-width);
+  height: var(--actual-height);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-between;
+`;
 
 function App() {
   const [phase, setPhase] = useState('title');
@@ -37,7 +48,7 @@ function App() {
   }
 
   return (
-    <div className="App">
+    <StyledApp >
       <Header />
       <TitleScreen 
         showing={phase === 'title'}
@@ -57,7 +68,7 @@ function App() {
         onClickBackToTitle={() => setPhase('title')}
         onClickAcceptGameMode={handleAcceptGameMode}
       />
-    </div>
+    </StyledApp>
   );
 }
 

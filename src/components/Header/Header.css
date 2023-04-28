@@ -1,9 +1,0 @@
-.Header {
-  align-self: stretch;
-  background-color: #555;
-  color: #bbb;
-  height: var(--header-height);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
