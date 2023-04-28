@@ -8,11 +8,15 @@ const StyledHeader = styled.header`
   display: flex;
   align-items: center;
   justify-content: center;
+
+  & > h1 {
+    font-size: 1.75rem;
+  }
 `;
 
 function Header() {
   return (
-    <StyledHeader className="Header">
+    <StyledHeader>
       <h1>Space Card Game</h1>
     </StyledHeader>
   );

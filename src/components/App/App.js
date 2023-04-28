@@ -3,7 +3,7 @@ import Header from '../Header';
 import Footer from '../Footer';
 import TitleScreen from '../TitleScreen/TitleScreen';
 import GameModeSelectScreen from '../GameModeSelectScreen/GameModeSelectScreen';
-import GameBoard from '../GameScreen/GameBoard';
+import GameBoard from '../GameScreen/GameScreen';
 import styled from 'styled-components';
 
 const StyledApp = styled.main`

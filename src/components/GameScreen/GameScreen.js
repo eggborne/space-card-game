@@ -17,7 +17,9 @@ const StyledGameBoard = styled.div`
 
 function GameBoard(props) {
   return (
-    <StyledGameBoard style={{ display: props.showing ? 'flex' : 'none'}} className="GameBoard">
+    <StyledGameBoard
+      style={{ display: props.showing ? 'flex' : 'none' }}
+    >
       <div>This is the game board!</div>
     </StyledGameBoard>
   );
@@ -26,6 +28,6 @@ function GameBoard(props) {
 GameBoard.propTypes = {
   showing: PropTypes.bool,
   gameMode: PropTypes.string,
-}
+};
 
 export default GameBoard;

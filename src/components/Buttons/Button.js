@@ -23,7 +23,7 @@ function Button(props) {
       style={{
         backgroundColor: `var(--button-${props.color || 'standard'})`
       }}
-      className={props.className}
+      className={props.className} // needs this for 'const WideButton' in TitleScreen to work ??
     >
       {props.label}
     </StyledButton>

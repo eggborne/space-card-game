@@ -18,10 +18,18 @@ const StyledGameModeSelectScreen = styled.div`
 
 function GameModeSelectScreen(props) {
   return (
-    <StyledGameModeSelectScreen style={{ display: props.showing ? 'flex' : 'none'}}>
+    <StyledGameModeSelectScreen style={{ display: props.showing ? 'flex' : 'none' }}>
       <h1 className='section-header'>Game Mode</h1>
-      <GameModeSelectItem onClick={() => props.switchGameMode('Campaign')} selected={props.gameMode === 'Campaign' } modeName={'Campaign'} />
-      <GameModeSelectItem onClick={() => props.switchGameMode('Quick Match')} selected={props.gameMode === 'Quick Match' } modeName={'Quick Match'} />
+      <GameModeSelectItem
+        onClick={() => props.switchGameMode('Campaign')}
+        selected={props.gameMode === 'Campaign'}
+        modeName={'Campaign'}
+      />
+      <GameModeSelectItem
+        onClick={() => props.switchGameMode('Quick Match')}
+        selected={props.gameMode === 'Quick Match'}
+        modeName={'Quick Match'}
+      />
     </StyledGameModeSelectScreen>
   );
 }
@@ -30,6 +38,6 @@ GameModeSelectScreen.propTypes = {
   showing: PropTypes.bool,
   gameMode: PropTypes.string,
   switchGameMode: PropTypes.func,
-}
+};
 
 export default GameModeSelectScreen;
