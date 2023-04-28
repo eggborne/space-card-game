@@ -30,7 +30,10 @@ function Header(props) {
       {props.userName &&
       <div className='user-info-area'>
         <div>{props.userName}</div>
-        <PlayerPortrait size='calc(var(--header-height) - 1rem)' />
+        <PlayerPortrait 
+          size='calc(var(--header-height) - 1rem)' 
+          imagePath='usericon.png'
+        />
       </div>}
     </StyledHeader>
   );
