@@ -19,9 +19,12 @@ const StyledGameBoard = styled.div`
 const GameBoardPlayerArea = styled.div`
   display: flex;
   align-items: center;
-  gap:0.5rem;
-  width: 16rem;
+  justify-content: center;
+  padding: 1rem;
+  gap: 1rem;
+  width: 14rem;
   font-weight: bold;
+  border: 2px solid orange;
 `;
 
 function GameScreen(props) {
