@@ -1,11 +1,23 @@
+// this is essentially a total rewrite of https://github.com/eggborne/pazaak (mikedonovan.dev/pazaak)
+// but with no class components and full use of Hooks
+// and also no PHP
+// and better integration of the Name Generator (https://github.com/eggborne/customizable-name-generator)
+
 1. Make a single GUEST match against 'Opponent' work
 
     components needed:
 
     GameScreen
-      > PlayerArea
-        > CardArea
-        > HandArea
+      > PlayerArea x 2 (50% of board)
+        > CardArea (~65% of PlayerArea)
+          > Card x 9 (90% of CardArea)
+          > ScoreDisplay (10% of CardArea)
+            > score
+            > SetWinIndicator (3 knobs)
+        > HandArea (~35% of PlayerArea)
+          > PlayerPortrait
+          > Card x 4
+          > TurnIndicator
 
     Card (CSS for shapes usable from old project?)
 
