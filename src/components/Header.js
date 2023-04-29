@@ -3,6 +3,10 @@ import PlayerPortrait from './PlayerPortrait';
 import PropTypes from 'prop-types';
 
 const StyledHeader = styled.header`
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: var(--main-width);
   align-self: stretch;
   background-color: var(--header-color);
   color: #bbb;
@@ -12,6 +16,7 @@ const StyledHeader = styled.header`
   justify-content: space-between;
   padding: 0 1rem;
   padding-right: 0.5rem;
+  transform-origin: top;
   transition: all 200ms ease;
 
   & > h1 {
@@ -27,7 +32,8 @@ const StyledHeader = styled.header`
 function Header(props) {
   return (
     <StyledHeader style={{
-      height: props.phase === 'game-board-showing' ? '0' : 'var(--header-height)',
+      // height: props.phase === 'game-board-showing' ? '0' : 'var(--header-height)',
+      transform: props.phase === 'game-board-showing' ? 'translateY(-100%)' : 'translateY(0)',
     }}>
       <h1>Space Card Game</h1>
       {props.userName && props.sheetCoords &&

@@ -14,6 +14,7 @@ const StyledTitleScreen = styled.div`
   grid-template-columns: 1fr 1fr;
   grid-template-rows: min-content 0.1fr 0.1fr;
   gap: 1rem;
+  padding-top: calc(var(--header-height) + 1rem);
 `;
 
 const WideButton = styled(Button)`

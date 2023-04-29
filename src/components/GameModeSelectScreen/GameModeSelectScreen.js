@@ -13,6 +13,7 @@ const StyledGameModeSelectScreen = styled.div`
   justify-content: flex-start;
   gap: 2rem;
   padding-bottom: var(--expanded-footer-height);
+  padding-top: calc(var(--header-height) + 1rem);
 `;
 
 function GameModeSelectScreen(props) {

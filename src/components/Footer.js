@@ -54,7 +54,7 @@ function Footer(props) {
         </>
         : props.phase === 'game-board-showing' ?
           <>
-            {/* <FooterBackButton onClick={props.onClickBackToGameSelect} className='Button footer-back-button' label='<'/> */}
+            <FooterBackButton onClick={props.onClickBackToGameSelect} className='Button footer-back-button' label='<'/>
             <Hamburger />
           </>
           :

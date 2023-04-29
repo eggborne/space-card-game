@@ -15,6 +15,7 @@ const StyledHamburger = styled.div`
   cursor: pointer;
   border-radius: calc(var(--border-radius) / 3);
   border-width: var(--button-border-width);
+  transition: all 300ms ease;
 
   & > .hamburger-bar {
     box-sizing: border-box;
@@ -34,7 +35,6 @@ function Hamburger() {
   const [open, setOpen] = useState(false);
 
   function toggleHamburgerAppearance() {
-    console.log('toggle clicked while open is', open)
     let topBar = document.getElementById('top-hamburger-bar');
     let bottomBar = document.getElementById('bottom-hamburger-bar');
     let middleBar = document.getElementById('middle-hamburger-bar');
@@ -63,7 +63,7 @@ function Hamburger() {
   };
   return (
     <StyledHamburger 
-      // style={{backgroundColor: open ? 'var(--hamburger-open-bg-color' : 'var(--hamburger-bg-color'}} 
+      style={{backgroundColor: open ? 'var(--hamburger-open-bg-color' : 'var(--hamburger-bg-color'}} 
       onClick={toggleHamburgerAppearance}
     >
       <div className='hamburger-bar' id='top-hamburger-bar'></div>
