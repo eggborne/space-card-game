@@ -4,16 +4,11 @@ import PropTypes from 'prop-types';
 const StyledPlayerPortrait = styled.div`
   box-sizing: content-box;
   border-radius: 10%;
-  border: 0.25rem solid darksalmon;
+  border: 0.1rem solid darksalmon;
   background-repeat: no-repeat;
 `;
 
 function PlayerPortrait(props) {
-  let portraitSize = props.size;
-  let sheetWidth = portraitSize * 8;
-  let sheetHeight = portraitSize * 3;
-
-
   return (
     <StyledPlayerPortrait 
       style={{

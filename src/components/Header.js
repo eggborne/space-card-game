@@ -27,7 +27,7 @@ function Header(props) {
   return (
     <StyledHeader>
       <h1>Space Card Game</h1>
-      {props.userName &&
+      {props.userName && props.sheetCoords &&
       <div className='user-info-area'>
         <div>{props.userName}</div>
         <PlayerPortrait 

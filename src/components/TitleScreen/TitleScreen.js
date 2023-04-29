@@ -1,6 +1,7 @@
 import Button from '../Buttons/Button';
 import LoginArea from './LoginArea';
 import AvatarChoiceModal from './AvatarChoiceModal';
+import ScreenVeil from '../ScreenVeil';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
 
@@ -24,6 +25,7 @@ const WideButton = styled(Button)`
 function TitleScreen(props) {
   return (
     <>
+      <ScreenVeil showing={props.avatarChoiceModalShowing} onClickClose={props.handleCloseAvatarModal} />
       <StyledTitleScreen style={{ display: props.showing ? 'grid' : 'none'}} >
         <LoginArea handleClickLogIn={props.handleClickLogIn} />
         <Button style={{backgroundColor: 'red'}} label='Options' />
@@ -39,6 +41,7 @@ TitleScreen.propTypes = {
   showing: PropTypes.bool,
   handleClickLogIn: PropTypes.func,
   handleChooseAvatar: PropTypes.func,
+  handleCloseAvatarModal: PropTypes.func,
   avatarChoiceModalShowing: PropTypes.bool,
 }
 

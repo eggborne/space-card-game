@@ -14,7 +14,7 @@ const StyledFooter = styled.footer`
   color: #bbb;
   display: flex;
   align-items: center;
-  justify-content: flex-end;
+  justify-content: center;
   font-size: 90%;
   padding: 0 1rem;
   transition: all 200ms ease;

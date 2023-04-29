@@ -30,6 +30,8 @@ function App() {
   const [avatarChoiceModalShowing, setAvatarChoiceModalShowing] = useState(false);
 
   function handleClickLogIn(user) {
+    console.warn('handleClickLogin got user')
+    console.table(user)
     if (user.password) {
       // do user login stuff with user.userName and user.password
     } else {
@@ -40,13 +42,14 @@ function App() {
       });
 
       setAvatarChoiceModalShowing(true);
-      // setPhase('game-mode-select');
     }
   }
   
   function handleChooseAvatar(newSheetCoords) {
     setUser({
-      sheetCoords: newSheetCoords
+      userName: user.userName,
+      imagePath: 'images/avatarsheetlq.jpg',
+      sheetCoords: newSheetCoords,
     });
     setAvatarChoiceModalShowing(false);
     setPhase('game-mode-select');
@@ -64,6 +67,10 @@ function App() {
     }
   }
 
+  function handleCloseAvatarModal() {
+    setAvatarChoiceModalShowing(false);
+  }
+
 
   return (
     <StyledApp >
@@ -77,6 +84,7 @@ function App() {
         handleClickLogIn={handleClickLogIn}
         handleChooseAvatar={handleChooseAvatar}
         avatarChoiceModalShowing={avatarChoiceModalShowing}
+        handleCloseAvatarModal={handleCloseAvatarModal}
       />
       <GameModeSelectScreen 
         showing={phase === 'game-mode-select'}

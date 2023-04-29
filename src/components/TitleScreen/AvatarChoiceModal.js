@@ -15,6 +15,7 @@ const StyledAvatarChoiceModal = styled.div`
   flex-direction: column;
   align-items: center;
   padding: 1rem;
+  z-index: 2;
 
   opacity: 0;
   pointer-events: none;
@@ -79,8 +80,6 @@ function getArrayOfPortraits() {
 function AvatarChoiceModal(props) { 
   const [userAvatarChoice, setUserAvatarChoice] = useState({ x: 0, y: 0 });
 
-  
-    
   return (
     <StyledAvatarChoiceModal style={{
       opacity: props.showing ? '1' : '0',
