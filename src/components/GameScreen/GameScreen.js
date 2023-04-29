@@ -17,18 +17,17 @@ const StyledGameBoard = styled.div`
 `;
 
 const GameBoardPlayerArea = styled.div`
-  display: flex;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
   align-items: center;
-  justify-content: center;
-  padding: 1rem;
+  justify-items: center;
+  padding: 0 1rem;
   gap: 1rem;
   width: 14rem;
   font-weight: bold;
-  border: 2px solid orange;
 `;
 
 function GameScreen(props) {
-  console.log('GameScreen', props);
   return (
     <StyledGameBoard
       style={{ display: props.showing ? 'flex' : 'none' }}

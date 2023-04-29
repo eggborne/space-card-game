@@ -12,6 +12,7 @@ const StyledHeader = styled.header`
   justify-content: space-between;
   padding: 0 1rem;
   padding-right: 0.5rem;
+  transition: all 200ms ease;
 
   & > h1 {
     font-size: 1.4rem;
@@ -25,7 +26,9 @@ const StyledHeader = styled.header`
 
 function Header(props) {
   return (
-    <StyledHeader>
+    <StyledHeader style={{
+      height: props.phase === 'game-board-showing' ? '0' : 'var(--header-height)',
+    }}>
       <h1>Space Card Game</h1>
       {props.userName && props.sheetCoords &&
       <div className='user-info-area'>

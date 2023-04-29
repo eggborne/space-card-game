@@ -34,11 +34,12 @@ function Hamburger() {
   const [open, setOpen] = useState(false);
 
   function toggleHamburgerAppearance() {
+    console.log('toggle clicked while open is', open)
     let topBar = document.getElementById('top-hamburger-bar');
     let bottomBar = document.getElementById('bottom-hamburger-bar');
     let middleBar = document.getElementById('middle-hamburger-bar');
     let middleBar2 = document.getElementById('middle-hamburger-bar-2');
-    if (!open) {
+    if (open) {
       // un-rotate middle bars to flat
       middleBar.style.transform = middleBar2.style.transform = 'rotate(0) scaleX(1)';
       setTimeout(() => {
@@ -46,7 +47,7 @@ function Hamburger() {
         // un-collapse top and bottom bars from middle
         topBar.style.transform = bottomBar.style.transform = 'translateY(0)';
       }, 150);
-      setOpen(true);
+      
     } else {
       // collapse top and bottom bars to middle
       topBar.style.transform = 'translateY(200%)';
@@ -57,8 +58,8 @@ function Hamburger() {
         middleBar.style.transform = 'rotate(40deg) scaleX(1.1)';
         middleBar2.style.transform = 'rotate(-40deg) scaleX(1.1)';
       }, 150);
-      setOpen(false);
     }
+    setOpen(!open);
   };
   return (
     <StyledHamburger 

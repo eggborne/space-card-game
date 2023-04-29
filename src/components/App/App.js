@@ -100,6 +100,7 @@ function App() {
         userName={user.userName}
         imagePath={user.imagePath}
         sheetCoords={user.sheetCoords}
+        phase={phase}
       />
       <TitleScreen 
         showing={phase === 'title'}

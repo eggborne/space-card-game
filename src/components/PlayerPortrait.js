@@ -13,6 +13,7 @@ function PlayerPortrait(props) {
     <StyledPlayerPortrait 
       style={{
         width: props.size,
+        minWidth: props.size,
         height: props.size,
         backgroundImage: `url(${props.imagePath})`,
         backgroundSize: props.imagePath.includes('opponent') ? '800% 400%' : '800% 300%',
