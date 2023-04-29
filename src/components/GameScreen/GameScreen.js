@@ -1,3 +1,4 @@
+import PlayerPortrait from '../PlayerPortrait';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
 
@@ -15,19 +16,46 @@ const StyledGameBoard = styled.div`
   padding-bottom: var(--expanded-footer-height);
 `;
 
-function GameBoard(props) {
+const GameBoardPlayerArea = styled.div`
+  display: flex;
+  align-items: center;
+  gap:0.5rem;
+  width: 16rem;
+  font-weight: bold;
+`;
+
+function GameScreen(props) {
+  console.log('GameScreen', props);
   return (
     <StyledGameBoard
       style={{ display: props.showing ? 'flex' : 'none' }}
     >
-      <div>This is the game board!</div>
+      <GameBoardPlayerArea>
+        <div>{props.opponent.userName}</div>
+        <PlayerPortrait 
+          size='6rem'
+          imagePath={props.opponent.imagePath}
+          sheetCoords={props.opponent.sheetCoords}
+        />
+      </GameBoardPlayerArea>
+      <h2>VS.</h2>
+      <GameBoardPlayerArea>
+        <PlayerPortrait 
+          size='6rem'
+          imagePath={props.user.imagePath}
+          sheetCoords={props.user.sheetCoords}
+        />
+        <div>{props.user.userName}</div>
+      </GameBoardPlayerArea>
     </StyledGameBoard>
   );
 }
 
-GameBoard.propTypes = {
+GameScreen.propTypes = {
+  user: PropTypes.object,
+  opponent: PropTypes.object,
   showing: PropTypes.bool,
   gameMode: PropTypes.string,
 };
 
-export default GameBoard;
+export default GameScreen;

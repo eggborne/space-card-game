@@ -15,7 +15,7 @@ function PlayerPortrait(props) {
         width: props.size,
         height: props.size,
         backgroundImage: `url(${props.imagePath})`,
-        backgroundSize: '800% 300%',
+        backgroundSize: props.imagePath.includes('opponent') ? '800% 400%' : '800% 300%',
         backgroundPositionX: `calc(${props.sheetCoords.x * -1} * ${props.size}`,
         backgroundPositionY: `calc(${props.sheetCoords.y * -1} * ${props.size}`,
       }} 

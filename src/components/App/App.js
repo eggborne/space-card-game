@@ -3,8 +3,14 @@ import Header from '../Header';
 import Footer from '../Footer';
 import TitleScreen from '../TitleScreen/TitleScreen';
 import GameModeSelectScreen from '../GameModeSelectScreen/GameModeSelectScreen';
-import GameBoard from '../GameScreen/GameScreen';
+import GameScreen from '../GameScreen/GameScreen';
 import styled from 'styled-components';
+import { characters, randomOpponents } from '../../characters.js';
+
+console.warn('got characters')
+console.table(characters)
+console.warn('got randomOpponents')
+console.table(randomOpponents)
 
 const randomInt = (min, max) => Math.floor(Math.random() * (max - min + 1)) + min;
 
@@ -29,6 +35,11 @@ function App() {
   const [user, setUser] = useState({
     userName: '',
     guest: true,
+  });
+  const [opponent, setOpponent] = useState({
+    userName: '',
+    imagePath: 'images/opponentsheet.jpg',
+    sheetCoords: { x: randomInt(0, 7), y: randomInt(0, 2) },
   });
   const [avatarChoiceModalShowing, setAvatarChoiceModalShowing] = useState(false);
 
@@ -66,7 +77,15 @@ function App() {
     if (gameMode === 'Campaign') {
       
     } else if (gameMode === 'Quick Match') {
-      setPhase('game-board-showing')
+      let randomX = randomInt(0, 5);
+      let characterData = Object.values(randomOpponents)[randomX];
+      console.log('got data', characterData)
+      setOpponent({
+        ...characterData,
+        imagePath: 'images/opponentsheet.jpg',
+        sheetCoords: { x: randomX, y: 3 },
+      });
+      setPhase('game-board-showing');
     }
   }
 
@@ -94,10 +113,11 @@ function App() {
         gameMode={gameMode}
         switchGameMode={handleSwitchGameMode}
       />
-      <GameBoard 
+      {phase === 'game-board-showing' && <GameScreen 
         showing={phase === 'game-board-showing'}
-
-      />
+        user={{...user}}
+        opponent={{...opponent}}
+      />}
       <Footer 
         phase={phase}
         onClickBackToTitle={() => setPhase('title')}
