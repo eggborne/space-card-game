@@ -15,7 +15,22 @@
 
 2. Set up login system so as to enable App state 'userLoggedIn' to be set within handleClickLogin
 
-3. check 'userLoggedIn' to use sequence:
-  1. DeckSelectScreen (not shown to GUEST)
-  2. OpponentSelectScreen (not shown to GUEST)
-  3. GameScreen
+3. for render, check 'userLoggedIn' to use sequence:
+
+  userLoggedIn ?
+  2. GameModeSelectScreen
+    Quick Match ? 
+    3. GameScreen 
+    Campaign ? 
+    3. DeckSelectScreen
+    4. OpponentSelectScreen
+    5. GameScreen
+
+  !userLoggedIn ?
+  1. AvatarChoiceModal
+  2. GameModeSelectScreen
+    Quick Match ? 
+    3. GameScreen 
+    Campaign ? 
+    3. OpponentSelectScreen
+    4. GameScreen
