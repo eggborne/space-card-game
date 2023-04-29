@@ -5,7 +5,6 @@ import styled from 'styled-components';
 const StyledGameModeSelectScreen = styled.div`
   padding: 1rem;
   align-self: stretch;
-  background-color: rgb(145, 150, 105);
   color: #eee;
   flex-grow: 1;
   display: flex;

@@ -8,7 +8,6 @@ import styled from 'styled-components';
 const StyledTitleScreen = styled.div`
   padding: 1rem;
   align-self: stretch;
-  background-color: #565;
   color: #eee;
   flex-grow: 1;
   display: grid;

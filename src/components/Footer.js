@@ -14,7 +14,6 @@ const StyledFooter = styled.footer`
   color: #bbb;
   display: flex;
   align-items: center;
-  justify-content: center;
   font-size: 90%;
   padding: 0 1rem;
   transition: all 200ms ease;
@@ -41,6 +40,7 @@ const FooterBackButton = styled(Button)`
 function Footer(props) {
   const footerStyle = {
     height: props.phase === 'title' ? 'var(--footer-height)' : 'var(--expanded-footer-height)',
+    justifyContent: props.phase !== 'game-board-showing' ? 'center' : 'flex-end',
   }
   return (
     <StyledFooter style={footerStyle}>

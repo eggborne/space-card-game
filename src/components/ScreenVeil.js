@@ -2,7 +2,7 @@ import styled from 'styled-components';
 import PlayerPortrait from './PlayerPortrait';
 import PropTypes from 'prop-types';
 
-const StyledScreenVeil = styled.header`
+const StyledScreenVeil = styled.div`
   position: fixed;
   left: 0;
   top: 0;

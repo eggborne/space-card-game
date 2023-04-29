@@ -18,6 +18,9 @@ const StyledApp = styled.main`
   flex-direction: column;
   align-items: center;
   justify-content: space-between;
+  background-image: url(images/starfield.png);
+  background-size: cover;
+  background-position: center;
 `;
 
 function App() {
