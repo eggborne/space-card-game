@@ -1,5 +1,6 @@
 import Button from '../Buttons/Button';
 import LoginArea from './LoginArea';
+import AvatarChoiceModal from './AvatarChoiceModal';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
 
@@ -22,18 +23,23 @@ const WideButton = styled(Button)`
 
 function TitleScreen(props) {
   return (
-    <StyledTitleScreen style={{ display: props.showing ? 'grid' : 'none'}} >
-      <LoginArea handleClickLogIn={props.handleClickLogIn} />
-      <Button style={{backgroundColor: 'red'}} label='Options' />
-      <Button style={{backgroundColor: 'red'}} label='How to Play' />
-      <WideButton style={{backgroundColor: 'red'}} label='High Scores' />
-    </StyledTitleScreen>
+    <>
+      <StyledTitleScreen style={{ display: props.showing ? 'grid' : 'none'}} >
+        <LoginArea handleClickLogIn={props.handleClickLogIn} />
+        <Button style={{backgroundColor: 'red'}} label='Options' />
+        <Button style={{backgroundColor: 'red'}} label='How to Play' />
+        <WideButton style={{backgroundColor: 'red'}} label='High Scores' />
+      </StyledTitleScreen>
+      <AvatarChoiceModal showing={props.avatarChoiceModalShowing} onClickOK={props.handleChooseAvatar} />
+    </>
   );
 }
 
 TitleScreen.propTypes = {
   showing: PropTypes.bool,
   handleClickLogIn: PropTypes.func,
+  handleChooseAvatar: PropTypes.func,
+  avatarChoiceModalShowing: PropTypes.bool,
 }
 
 export default TitleScreen;

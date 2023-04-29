@@ -32,8 +32,8 @@ function Header(props) {
         <div>{props.userName}</div>
         <PlayerPortrait 
           size='calc(var(--header-height) - 1rem)' 
-          imagePath='images/avatarsheetlq.jpg'
-          sheetCoords={{ x: 6, y: 2 }}
+          imagePath={props.imagePath}
+          sheetCoords={{...props.sheetCoords}}
         />
       </div>}
     </StyledHeader>
@@ -42,6 +42,8 @@ function Header(props) {
 
 Header.propTypes = {
   userName: PropTypes.string,
+  imagePath: PropTypes.string,
+  sheetCoords: PropTypes.objectOf(PropTypes.number),
 }
 
 export default Header;

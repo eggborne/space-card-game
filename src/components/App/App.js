@@ -6,6 +6,8 @@ import GameModeSelectScreen from '../GameModeSelectScreen/GameModeSelectScreen';
 import GameBoard from '../GameScreen/GameScreen';
 import styled from 'styled-components';
 
+const randomInt = (min, max) => Math.floor(Math.random() * (max - min + 1)) + min;
+
 const StyledApp = styled.main`
   position: relative;
   background-color: #111;
@@ -21,18 +23,33 @@ const StyledApp = styled.main`
 function App() {
   const [phase, setPhase] = useState('title');
   const [gameMode, setGameMode] = useState('Quick Match');
-  const [user, setUser] = useState({});
+  const [user, setUser] = useState({
+    userName: '',
+    guest: true,
+  });
+  const [avatarChoiceModalShowing, setAvatarChoiceModalShowing] = useState(false);
 
   function handleClickLogIn(user) {
     if (user.password) {
       // do user login stuff with user.userName and user.password
     } else {
-      // do guest player stuff
       setUser({
-        userName: user.userName
-      })
-      setPhase('game-mode-select');
+        userName: user.userName,
+        imagePath: 'images/avatarsheetlq.jpg',
+        // sheetCoords: { x: randomInt(0, 7), y: randomInt(0, 2) },
+      });
+
+      setAvatarChoiceModalShowing(true);
+      // setPhase('game-mode-select');
     }
+  }
+  
+  function handleChooseAvatar(newSheetCoords) {
+    setUser({
+      sheetCoords: newSheetCoords
+    });
+    setAvatarChoiceModalShowing(false);
+    setPhase('game-mode-select');
   }
 
   function handleSwitchGameMode(newMode) {
@@ -40,11 +57,6 @@ function App() {
   }
 
   function handleAcceptGameMode() {
-    console.log('gm is', gameMode)
-    // if campaign
-      // show deck select > opponent select > start
-    // if quick match
-      // start
     if (gameMode === 'Campaign') {
       
     } else if (gameMode === 'Quick Match') {
@@ -52,14 +64,19 @@ function App() {
     }
   }
 
+
   return (
     <StyledApp >
       <Header 
         userName={user.userName}
+        imagePath={user.imagePath}
+        sheetCoords={user.sheetCoords}
       />
       <TitleScreen 
         showing={phase === 'title'}
         handleClickLogIn={handleClickLogIn}
+        handleChooseAvatar={handleChooseAvatar}
+        avatarChoiceModalShowing={avatarChoiceModalShowing}
       />
       <GameModeSelectScreen 
         showing={phase === 'game-mode-select'}

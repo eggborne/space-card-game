@@ -58,7 +58,6 @@ function LoginRegisterForm(props) {
     if (!playingAsGuest) {
       user.password = e.target.password.value;
     }
-    console.log('LoginRegisterForm handleLogin got user');
     console.table(user);
     props.handleClickLogIn(user);
   }

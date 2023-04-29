@@ -10,7 +10,7 @@ const StyledHamburger = styled.div`
   width: var(--hamburger-height);
   height: var(--hamburger-height);
   max-height: 100%;
-  // background-color: var(--hamburger-bg-color);
+  background-color: var(--hamburger-bg-color);
   border: solid #00000044;
   cursor: pointer;
   border-radius: calc(var(--border-radius) / 3);
@@ -61,7 +61,10 @@ function Hamburger() {
     }
   };
   return (
-    <StyledHamburger style={{backgroundColor: open ? 'var(--hamburger-open-bg-color' : 'var(--hamburger-bg-color'}} onClick={toggleHamburgerAppearance}>
+    <StyledHamburger 
+      // style={{backgroundColor: open ? 'var(--hamburger-open-bg-color' : 'var(--hamburger-bg-color'}} 
+      onClick={toggleHamburgerAppearance}
+    >
       <div className='hamburger-bar' id='top-hamburger-bar'></div>
       <div className='hamburger-bar' id='middle-hamburger-bar'></div>
       <div className='hamburger-bar' id='middle-hamburger-bar-2'></div>
