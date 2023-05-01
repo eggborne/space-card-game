@@ -6,13 +6,12 @@ import GameModeSelectScreen from '../GameModeSelectScreen/GameModeSelectScreen';
 import GameScreen from '../GameScreen/GameScreen';
 import styled from 'styled-components';
 import { characters, randomOpponents } from '../../characters.js';
+import { randomInt, pause } from '../../util.js';
 
 console.warn('got characters')
 console.table(characters)
 console.warn('got randomOpponents')
 console.table(randomOpponents)
-
-const randomInt = (min, max) => Math.floor(Math.random() * (max - min + 1)) + min;
 
 const StyledApp = styled.main`
   position: relative;
@@ -32,10 +31,7 @@ const StyledApp = styled.main`
 function App() {
   const [phase, setPhase] = useState('title');
   const [gameMode, setGameMode] = useState('Quick Match');
-  const [user, setUser] = useState({
-    userName: '',
-    guest: true,
-  });
+  const [user, setUser] = useState({});
   const [opponent, setOpponent] = useState({
     userName: '',
     imagePath: 'images/opponentsheet.jpg',

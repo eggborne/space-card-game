@@ -1,11 +1,12 @@
-import PlayerPortrait from '../PlayerPortrait';
+import { useState } from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
+import VersusScreen from './VersusScreen';
 
 const StyledGameBoard = styled.div`
   padding: 1rem;
   align-self: stretch;
-  background-color: rgb(13, 71, 16);
+  // background-color: rgb(13, 71, 16);
   color: #eee;
   flex-grow: 1;
   display: flex;
@@ -28,27 +29,16 @@ const GameBoardPlayerArea = styled.div`
 `;
 
 function GameScreen(props) {
+  const [versusScreenShowing, setVersusScreenShowing] = useState(true)
   return (
     <StyledGameBoard
       style={{ display: props.showing ? 'flex' : 'none' }}
     >
-      <GameBoardPlayerArea>
-        <div>{props.opponent.userName}</div>
-        <PlayerPortrait 
-          size='6rem'
-          imagePath={props.opponent.imagePath}
-          sheetCoords={props.opponent.sheetCoords}
-        />
-      </GameBoardPlayerArea>
-      <h2>VS.</h2>
-      <GameBoardPlayerArea>
-        <PlayerPortrait 
-          size='6rem'
-          imagePath={props.user.imagePath}
-          sheetCoords={props.user.sheetCoords}
-        />
-        <div>{props.user.userName}</div>
-      </GameBoardPlayerArea>
+      <VersusScreen user={props.user} opponent={props.opponent} showing={versusScreenShowing} />
+      {!versusScreenShowing &&
+        <div>this is the actual game board</div>
+      }
+      
     </StyledGameBoard>
   );
 }
