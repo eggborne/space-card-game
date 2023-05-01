@@ -42,6 +42,7 @@ input, select {
   font-family: inherit;
   font-size: inherit;
   border-radius: calc(var(--border-radius) / 4);
+  padding: 1rem !important;
 }
 
 h1, h2, h3, h4 {

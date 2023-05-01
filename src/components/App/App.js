@@ -5,6 +5,9 @@ import TitleScreen from '../TitleScreen/TitleScreen';
 import GameModeSelectScreen from '../GameModeSelectScreen/GameModeSelectScreen';
 import GameScreen from '../GameScreen/GameScreen';
 import styled from 'styled-components';
+import { db } from '../../firebase.js'
+import { auth } from "../../firebase.js";
+import { createUserWithEmailAndPassword } from "firebase/auth";
 import { characters, randomOpponents } from '../../characters.js';
 import { randomInt, pause } from '../../util.js';
 
@@ -43,8 +46,10 @@ function App() {
     console.warn('handleClickLogin got user')
     console.table(user)
     if (user.password) {
-      // do user login stuff with user.userName and user.password
+      
+      // do user login stuff
     } else {
+      // guest user
       setUser({
         userName: user.userName,
         imagePath: 'images/avatarsheetlq.jpg',
@@ -53,6 +58,12 @@ function App() {
 
       setAvatarChoiceModalShowing(true);
     }
+  }
+
+  function handleClickRegister(newUser) {
+    console.warn('handleClickRegister got newUser');
+    console.table(newUser);
+
   }
   
   function handleChooseAvatar(newSheetCoords) {
@@ -101,6 +112,7 @@ function App() {
       <TitleScreen 
         showing={phase === 'title'}
         handleClickLogIn={handleClickLogIn}
+        handleClickRegister={handleClickRegister}
         handleChooseAvatar={handleChooseAvatar}
         avatarChoiceModalShowing={avatarChoiceModalShowing}
         handleCloseAvatarModal={handleCloseAvatarModal}

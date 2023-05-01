@@ -40,13 +40,56 @@ const StyledLoginRegisterForm = styled.div`
   &.register > form {
     transform: translateX(-18rem);
   }
+
+  & .password-input-container {
+    position: relative;
+
+    & input {
+      transition: background-color 200ms ease;
+    }
+
+    & > .error-message.password-match {
+      position: absolute;
+      top: 2.5%;
+      right: 2.5%;
+      color: red;
+      font-weight: bold;
+      font-size: 80%;
+
+      opacity: 0;
+      transition: opacity 200ms ease;
+    }
+
+    &.invalid .error-message.password-match {
+      opacity: 1;
+    }
+
+    &.invalid input {
+      background-color: #ffcccc;
+    }
+  }
+`;
+
+const PasswordInput = styled.input`
+  &.invalid {
+    outline: solid red;
+  }
+`;
+const RepeatPasswordInput = styled.input`
+  &.invalid {
+    outline: solid blue;
+     
+  }
 `;
 
 function LoginRegisterForm(props) {
 
   const [playingAsGuest, setPlayingAsGuest] = useState(true);
+  const [nameLengthOkay, setNameLengthOkay] = useState(false);
+  const [passwordsMatch, setPasswordsMatch] = useState(false);
+  const [passwordLengthOkay, setPasswordLengthOkay] = useState(false);
 
-  function handleInputChange(e) {
+  function handlePasswordInputChange(e) {
     setPlayingAsGuest(!e.target.value);
   }
 
@@ -58,15 +101,58 @@ function LoginRegisterForm(props) {
     if (!playingAsGuest) {
       user.password = e.target.password.value;
     }
+    // add to db here?
+    
     props.handleClickLogIn(user);
+  }
+
+  function handleRegisterFormChange(e) {
+    const nameOkay = e.target.form.userName.value.length >= 3;
+    const matching = e.target.form.password.value === e.target.form.repeatPassword.value;
+    const passwordOkay = e.target.form.password.value.length >= 6;
+    console.log('nameOkay', nameOkay)
+    console.log('matching', matching)
+    console.log('passwordOkay', passwordOkay)
+    setNameLengthOkay(nameOkay);
+    setPasswordsMatch(matching);
+    setPasswordLengthOkay(passwordOkay);
+  }
+
+  function handleRegister(e) {
+    e.preventDefault();
+    const user = {
+      userName: e.target.userName.value,
+      password: e.target.password.value
+    }
+    console.log('user is')
+    console.table(user)
+    if (!playingAsGuest) {
+      user.password = e.target.password.value;
+    }
+    // add to db here?
+    
+    // props.handleClickRegister(user);
   }
 
   return (
     <StyledLoginRegisterForm className={`LoginRegisterForm ${props.loginShowing}`}>
       <form onSubmit={handleLogIn}>
         <h2>Log In</h2>
-        <div><input tabIndex={props.loginShowing === 'register' ? -1 : 1} name='userName' type='text' placeholder='Name' autoComplete='username' /></div>
-        <div><input onChange={handleInputChange} tabIndex={props.loginShowing === 'register' ? -1 : 1} name='password' type='password' placeholder='Password' autoComplete='current-password' /></div>
+        <div><input 
+          tabIndex={props.loginShowing === 'register' ? -1 : 1} 
+          name='userName' 
+          type='text' 
+          placeholder='Name' 
+          autoComplete='username' 
+          /></div>
+        <div><input 
+          onChange={handlePasswordInputChange} 
+          tabIndex={props.loginShowing === 'register' ? -1 : 1} 
+          name='password' 
+          type='password' 
+          placeholder='Password' 
+          autoComplete='current-password' 
+          /></div>
         <div className='form-button-area'>
           <Button 
             tabIndex={props.loginShowing === 'register' ? -1 : 1}
@@ -75,13 +161,39 @@ function LoginRegisterForm(props) {
           />
         </div>
       </form>
-      <form onSubmit={props.handleClickRegister}>
+      <form onChange={handleRegisterFormChange} onSubmit={handleRegister}>
         <h2>Register</h2>
-        <div><input tabIndex={props.loginShowing === 'login' ? -1 : 1} name='userName' type='text' placeholder='Name' autoComplete='username' /></div>
-        <div><input tabIndex={props.loginShowing === 'login' ? -1 : 1} name='password' type='password' placeholder='Password' autoComplete='new-password' /></div>
-        <div><input tabIndex={props.loginShowing === 'login' ? -1 : 1} name='repeatPassword' type='password' placeholder='Repeat Password' autoComplete='new-password' /></div>
+          <div className={`password-input-container${nameLengthOkay ? '' : ' invalid'}`} >
+          <div className='error-message password-match'>TOO SHORT</div>
+            <input
+            tabIndex={props.loginShowing === 'login' ? -1 : 1} 
+            name='userName' 
+            type='text' 
+            placeholder='Name (3+ characters)' 
+            autoComplete='username' 
+          /></div>
+        <div className={`password-input-container${passwordLengthOkay ? '' : ' invalid'}`}>
+          <div className='error-message password-match'>TOO SHORT</div>
+          <PasswordInput
+            tabIndex={props.loginShowing === 'login' ? -1 : 1} 
+            name='password' 
+            type='password' 
+            placeholder='Password (6+ characters)' 
+            autoComplete='new-password' 
+          /></div>
+        <div className={`password-input-container${passwordsMatch ? '' : ' invalid'}`}>
+          <div className='error-message password-match'>DOES NOT MATCH</div>
+          <RepeatPasswordInput
+            className={passwordsMatch ? '' : 'invalid'}
+            tabIndex={props.loginShowing === 'login' ? -1 : 1} 
+            name='repeatPassword' 
+            type='password' 
+            placeholder='Repeat Password' 
+            autoComplete='new-password' 
+          /></div>
         <div tabIndex={props.loginShowing === 'login' ? -1 : 1} className='form-button-area'>
           <Button 
+            disabled={!nameLengthOkay || !passwordLengthOkay || !passwordsMatch}
             tabIndex={props.loginShowing === 'login' ? -1: 1}
             color='orange'
             label='Register'

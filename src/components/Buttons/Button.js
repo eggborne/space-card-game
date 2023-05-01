@@ -15,6 +15,7 @@ const StyledButton = styled.button`
   font-size: inherit;
   min-width: 6rem;
   cursor: pointer;
+  transition: opacity 200ms ease;
 
   &:hover {
     border-color: #00ff00aa
@@ -23,11 +24,16 @@ const StyledButton = styled.button`
   &.main-footer {
     width: 45%;
   }
+
+  :disabled {
+    opacity: 0.5;
+  }
 `;
 
 function Button(props) {
   return (
     <StyledButton
+      disabled={props.disabled}
       tabIndex={props.tabIndex}
       onClick={props.onClick}
       style={{
@@ -45,7 +51,8 @@ Button.propTypes = {
   tabIndex: PropTypes.number,
   label: PropTypes.string,
   color: PropTypes.string,
-  onClick: PropTypes.func
+  onClick: PropTypes.func,
+  disabled: PropTypes.bool,
 };
 
 export default Button;

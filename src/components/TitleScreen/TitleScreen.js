@@ -27,7 +27,7 @@ function TitleScreen(props) {
     <>
       <ScreenVeil showing={props.avatarChoiceModalShowing} onClickClose={props.handleCloseAvatarModal} />
       <StyledTitleScreen style={{ display: props.showing ? 'grid' : 'none'}} >
-        <LoginArea handleClickLogIn={props.handleClickLogIn} />
+        <LoginArea handleClickLogIn={props.handleClickLogIn} handleClickRegister={props.handleClickRegister} />
         <Button style={{backgroundColor: 'red'}} label='Options' />
         <Button style={{backgroundColor: 'red'}} label='How to Play' />
         <WideButton style={{backgroundColor: 'red'}} label='High Scores' />
@@ -40,6 +40,7 @@ function TitleScreen(props) {
 TitleScreen.propTypes = {
   showing: PropTypes.bool,
   handleClickLogIn: PropTypes.func,
+  handleClickRegister: PropTypes.func,
   handleChooseAvatar: PropTypes.func,
   handleCloseAvatarModal: PropTypes.func,
   avatarChoiceModalShowing: PropTypes.bool,
