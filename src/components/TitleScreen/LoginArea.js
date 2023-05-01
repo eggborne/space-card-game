@@ -64,6 +64,7 @@ function LoginArea(props) {
         loginShowing={loginShowing}
         handleClickLogIn={props.handleClickLogIn}
         handleClickRegister={props.handleClickRegister}
+        setAvatarChoiceModalShowing={props.setAvatarChoiceModalShowing}
       />
       <div className='bottom-button-area'>
         <div onClick={() => setLoginShowing('login')} className={loginShowing === 'login' ? 'tab-button selected' : 'tab-button'}>Log In</div>
@@ -77,6 +78,7 @@ LoginArea.propTypes = {
   loginShowing: PropTypes.string,
   handleClickLogIn: PropTypes.func,
   handleClickRegister: PropTypes.func,
+  setAvatarChoiceModalShowing: PropTypes.func,
 };
 
 export default LoginArea;

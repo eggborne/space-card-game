@@ -9,8 +9,10 @@ import { db, auth } from '../../firebase.js'
 import { 
   createUserWithEmailAndPassword, 
   signInWithEmailAndPassword, 
-  signOut  
+  signOut,
+  updateProfile
 } from "firebase/auth";
+import { collection, addDoc, getDoc } from "firebase/firestore";
 import { characters, randomOpponents } from '../../characters.js';
 import { randomInt, pause } from '../../util.js';
 
@@ -57,8 +59,8 @@ function App() {
       signInWithEmailAndPassword(auth, user.email, user.password)
       .then((userCredential) => {
         console.log(`You've successfully signed in as ${userCredential.user.email}!`);
-        console.log('now auth.currentUser is', auth.currentUser)
-        setCurrentUser(auth.currentUser)
+        setCurrentUser(auth.currentUser);
+        setPhase('game-mode-select')
       })
       .catch((error) => {
         console.log(`There was an error signing in: ${error.message}!`)
@@ -76,14 +78,30 @@ function App() {
     }
   }
 
-  function handleClickRegister(newUser) {
+  async function handleClickRegister(newUser) {
     console.warn('handleClickRegister got newUser');
     console.table(newUser);
 
     createUserWithEmailAndPassword(auth, newUser.email, newUser.password)
-      .then((userCredential) => {
+      .then(async (userCredential) => {
         // User successfully signed up 
-        console.log('REGISTERED!', userCredential)
+        console.log('REGISTERED!', userCredential);
+
+        await addDoc(collection(db, "users"), newUser);
+
+
+        updateProfile(auth.currentUser, {
+          displayName: newUser.displayName
+        }).then(() => {
+          console.log('PROFILE UPDATED! /////////////////////////////////');
+          console.log(auth.currentUser)
+          // ...
+        }).catch((error) => {
+          console.log('profile not updated :(')
+          // An error occurred
+          // ...
+        });
+        // setAvatarChoiceModalShowing(true);
       })
       .catch((error) => {
         console.log('ERROR', error)
@@ -151,6 +169,7 @@ function App() {
         handleClickRegister={handleClickRegister}
         handleChooseAvatar={handleChooseAvatar}
         avatarChoiceModalShowing={avatarChoiceModalShowing}
+        setAvatarChoiceModalShowing={() => setAvatarChoiceModalShowing(true)}
         handleCloseAvatarModal={handleCloseAvatarModal}
       />
       <GameModeSelectScreen 

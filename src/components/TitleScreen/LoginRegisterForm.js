@@ -104,7 +104,7 @@ function LoginRegisterForm(props) {
       user.email = e.target.email.value
     }
     // add to db here?
-    console.log('form loggin in user', user)
+    console.log('form loggin in user', user);
     props.handleClickLogIn(user);
   }
 
@@ -130,8 +130,8 @@ function LoginRegisterForm(props) {
       user.password = e.target.password.value;
     }
     // add to db here?
-    
-    props.handleClickRegister(user);
+    props.setAvatarChoiceModalShowing(true);
+    // props.handleClickRegister(user);
   }
 
   return (
@@ -221,6 +221,7 @@ LoginRegisterForm.propTypes = {
   loginShowing: PropTypes.string,
   handleClickLogIn: PropTypes.func,
   handleClickRegister: PropTypes.func,
+  setAvatarChoiceModalShowing: PropTypes.func,
 };
 
 export default LoginRegisterForm;
