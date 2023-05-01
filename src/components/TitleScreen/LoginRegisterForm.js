@@ -86,6 +86,7 @@ function LoginRegisterForm(props) {
 
   const [playingAsGuest, setPlayingAsGuest] = useState(true);
   const [nameLengthOkay, setNameLengthOkay] = useState(false);
+  const [emailOkay, setEmailOkay] = useState(false);
   const [passwordsMatch, setPasswordsMatch] = useState(false);
   const [passwordLengthOkay, setPasswordLengthOkay] = useState(false);
 
@@ -96,42 +97,41 @@ function LoginRegisterForm(props) {
   function handleLogIn(e) {
     e.preventDefault();
     const user = {
-      userName: e.target.userName.value || 'Guest',
+      displayName: (e.target.displayName && e.target.displayName.value) || 'Guest',
     }
     if (!playingAsGuest) {
       user.password = e.target.password.value;
+      user.email = e.target.email.value
     }
     // add to db here?
-    
+    console.log('form loggin in user', user)
     props.handleClickLogIn(user);
   }
 
   function handleRegisterFormChange(e) {
-    const nameOkay = e.target.form.userName.value.length >= 3;
+    const nameOkay = e.target.form.displayName.value.length >= 3;
+    const correctEmailFormat = e.target.form.email.value.includes('@') && e.target.form.email.value.includes('.');
     const matching = e.target.form.password.value === e.target.form.repeatPassword.value;
     const passwordOkay = e.target.form.password.value.length >= 6;
-    console.log('nameOkay', nameOkay)
-    console.log('matching', matching)
-    console.log('passwordOkay', passwordOkay)
     setNameLengthOkay(nameOkay);
     setPasswordsMatch(matching);
     setPasswordLengthOkay(passwordOkay);
+    setEmailOkay(correctEmailFormat);
   }
 
   function handleRegister(e) {
     e.preventDefault();
     const user = {
-      userName: e.target.userName.value,
+      email: e.target.email.value,
+      displayName: e.target.displayName.value,
       password: e.target.password.value
     }
-    console.log('user is')
-    console.table(user)
     if (!playingAsGuest) {
       user.password = e.target.password.value;
     }
     // add to db here?
     
-    // props.handleClickRegister(user);
+    props.handleClickRegister(user);
   }
 
   return (
@@ -140,10 +140,10 @@ function LoginRegisterForm(props) {
         <h2>Log In</h2>
         <div><input 
           tabIndex={props.loginShowing === 'register' ? -1 : 1} 
-          name='userName' 
+          name='email' 
           type='text' 
-          placeholder='Name' 
-          autoComplete='username' 
+          placeholder='Email' 
+          autoComplete='email' 
           /></div>
         <div><input 
           onChange={handlePasswordInputChange} 
@@ -163,34 +163,47 @@ function LoginRegisterForm(props) {
       </form>
       <form onChange={handleRegisterFormChange} onSubmit={handleRegister}>
         <h2>Register</h2>
-          <div className={`password-input-container${nameLengthOkay ? '' : ' invalid'}`} >
+        <div className={`password-input-container${nameLengthOkay ? '' : ' invalid'}`} >
           <div className='error-message password-match'>TOO SHORT</div>
-            <input
+          <input
             tabIndex={props.loginShowing === 'login' ? -1 : 1} 
-            name='userName' 
+            name='displayName' 
             type='text' 
             placeholder='Name (3+ characters)' 
             autoComplete='username' 
-          /></div>
+          />
+        </div>
+        <div className={`password-input-container${emailOkay ? '' : ' invalid'}`} >
+          <div className='error-message password-match'>INVALID EMAIL</div>
+          <input
+            tabIndex={props.loginShowing === 'login' ? -1 : 1} 
+            name='email' 
+            type='email' 
+            placeholder='Email' 
+            autoComplete='email' 
+          />
+        </div>
         <div className={`password-input-container${passwordLengthOkay ? '' : ' invalid'}`}>
           <div className='error-message password-match'>TOO SHORT</div>
-          <PasswordInput
-            tabIndex={props.loginShowing === 'login' ? -1 : 1} 
-            name='password' 
-            type='password' 
-            placeholder='Password (6+ characters)' 
-            autoComplete='new-password' 
-          /></div>
+            <PasswordInput
+              tabIndex={props.loginShowing === 'login' ? -1 : 1} 
+              name='password' 
+              type='password' 
+              placeholder='Password (6+ characters)' 
+              autoComplete='new-password' 
+            />
+          </div>
         <div className={`password-input-container${passwordsMatch ? '' : ' invalid'}`}>
           <div className='error-message password-match'>DOES NOT MATCH</div>
-          <RepeatPasswordInput
-            className={passwordsMatch ? '' : 'invalid'}
-            tabIndex={props.loginShowing === 'login' ? -1 : 1} 
-            name='repeatPassword' 
-            type='password' 
-            placeholder='Repeat Password' 
-            autoComplete='new-password' 
-          /></div>
+            <RepeatPasswordInput
+              className={passwordsMatch ? '' : 'invalid'}
+              tabIndex={props.loginShowing === 'login' ? -1 : 1} 
+              name='repeatPassword' 
+              type='password' 
+              placeholder='Repeat Password' 
+              autoComplete='new-password' 
+            />
+          </div>
         <div tabIndex={props.loginShowing === 'login' ? -1 : 1} className='form-button-area'>
           <Button 
             disabled={!nameLengthOkay || !passwordLengthOkay || !passwordsMatch}

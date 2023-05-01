@@ -68,7 +68,7 @@ function VersusScreen(props) {
       style={{ display: props.showing ? 'flex' : 'none' }}
     >
       <VersusScreenPlayerArea id='player-area-1'>
-        <div>{props.opponent.userName}</div>
+        <div>{props.opponent.displayName}</div>
         <PlayerPortrait 
           size='6rem'
           imagePath={props.opponent.imagePath}
@@ -82,7 +82,7 @@ function VersusScreen(props) {
           imagePath={props.user.imagePath}
           sheetCoords={props.user.sheetCoords}
         />
-        <div>{props.user.userName}</div>
+        <div>{props.user.displayName}</div>
       </VersusScreenPlayerArea>
     </StyledVersusScreen>
   );

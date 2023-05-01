@@ -5,9 +5,12 @@ import TitleScreen from '../TitleScreen/TitleScreen';
 import GameModeSelectScreen from '../GameModeSelectScreen/GameModeSelectScreen';
 import GameScreen from '../GameScreen/GameScreen';
 import styled from 'styled-components';
-import { db } from '../../firebase.js'
-import { auth } from "../../firebase.js";
-import { createUserWithEmailAndPassword } from "firebase/auth";
+import { db, auth } from '../../firebase.js'
+import { 
+  createUserWithEmailAndPassword, 
+  signInWithEmailAndPassword, 
+  signOut  
+} from "firebase/auth";
 import { characters, randomOpponents } from '../../characters.js';
 import { randomInt, pause } from '../../util.js';
 
@@ -34,9 +37,14 @@ const StyledApp = styled.main`
 function App() {
   const [phase, setPhase] = useState('title');
   const [gameMode, setGameMode] = useState('Quick Match');
-  const [user, setUser] = useState({});
+  const [currentUser, setCurrentUser] = useState(null);
+  const [user, setUser] = useState({
+    email: '',
+    displayName: '',
+    imagePath: 'images/avatarsheetlq.jpg',
+  });
   const [opponent, setOpponent] = useState({
-    userName: '',
+    displayName: '',
     imagePath: 'images/opponentsheet.jpg',
     sheetCoords: { x: randomInt(0, 7), y: randomInt(0, 2) },
   });
@@ -46,14 +54,22 @@ function App() {
     console.warn('handleClickLogin got user')
     console.table(user)
     if (user.password) {
-      
+      signInWithEmailAndPassword(auth, user.email, user.password)
+      .then((userCredential) => {
+        console.log(`You've successfully signed in as ${userCredential.user.email}!`);
+        console.log('now auth.currentUser is', auth.currentUser)
+        setCurrentUser(auth.currentUser)
+      })
+      .catch((error) => {
+        console.log(`There was an error signing in: ${error.message}!`)
+      });
       // do user login stuff
     } else {
       // guest user
       setUser({
-        userName: user.userName,
+        email: '',
+        displayName: user.displayName,
         imagePath: 'images/avatarsheetlq.jpg',
-        // sheetCoords: { x: randomInt(0, 7), y: randomInt(0, 2) },
       });
 
       setAvatarChoiceModalShowing(true);
@@ -64,11 +80,22 @@ function App() {
     console.warn('handleClickRegister got newUser');
     console.table(newUser);
 
+    createUserWithEmailAndPassword(auth, newUser.email, newUser.password)
+      .then((userCredential) => {
+        // User successfully signed up 
+        console.log('REGISTERED!', userCredential)
+      })
+      .catch((error) => {
+        console.log('ERROR', error)
+        // There was an error with sign up
+      });
+
+
   }
   
   function handleChooseAvatar(newSheetCoords) {
     setUser({
-      userName: user.userName,
+      displayName: user.displayName,
       imagePath: 'images/avatarsheetlq.jpg',
       sheetCoords: newSheetCoords,
     });
@@ -86,7 +113,6 @@ function App() {
     } else if (gameMode === 'Quick Match') {
       let randomX = randomInt(0, 5);
       let characterData = Object.values(randomOpponents)[randomX];
-      console.log('got data', characterData)
       setOpponent({
         ...characterData,
         imagePath: 'images/opponentsheet.jpg',
@@ -100,11 +126,21 @@ function App() {
     setAvatarChoiceModalShowing(false);
   }
 
+  function handleLogOut() {
+    signOut(auth)
+      .then(function() {
+        console.log("You have successfully signed out!");
+      }).catch(function(error) {
+        console.log(`There was an error signing out: ${error.message}!`);
+      });
+  }
+
 
   return (
     <StyledApp >
       <Header 
-        userName={user.userName}
+        currentUser={currentUser}
+        displayName={user.displayName}
         imagePath={user.imagePath}
         sheetCoords={user.sheetCoords}
         phase={phase}

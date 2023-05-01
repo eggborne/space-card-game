@@ -720,32 +720,32 @@ export const characters = {
 export const randomOpponents = {
   bennett: {
     id: 'bennett',
-    userName: 'Bennett from Commando',
+    displayName: 'Bennett from Commando',
     strategy: defaultStrategy,
   },
   masan: {
     id: 'masan',
-    userName: 'Ma-san',
+    displayName: 'Ma-san',
     strategy: defaultStrategy,
   },
   acarrot: {
     id: 'acarrot',
-    userName: 'A Carrot',
+    displayName: 'A Carrot',
     strategy: defaultStrategy,
   },
   davidbowie1970s: {
     id: 'davidbowie1970s',
-    userName: '1970s David Bowie',
+    displayName: '1970s David Bowie',
     strategy: defaultStrategy,
   },
   iliketurleskid: {
     id: 'iliketurleskid',
-    userName: '"I like turtles" kid',
+    displayName: '"I like turtles" kid',
     strategy: defaultStrategy,
   },
   poochie: {
     id: 'poochie',
-    userName: 'Poochie',
+    displayName: 'Poochie',
     strategy: defaultStrategy,
   },
 }

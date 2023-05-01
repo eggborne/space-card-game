@@ -30,27 +30,32 @@ const StyledHeader = styled.header`
 `;
 
 function Header(props) {
+  console.log('Header props.currentUser is', props.currentUser)
   return (
     <StyledHeader style={{
       // height: props.phase === 'game-board-showing' ? '0' : 'var(--header-height)',
       transform: props.phase === 'game-board-showing' ? 'translateY(-100%)' : 'translateY(0)',
     }}>
       <h1>Space Card Game</h1>
-      {props.userName && props.sheetCoords &&
-      <div className='user-info-area'>
-        <div>{props.userName}</div>
-        <PlayerPortrait 
-          size='calc(var(--header-height) - 1rem)' 
-          imagePath={props.imagePath}
-          sheetCoords={{...props.sheetCoords}}
-        />
-      </div>}
+      {props.currentUser ?
+        <div className='user-info-area'>
+          <div style={{ fontSize: '70%'}}>{props.currentUser.email}</div>
+          <PlayerPortrait 
+            size='calc(var(--header-height) - 1rem)' 
+            imagePath={props.imagePath}
+            sheetCoords={{...props.sheetCoords}}
+          />
+        </div>
+        :
+        <div>not logged in</div>  
+      }
     </StyledHeader>
   );
 }
 
 Header.propTypes = {
-  userName: PropTypes.string,
+  currentUser: PropTypes.object,
+  displayName: PropTypes.string,
   imagePath: PropTypes.string,
   sheetCoords: PropTypes.objectOf(PropTypes.number),
 }
