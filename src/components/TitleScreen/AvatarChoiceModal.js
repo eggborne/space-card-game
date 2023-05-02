@@ -80,6 +80,10 @@ function getArrayOfPortraits() {
 function AvatarChoiceModal(props) { 
   const [userAvatarChoice, setUserAvatarChoice] = useState({ x: 0, y: 0 });
 
+  function handleSubmitAvatarChoice() {
+    props.onClickOK(userAvatarChoice);
+  }
+
   return (
     <StyledAvatarChoiceModal style={{
       opacity: props.showing ? '1' : '0',
@@ -101,7 +105,7 @@ function AvatarChoiceModal(props) {
         )}
       </div>
       <div className='bottom-button-area'>
-        <Button color='green' onClick={() => props.onClickOK(userAvatarChoice)} label='OK!' />
+        <Button color='green' onClick={() => handleSubmitAvatarChoice()} label='OK!' />
       </div>
     </StyledAvatarChoiceModal>
   );

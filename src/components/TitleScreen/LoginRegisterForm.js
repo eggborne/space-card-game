@@ -130,8 +130,8 @@ function LoginRegisterForm(props) {
       user.password = e.target.password.value;
     }
     // add to db here?
+    props.handleClickRegister(user);
     props.setAvatarChoiceModalShowing(true);
-    // props.handleClickRegister(user);
   }
 
   return (

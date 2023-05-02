@@ -36,7 +36,10 @@ function TitleScreen(props) {
         <Button style={{backgroundColor: 'red'}} label='How to Play' />
         <WideButton style={{backgroundColor: 'red'}} label='High Scores' />
       </StyledTitleScreen>
-      <AvatarChoiceModal showing={props.avatarChoiceModalShowing} onClickOK={props.handleClickRegister} />
+      <AvatarChoiceModal 
+        showing={props.avatarChoiceModalShowing} 
+        onClickOK={props.handleChooseAvatar} 
+      />
     </>
   );
 }

@@ -87,36 +87,61 @@ function App() {
         // User successfully signed up 
         console.log('REGISTERED!', userCredential);
 
-        await addDoc(collection(db, "users"), newUser);
+        // await addDoc(collection(db, "users"), newUser);
 
 
         updateProfile(auth.currentUser, {
           displayName: newUser.displayName
         }).then(() => {
-          console.log('PROFILE UPDATED! /////////////////////////////////');
-          console.log(auth.currentUser)
-          // ...
+          console.log('PROFILE UPDATED with displayName! /////////////////////////////////');
+          console.log(auth.currentUser);
+          setAvatarChoiceModalShowing(true);
         }).catch((error) => {
-          console.log('profile not updated :(')
-          // An error occurred
-          // ...
+          console.log('profile not updated :(');
         });
-        // setAvatarChoiceModalShowing(true);
       })
       .catch((error) => {
-        console.log('ERROR', error)
-        // There was an error with sign up
+        console.log('ERROR', error);
       });
+  }
 
+  async function handleCreatingNewUser(newUserData) {
 
+    await addDoc(collection(db, "users"), newUserData);
+    console.log('awaited AddDoc(collection(db, "users"), newUserData)...');
+    // const newUserObj = getDoc(collection(db, 'users'), )
+    console.warn('newUSerOBJ');
+    console.log(newUserObj)
+    console.log(auth.currentUser);
   }
   
-  function handleChooseAvatar(newSheetCoords) {
-    setUser({
-      displayName: user.displayName,
-      imagePath: 'images/avatarsheetlq.jpg',
+  async function handleChooseAvatar(newSheetCoords) {
+
+    const newUserData = {
+      email: auth.currentUser.email,
+      displayName: auth.currentUser.displayName,
       sheetCoords: newSheetCoords,
-    });
+      id: auth.currentUser.uid,
+    }
+
+    console.log('newUserData')
+    console.log(newUserData);
+
+    handleCreatingNewUser(newUserData)
+
+    // updateProfile(auth.currentUser, {
+    //   sheetCoords: newSheetCoords
+    // }).then(() => {
+    //   console.log('PROFILE UPDATED WITH SHEETCOORDS! /////////////////////////////////');
+    //   console.log(auth.currentUser)
+    // }).catch((error) => {
+    //   console.log('profile not updated :(')
+    // });
+    // setUser({
+    //   displayName: user.displayName,
+    //   imagePath: 'images/avatarsheetlq.jpg',
+    //   sheetCoords: newSheetCoords,
+    // });
     setAvatarChoiceModalShowing(false);
     setPhase('game-mode-select');
   }
