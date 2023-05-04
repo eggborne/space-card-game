@@ -57,6 +57,18 @@ function Header(props) {
           />
         </div>
         :
+        props.displayName === 'Guest' ?
+        <div className='user-info-area'>
+          <div>
+            <div style={{ fontSize: '100%', fontWeight: 'bold'}}>Guest</div>
+          </div>
+          <PlayerPortrait 
+            size='calc(var(--header-height) - 1rem)' 
+            imagePath={props.imagePath}
+            sheetCoords={{...props.sheetCoords}}
+          />
+        </div>
+        :
         <div>not logged in</div>  
       }
     </StyledHeader>

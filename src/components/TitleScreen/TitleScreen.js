@@ -23,15 +23,23 @@ const WideButton = styled(Button)`
 `;
 
 function TitleScreen(props) {
+  console.log('TitleScreen props: ', props);
   return (
     <>
       <ScreenVeil showing={props.avatarChoiceModalShowing} onClickClose={props.handleCloseAvatarModal} />
       <StyledTitleScreen style={{ display: props.showing ? 'grid' : 'none'}} >
-        <LoginArea 
-          handleClickLogIn={props.handleClickLogIn} 
-          handleClickRegister={props.handleClickRegister}
-          setAvatarChoiceModalShowing={props.setAvatarChoiceModalShowing}
-        />
+        {/* <Button label='Log out' onClick={props.onClickLogOut} /> */}
+        {!(props.user && props.user.email) ?
+          <LoginArea 
+            handleClickLogIn={props.handleClickLogIn} 
+            handleClickRegister={props.handleClickRegister}
+            setAvatarChoiceModalShowing={props.setAvatarChoiceModalShowing}
+          />
+          :
+          <div>
+            <Button label='Log out' onClick={props.onClickLogOut} />
+          </div>
+        }
         <Button style={{backgroundColor: 'red'}} label='Options' />
         <Button style={{backgroundColor: 'red'}} label='How to Play' />
         <WideButton style={{backgroundColor: 'red'}} label='High Scores' />
@@ -45,8 +53,10 @@ function TitleScreen(props) {
 }
 
 TitleScreen.propTypes = {
+  user: PropTypes.object,
   showing: PropTypes.bool,
   handleClickLogIn: PropTypes.func,
+  onClickLogOut: PropTypes.func,
   handleClickRegister: PropTypes.func,
   handleChooseAvatar: PropTypes.func,
   handleCloseAvatarModal: PropTypes.func,

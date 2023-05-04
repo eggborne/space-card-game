@@ -57,15 +57,17 @@ function App() {
     console.warn('handleClickLogin got user')
     console.table(user)
     if (user.password) {
+      console.log('--- user used password')
       signInWithEmailAndPassword(auth, user.email, user.password)
       .then(async (userCredential) => {
         console.log(`You've successfully signed in as ${userCredential.user.email}!`);
-
+        
         // get userData with userId === userCredential.user.uid
         const docRef = doc(db, "userData", userCredential.user.uid);
         const docSnap = await getDoc(docRef);
 
         if (docSnap.exists()) {
+          console.warn('SETTING DB USERDATA FOR USER!! -------------------------------------------------')
           setUser(docSnap.data());
         } else {
           // docSnap.data() will be undefined in this case
@@ -78,6 +80,7 @@ function App() {
         console.log(`There was an error signing in: ${error.message}!`)
       });
     } else {
+      console.log('--- user is GUEST');
       // guest user
       setUser({
         email: '',
@@ -117,19 +120,23 @@ function App() {
   }
   
   async function handleChooseAvatar(newSheetCoords) {
-
-    const newUserData = {
-      email: auth.currentUser.email,
-      displayName: auth.currentUser.displayName,
-      imagePath: 'images/avatarsheetlq.jpg',
-      sheetCoords: newSheetCoords,
-      id: auth.currentUser.uid,
+    if (auth.currentUser) {
+      console.log('chose avatar while currentUser is valid')
+      const newUserData = {
+        email: auth.currentUser.email,
+        displayName: auth.currentUser.displayName,
+        imagePath: 'images/avatarsheetlq.jpg',
+        sheetCoords: newSheetCoords,
+        id: auth.currentUser.uid,
+      }
+      console.log('newUserData')
+      console.table(newUserData);
+      await handleCreatingNewUser(newUserData);
+    } else {
+      setUser({...user, sheetCoords: newSheetCoords});
     }
 
-    console.log('newUserData')
-    console.log(newUserData);
 
-    await handleCreatingNewUser(newUserData);
 
     // updateProfile(auth.currentUser, {
     //   sheetCoords: newSheetCoords
@@ -144,6 +151,7 @@ function App() {
     //   imagePath: 'images/avatarsheetlq.jpg',
     //   sheetCoords: newSheetCoords,
     // });
+
     setAvatarChoiceModalShowing(false);
     setPhase('game-mode-select');
   }
@@ -180,7 +188,7 @@ function App() {
     setAvatarChoiceModalShowing(false);
   }
 
-  function handleLogOut() {
+  function handleClickLogOut() {
     signOut(auth)
       .then(function() {
         console.log("You have successfully signed out!");
@@ -200,8 +208,10 @@ function App() {
         phase={phase}
       />
       <TitleScreen 
+        user={user}
         showing={phase === 'title'}
         handleClickLogIn={handleClickLogIn}
+        onClickLogOut={handleClickLogOut}
         handleClickRegister={handleClickRegister}
         handleChooseAvatar={handleChooseAvatar}
         avatarChoiceModalShowing={avatarChoiceModalShowing}
