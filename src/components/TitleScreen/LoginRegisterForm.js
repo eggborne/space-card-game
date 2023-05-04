@@ -96,6 +96,7 @@ function LoginRegisterForm(props) {
 
   function handleLogIn(e) {
     e.preventDefault();
+    console.log('form handleLogin got displayName', e.target.displayName)
     const user = {
       displayName: (e.target.displayName && e.target.displayName.value) || 'Guest',
     }

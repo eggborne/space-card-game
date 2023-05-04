@@ -69,21 +69,19 @@ function App() {
         if (docSnap.exists()) {
           console.warn('SETTING DB USERDATA FOR USER!! -------------------------------------------------')
           setUser(docSnap.data());
+          setPhase('game-mode-select')
         } else {
           // docSnap.data() will be undefined in this case
-          console.log("No such document!");
+          console.log("No such userData document!");
         }
-        // setUser();
-        setPhase('game-mode-select')
       })
       .catch((error) => {
         console.log(`There was an error signing in: ${error.message}!`)
       });
     } else {
       console.log('--- user is GUEST');
-      // guest user
       setUser({
-        email: '',
+        email: 'guest@guest.guest',
         displayName: user.displayName,
         imagePath: 'images/avatarsheetlq.jpg',
       });
@@ -133,10 +131,9 @@ function App() {
       console.table(newUserData);
       await handleCreatingNewUser(newUserData);
     } else {
+      console.log('chose avatar while GUEST >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>')
       setUser({...user, sheetCoords: newSheetCoords});
     }
-
-
 
     // updateProfile(auth.currentUser, {
     //   sheetCoords: newSheetCoords
@@ -157,7 +154,9 @@ function App() {
   }
 
   async function handleCreatingNewUser(newUserData) {
+    console.warn('CREATING USER!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!')
     console.log('handleCreatingUser got', newUserData);
+    console.warn('CREATING USER!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!')
     // create a doc in userData with same ID as user
     await setDoc(doc(db, "userData", newUserData.id), newUserData);
     setUser(newUserData);
@@ -192,6 +191,12 @@ function App() {
     signOut(auth)
       .then(function() {
         console.log("You have successfully signed out!");
+        setUser({
+          email: '',
+          displayName: '',
+          imagePath: 'images/avatarsheetlq.jpg',
+          sheetCoords: { x: 0, y: 0 },
+        });
       }).catch(function(error) {
         console.log(`There was an error signing out: ${error.message}!`);
       });
@@ -202,9 +207,7 @@ function App() {
     <StyledApp >
       <Header 
         currentUser={auth.currentUser}
-        displayName={user.displayName}
-        imagePath={user.imagePath}
-        sheetCoords={user.sheetCoords}
+        {...user}
         phase={phase}
       />
       <TitleScreen 

@@ -57,10 +57,10 @@ function Header(props) {
           />
         </div>
         :
-        props.displayName === 'Guest' ?
+        props.email === 'guest@guest.guest' ?
         <div className='user-info-area'>
           <div>
-            <div style={{ fontSize: '100%', fontWeight: 'bold'}}>Guest</div>
+            <div style={{ fontSize: '100%', fontWeight: 'bold'}}>{props.displayName}</div>
           </div>
           <PlayerPortrait 
             size='calc(var(--header-height) - 1rem)' 
@@ -69,7 +69,7 @@ function Header(props) {
           />
         </div>
         :
-        <div>not logged in</div>  
+        <div style={{marginRight: '1rem', fontSize: '90%'}}>not logged in</div>  
       }
     </StyledHeader>
   );
@@ -78,6 +78,7 @@ function Header(props) {
 Header.propTypes = {
   currentUser: PropTypes.object,
   displayName: PropTypes.string,
+  email: PropTypes.string,
   imagePath: PropTypes.string,
   sheetCoords: PropTypes.objectOf(PropTypes.number),
 }

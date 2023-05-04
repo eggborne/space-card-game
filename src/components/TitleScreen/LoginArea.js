@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import PropTypes from 'prop-types';
 import LoginRegisterForm from './LoginRegisterForm';
+import Button from '../Buttons/Button';
 import styled from 'styled-components';
 
 const StyledLoginArea = styled.div`
@@ -60,16 +61,22 @@ function LoginArea(props) {
 
   return (
     <StyledLoginArea>
-      <LoginRegisterForm
-        loginShowing={loginShowing}
-        handleClickLogIn={props.handleClickLogIn}
-        handleClickRegister={props.handleClickRegister}
-        setAvatarChoiceModalShowing={props.setAvatarChoiceModalShowing}
-      />
-      <div className='bottom-button-area'>
-        <div onClick={() => setLoginShowing('login')} className={loginShowing === 'login' ? 'tab-button selected' : 'tab-button'}>Log In</div>
-        <div onClick={() => setLoginShowing('register')} className={loginShowing === 'register' ? 'tab-button selected' : 'tab-button'}>Register</div>
-      </div>
+      {!props.showLogOut ? 
+        <>
+          <LoginRegisterForm
+            loginShowing={loginShowing}
+            handleClickLogIn={props.handleClickLogIn}
+            handleClickRegister={props.handleClickRegister}
+            setAvatarChoiceModalShowing={props.setAvatarChoiceModalShowing}
+          />
+          <div className='bottom-button-area'>
+            <div onClick={() => setLoginShowing('login')} className={loginShowing === 'login' ? 'tab-button selected' : 'tab-button'}>Log In</div>
+            <div onClick={() => setLoginShowing('register')} className={loginShowing === 'register' ? 'tab-button selected' : 'tab-button'}>Register</div>
+          </div>
+        </>
+        :
+        <Button onClick={props.onClickLogOut} label='Log out'/>
+      }
     </StyledLoginArea>
   );
 }
@@ -79,6 +86,7 @@ LoginArea.propTypes = {
   handleClickLogIn: PropTypes.func,
   handleClickRegister: PropTypes.func,
   setAvatarChoiceModalShowing: PropTypes.func,
+  showLogOut: PropTypes.bool,
 };
 
 export default LoginArea;
