@@ -97,16 +97,10 @@ function App() {
     createUserWithEmailAndPassword(auth, newUser.email, newUser.password)
       .then(async (userCredential) => {
         // User successfully signed up 
-        console.log('REGISTERED!', userCredential);
-        console.log('with newUser', newUser)
-
-        // await addDoc(collection(db, "userData"), newUser);
-
         updateProfile(auth.currentUser, {
           displayName: newUser.displayName
         }).then(() => {
-          console.log('PROFILE UPDATED with displayName! /////////////////////////////////');
-          console.log(auth.currentUser);
+          // actual creation occurs in handleCreatingNewUser via handleChooseAvatar
           setAvatarChoiceModalShowing(true);
         }).catch((error) => {
           console.log('profile not updated :(');
@@ -119,7 +113,6 @@ function App() {
   
   async function handleChooseAvatar(newSheetCoords) {
     if (auth.currentUser) {
-      console.log('chose avatar while currentUser is valid')
       const newUserData = {
         email: auth.currentUser.email,
         displayName: auth.currentUser.displayName,
@@ -131,32 +124,14 @@ function App() {
       console.table(newUserData);
       await handleCreatingNewUser(newUserData);
     } else {
-      console.log('chose avatar while GUEST >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>')
       setUser({...user, sheetCoords: newSheetCoords});
     }
-
-    // updateProfile(auth.currentUser, {
-    //   sheetCoords: newSheetCoords
-    // }).then(() => {
-    //   console.log('PROFILE UPDATED WITH SHEETCOORDS! /////////////////////////////////');
-    //   console.log(auth.currentUser)
-    // }).catch((error) => {
-    //   console.log('profile not updated :(')
-    // });
-    // setUser({
-    //   displayName: user.displayName,
-    //   imagePath: 'images/avatarsheetlq.jpg',
-    //   sheetCoords: newSheetCoords,
-    // });
 
     setAvatarChoiceModalShowing(false);
     setPhase('game-mode-select');
   }
 
   async function handleCreatingNewUser(newUserData) {
-    console.warn('CREATING USER!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!')
-    console.log('handleCreatingUser got', newUserData);
-    console.warn('CREATING USER!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!')
     // create a doc in userData with same ID as user
     await setDoc(doc(db, "userData", newUserData.id), newUserData);
     setUser(newUserData);

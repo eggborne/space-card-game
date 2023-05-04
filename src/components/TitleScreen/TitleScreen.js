@@ -30,6 +30,7 @@ function TitleScreen(props) {
       <StyledTitleScreen style={{ display: props.showing ? 'grid' : 'none'}} >
         {/* <Button label='Log out' onClick={props.onClickLogOut} /> */}
         <LoginArea 
+          user={props.user}
           showLogOut={props.user.displayName && (props.user.displayName !== 'Guest')}
           handleClickLogIn={props.handleClickLogIn} 
           onClickLogOut={props.onClickLogOut} 

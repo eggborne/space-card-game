@@ -75,13 +75,17 @@ function LoginArea(props) {
           </div>
         </>
         :
-        <Button onClick={props.onClickLogOut} label='Log out'/>
+        <>
+          <div style={{margin: '2rem 0'}}>Logged in as {props.user.displayName} ({props.user.email})</div>
+          <Button onClick={props.onClickLogOut} label='Log out'/>
+        </>
       }
     </StyledLoginArea>
   );
 }
 
 LoginArea.propTypes = {
+  user: PropTypes.object,
   loginShowing: PropTypes.string,
   handleClickLogIn: PropTypes.func,
   handleClickRegister: PropTypes.func,
