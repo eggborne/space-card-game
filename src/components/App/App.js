@@ -12,7 +12,7 @@ import {
   signOut,
   updateProfile
 } from "firebase/auth";
-import { collection, addDoc, getDoc } from "firebase/firestore";
+import { collection, doc, setDoc, getDoc } from "firebase/firestore";
 import { characters, randomOpponents } from '../../characters.js';
 import { randomInt, pause } from '../../util.js';
 
@@ -39,11 +39,12 @@ const StyledApp = styled.main`
 function App() {
   const [phase, setPhase] = useState('title');
   const [gameMode, setGameMode] = useState('Quick Match');
-  const [currentUser, setCurrentUser] = useState(null);
   const [user, setUser] = useState({
     email: '',
     displayName: '',
     imagePath: 'images/avatarsheetlq.jpg',
+    sheetCoords: { x: 0, y: 0 },
+
   });
   const [opponent, setOpponent] = useState({
     displayName: '',
@@ -57,15 +58,25 @@ function App() {
     console.table(user)
     if (user.password) {
       signInWithEmailAndPassword(auth, user.email, user.password)
-      .then((userCredential) => {
+      .then(async (userCredential) => {
         console.log(`You've successfully signed in as ${userCredential.user.email}!`);
-        setCurrentUser(auth.currentUser);
+
+        // get userData with userId === userCredential.user.uid
+        const docRef = doc(db, "userData", userCredential.user.uid);
+        const docSnap = await getDoc(docRef);
+
+        if (docSnap.exists()) {
+          setUser(docSnap.data());
+        } else {
+          // docSnap.data() will be undefined in this case
+          console.log("No such document!");
+        }
+        // setUser();
         setPhase('game-mode-select')
       })
       .catch((error) => {
         console.log(`There was an error signing in: ${error.message}!`)
       });
-      // do user login stuff
     } else {
       // guest user
       setUser({
@@ -86,9 +97,9 @@ function App() {
       .then(async (userCredential) => {
         // User successfully signed up 
         console.log('REGISTERED!', userCredential);
+        console.log('with newUser', newUser)
 
-        // await addDoc(collection(db, "users"), newUser);
-
+        // await addDoc(collection(db, "userData"), newUser);
 
         updateProfile(auth.currentUser, {
           displayName: newUser.displayName
@@ -104,22 +115,13 @@ function App() {
         console.log('ERROR', error);
       });
   }
-
-  async function handleCreatingNewUser(newUserData) {
-
-    await addDoc(collection(db, "users"), newUserData);
-    console.log('awaited AddDoc(collection(db, "users"), newUserData)...');
-    // const newUserObj = getDoc(collection(db, 'users'), )
-    console.warn('newUSerOBJ');
-    console.log(newUserObj)
-    console.log(auth.currentUser);
-  }
   
   async function handleChooseAvatar(newSheetCoords) {
 
     const newUserData = {
       email: auth.currentUser.email,
       displayName: auth.currentUser.displayName,
+      imagePath: 'images/avatarsheetlq.jpg',
       sheetCoords: newSheetCoords,
       id: auth.currentUser.uid,
     }
@@ -127,7 +129,7 @@ function App() {
     console.log('newUserData')
     console.log(newUserData);
 
-    handleCreatingNewUser(newUserData)
+    await handleCreatingNewUser(newUserData);
 
     // updateProfile(auth.currentUser, {
     //   sheetCoords: newSheetCoords
@@ -144,6 +146,15 @@ function App() {
     // });
     setAvatarChoiceModalShowing(false);
     setPhase('game-mode-select');
+  }
+
+  async function handleCreatingNewUser(newUserData) {
+    console.log('handleCreatingUser got', newUserData);
+    // create a doc in userData with same ID as user
+    await setDoc(doc(db, "userData", newUserData.id), newUserData);
+    setUser(newUserData);
+    console.log('auth.currentUser', auth.currentUser);
+    console.log('user is now', user);
   }
 
   function handleSwitchGameMode(newMode) {
@@ -182,7 +193,7 @@ function App() {
   return (
     <StyledApp >
       <Header 
-        currentUser={currentUser}
+        currentUser={auth.currentUser}
         displayName={user.displayName}
         imagePath={user.imagePath}
         sheetCoords={user.sheetCoords}

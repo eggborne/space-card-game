@@ -26,11 +26,18 @@ const StyledHeader = styled.header`
   & > .user-info-area {
     display: flex;
     gap: 0.5rem;
+
+    & > div:first-child {
+      display: flex;
+      flex-direction: column;
+      align-items: flex-end;
+      justify-content: space-evenly;
+    }
   }
 `;
 
 function Header(props) {
-  console.log('Header props.currentUser is', props.currentUser)
+  console.log('Header props is', props)
   return (
     <StyledHeader style={{
       // height: props.phase === 'game-board-showing' ? '0' : 'var(--header-height)',
@@ -39,7 +46,10 @@ function Header(props) {
       <h1>Space Card Game</h1>
       {props.currentUser ?
         <div className='user-info-area'>
-          <div style={{ fontSize: '70%'}}>{props.currentUser.email}</div>
+          <div>
+            <div style={{ fontSize: '100%', fontWeight: 'bold'}}>{props.currentUser.displayName}</div>
+            <div style={{ fontSize: '80%'}}>{props.currentUser.email}</div>
+          </div>
           <PlayerPortrait 
             size='calc(var(--header-height) - 1rem)' 
             imagePath={props.imagePath}

@@ -3,5 +3,5 @@ const pause = async (ms) => new Promise(resolve => setTimeout(resolve, ms));
 
 export {
   randomInt,
-  pause
+  pause,
 }
