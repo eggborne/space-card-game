@@ -28,10 +28,9 @@ function TitleScreen(props) {
     <>
       <ScreenVeil showing={props.avatarChoiceModalShowing} onClickClose={props.handleCloseAvatarModal} />
       <StyledTitleScreen style={{ display: props.showing ? 'grid' : 'none'}} >
-        {/* <Button label='Log out' onClick={props.onClickLogOut} /> */}
         <LoginArea 
           user={props.user}
-          showLogOut={props.user.displayName && (props.user.displayName !== 'Guest')}
+          showLogOut={(props.user.displayName !== '' && (props.user.displayName !== 'Guest'))}
           handleClickLogIn={props.handleClickLogIn} 
           onClickLogOut={props.onClickLogOut} 
           handleClickRegister={props.handleClickRegister}

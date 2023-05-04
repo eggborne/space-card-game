@@ -1,14 +1,15 @@
 import { useState } from 'react';
 import Header from '../Header';
+import UserProfileDisplay from '../UserProfileDisplay';
 import Footer from '../Footer';
 import TitleScreen from '../TitleScreen/TitleScreen';
 import GameModeSelectScreen from '../GameModeSelectScreen/GameModeSelectScreen';
 import GameScreen from '../GameScreen/GameScreen';
 import styled from 'styled-components';
-import { db, auth } from '../../firebase.js'
-import { 
-  createUserWithEmailAndPassword, 
-  signInWithEmailAndPassword, 
+import { db, auth } from '../../firebase.js';
+import {
+  createUserWithEmailAndPassword,
+  signInWithEmailAndPassword,
   signOut,
   updateProfile
 } from "firebase/auth";
@@ -16,10 +17,10 @@ import { collection, doc, setDoc, getDoc } from "firebase/firestore";
 import { characters, randomOpponents } from '../../characters.js';
 import { randomInt, pause } from '../../util.js';
 
-console.warn('got characters')
-console.table(characters)
-console.warn('got randomOpponents')
-console.table(randomOpponents)
+console.warn('got characters');
+console.table(characters);
+console.warn('got randomOpponents');
+console.table(randomOpponents);
 
 const StyledApp = styled.main`
   position: relative;
@@ -52,32 +53,33 @@ function App() {
     sheetCoords: { x: randomInt(0, 7), y: randomInt(0, 2) },
   });
   const [avatarChoiceModalShowing, setAvatarChoiceModalShowing] = useState(false);
+  const [profileMenuOpen, setProfileMenuOpen] = useState(false);
 
   function handleClickLogIn(user) {
-    console.warn('handleClickLogin got user')
-    console.table(user)
+    console.warn('handleClickLogin got user');
+    console.table(user);
     if (user.password) {
-      console.log('--- user used password')
+      console.log('--- user used password');
       signInWithEmailAndPassword(auth, user.email, user.password)
-      .then(async (userCredential) => {
-        console.log(`You've successfully signed in as ${userCredential.user.email}!`);
-        
-        // get userData with userId === userCredential.user.uid
-        const docRef = doc(db, "userData", userCredential.user.uid);
-        const docSnap = await getDoc(docRef);
+        .then(async (userCredential) => {
+          console.log(`You've successfully signed in as ${userCredential.user.email}!`);
 
-        if (docSnap.exists()) {
-          console.warn('SETTING DB USERDATA FOR USER!! -------------------------------------------------')
-          setUser(docSnap.data());
-          setPhase('game-mode-select')
-        } else {
-          // docSnap.data() will be undefined in this case
-          console.log("No such userData document!");
-        }
-      })
-      .catch((error) => {
-        console.log(`There was an error signing in: ${error.message}!`)
-      });
+          // get userData with userId === userCredential.user.uid
+          const docRef = doc(db, "userData", userCredential.user.uid);
+          const docSnap = await getDoc(docRef);
+
+          if (docSnap.exists()) {
+            console.warn('SETTING DB USERDATA FOR USER!! -------------------------------------------------');
+            setUser(docSnap.data());
+            setPhase('game-mode-select');
+          } else {
+            // docSnap.data() will be undefined in this case
+            console.log("No such userData document!");
+          }
+        })
+        .catch((error) => {
+          console.log(`There was an error signing in: ${error.message}!`);
+        });
     } else {
       console.log('--- user is GUEST');
       setUser({
@@ -110,7 +112,7 @@ function App() {
         console.log('ERROR', error);
       });
   }
-  
+
   async function handleChooseAvatar(newSheetCoords) {
     if (auth.currentUser) {
       const newUserData = {
@@ -119,12 +121,12 @@ function App() {
         imagePath: 'images/avatarsheetlq.jpg',
         sheetCoords: newSheetCoords,
         id: auth.currentUser.uid,
-      }
-      console.log('newUserData')
+      };
+      console.log('newUserData');
       console.table(newUserData);
       await handleCreatingNewUser(newUserData);
     } else {
-      setUser({...user, sheetCoords: newSheetCoords});
+      setUser({ ...user, sheetCoords: newSheetCoords });
     }
 
     setAvatarChoiceModalShowing(false);
@@ -145,7 +147,7 @@ function App() {
 
   function handleAcceptGameMode() {
     if (gameMode === 'Campaign') {
-      
+
     } else if (gameMode === 'Quick Match') {
       let randomX = randomInt(0, 5);
       let characterData = Object.values(randomOpponents)[randomX];
@@ -164,7 +166,7 @@ function App() {
 
   function handleClickLogOut() {
     signOut(auth)
-      .then(function() {
+      .then(function () {
         console.log("You have successfully signed out!");
         setUser({
           email: '',
@@ -172,20 +174,35 @@ function App() {
           imagePath: 'images/avatarsheetlq.jpg',
           sheetCoords: { x: 0, y: 0 },
         });
-      }).catch(function(error) {
+      }).catch(function (error) {
         console.log(`There was an error signing out: ${error.message}!`);
       });
+  }
+
+  function handleToggleProfileMenu() {
+    setProfileMenuOpen(!profileMenuOpen);
   }
 
 
   return (
     <StyledApp >
-      <Header 
+      <Header
         currentUser={auth.currentUser}
         {...user}
         phase={phase}
+        profileMenuOpen={profileMenuOpen}
+        onClickProfileMenu={handleToggleProfileMenu}
       />
-      <TitleScreen 
+      {(auth.currentUser || user.displayName === 'Guest') &&
+        <UserProfileDisplay
+          open={profileMenuOpen}
+          currentUser={auth.currentUser}
+          {...user}
+          phase={phase}
+          onClickLogOut={handleClickLogOut}
+        />
+      }
+      <TitleScreen
         user={user}
         showing={phase === 'title'}
         handleClickLogIn={handleClickLogIn}
@@ -196,17 +213,19 @@ function App() {
         setAvatarChoiceModalShowing={() => setAvatarChoiceModalShowing(true)}
         handleCloseAvatarModal={handleCloseAvatarModal}
       />
-      <GameModeSelectScreen 
+      <GameModeSelectScreen
         showing={phase === 'game-mode-select'}
         gameMode={gameMode}
         switchGameMode={handleSwitchGameMode}
       />
-      {phase === 'game-board-showing' && <GameScreen 
-        showing={phase === 'game-board-showing'}
-        user={{...user}}
-        opponent={{...opponent}}
-      />}
-      <Footer 
+      {phase === 'game-board-showing' && 
+        <GameScreen
+          showing={phase === 'game-board-showing'}
+          user={{ ...user }}
+          opponent={{ ...opponent }}
+        />
+      }
+      <Footer
         phase={phase}
         onClickBackToTitle={() => setPhase('title')}
         onClickBackToGameSelect={() => setPhase('game-mode-select')}

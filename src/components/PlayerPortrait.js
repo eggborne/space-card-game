@@ -6,6 +6,8 @@ const StyledPlayerPortrait = styled.div`
   border-radius: 10%;
   border: 0.1rem solid darksalmon;
   background-repeat: no-repeat;
+  grid-column-end: 2;
+
 `;
 
 function PlayerPortrait(props) {

@@ -58,7 +58,7 @@ const StyledLoginArea = styled.div`
 
 function LoginArea(props) {
   const [loginShowing, setLoginShowing] = useState('login');
-
+  console.log('LoginArea props', props);
   return (
     <StyledLoginArea>
       {!props.showLogOut ? 
