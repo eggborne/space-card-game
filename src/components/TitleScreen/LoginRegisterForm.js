@@ -9,18 +9,27 @@ const StyledLoginRegisterForm = styled.div`
   width: 18rem;
   overflow: hidden;
 
-  & button {
+  & h2 {
+    margin-bottom: 0.5rem;
+  }
+
+  & button:first-of-type {
+    font-size: 1.5rem;
     width: 14rem;
+    height: 5rem;
+    padding: 0;
+  }
+  & button:last-of-type {
+    width: 14rem;
+    background-color: gray !important;
   }
 
   & > form {
     display: flex;
     flex-direction: column;
     align-items: center;
-    gap: 1rem;
+    gap: 0.5rem;
     padding: 1.25rem;
-    padding-bottom: 2rem;
-    // background: rgb(76, 59, 28);
     min-width: 18rem;
     transition: transform 300ms ease;
 
@@ -33,7 +42,12 @@ const StyledLoginRegisterForm = styled.div`
     & > .form-button-area {
       flex-grow: 1;
       display: flex;
-      align-items: flex-end;
+      flex-direction: column;
+      gap: 1rem;
+      align-items: center;
+      justify-content: flex-end;
+      margin-top: 2rem;
+      
     }
   }
 
@@ -156,9 +170,16 @@ function LoginRegisterForm(props) {
           /></div>
         <div className='form-button-area'>
           <Button 
+            disabled={playingAsGuest}
             tabIndex={props.loginShowing === 'register' ? -1 : 1}
             color='green'
-            label={playingAsGuest ? 'Play as Guest' : 'Log in'}
+            label='Log In'
+            />
+          <Button 
+            disabled={!playingAsGuest}
+            tabIndex={props.loginShowing === 'register' ? -1 : 1}
+            color='green'
+            label='Play as guest'
           />
         </div>
       </form>

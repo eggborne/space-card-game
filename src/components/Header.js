@@ -17,6 +17,8 @@ const StyledHeader = styled.header`
   justify-content: space-between;
   padding: 0 1rem;
   padding-right: 0.5rem;
+  border-bottom-left-radius: calc(var(--border-radius) / 2);
+  border-bottom-right-radius: calc(var(--border-radius) / 2);
   transform-origin: top;
   transition: all 200ms ease;
   z-index: 2;
@@ -46,13 +48,13 @@ function Header(props) {
       transform: props.phase === 'game-board-showing' ? 'translateY(-100%)' : 'translateY(0)',
     }}>
       <h1>Space Card Game</h1>
-      {props.currentUser ?
+      {props.authUser ?
         <div className='user-info-area'>
           <div>
-            <div style={{ fontSize: '100%', fontWeight: 'bold' }}>{props.currentUser.displayName}</div>
-            <div style={{ fontSize: '80%' }}>{props.currentUser.email}</div>
+            <div style={{ fontSize: '100%', fontWeight: 'bold' }}>{props.authUser.displayName}</div>
+            <div style={{ fontSize: '80%' }}>{props.authUser.email}</div>
           </div>
-          <div style={{ cursor: 'pointer' }} onClick={props.onClickProfileMenu}>
+          <div style={{ cursor: 'pointer' }} onClick={props.phase !== 'title' ? props.onClickProfileMenu : null}>
             <PlayerPortrait
               size='calc(var(--header-height) - 1rem)'
               imagePath={props.imagePath}
@@ -66,7 +68,7 @@ function Header(props) {
             <div>
               <div style={{ fontSize: '100%', fontWeight: 'bold' }}>{props.displayName}</div>
             </div>
-            <div style={{ cursor: 'pointer' }} onClick={props.onClickProfileMenu}>
+            <div style={{ cursor: 'pointer' }} onClick={props.phase !== 'title' ? props.onClickProfileMenu : null}>
               <PlayerPortrait
                 size='calc(var(--header-height) - 1rem)'
                 imagePath={props.imagePath}
@@ -82,8 +84,9 @@ function Header(props) {
 }
 
 Header.propTypes = {
+  phase: PropTypes.string,
   profileMenuOpen: PropTypes.bool,
-  currentUser: PropTypes.object,
+  authUser: PropTypes.object,
   displayName: PropTypes.string,
   email: PropTypes.string,
   imagePath: PropTypes.string,

@@ -2,6 +2,7 @@ import { useState } from 'react';
 import PropTypes from 'prop-types';
 import LoginRegisterForm from './LoginRegisterForm';
 import Button from '../Buttons/Button';
+import UserProfileDisplay from '../UserProfileDisplay';
 import styled from 'styled-components';
 
 const StyledLoginArea = styled.div`
@@ -16,7 +17,7 @@ const StyledLoginArea = styled.div`
   padding: 1rem 0;
   padding-bottom: 0;
 
-  & .logged-in-bottom-button-area {
+  & .logged-in.bottom-button-area {
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -34,10 +35,10 @@ const StyledLoginArea = styled.div`
     }
     & button:last-of-type {
       background-color: green !important;
-      width: 70%;
+      width: 14rem;
       height: 5rem;
-      margin: 2rem;
       padding: 0;
+      margin: 2rem;
     }
   }
 
@@ -100,11 +101,24 @@ function LoginArea(props) {
         </>
         :
         <>
-          <div style={{margin: '2rem 0'}}>Logged in as {props.user.displayName} ({props.user.email})</div>
-          <div className='logged-in-bottom-button-area'>
-            <Button onClick={props.onClickLogOut} label='Log out'/>
+        <div style={{ margin: '0 1rem' }}>
+          <UserProfileDisplay 
+            {...props.user}
+            userLoggedIn={props.userLoggedIn}
+            currentUser={props.authUser}
+            phase={props.phase}
+            onClickLogOut={props.onClickLogOut}
+          />
+        </div>
+          <div className='logged-in bottom-button-area'>
+            {/* <Button onClick={props.onClickLogOut} label='Log out'/> */}
             <Button onClick={props.onClickPlay} label='Play'/>
           </div>
+          {/* <div style={{margin: '2rem 0'}}>Logged in as {props.user.displayName} ({props.user.email})</div>
+          <div className='logged-in bottom-button-area'>
+            <Button onClick={props.onClickLogOut} label='Log out'/>
+            <Button onClick={props.onClickPlay} label='Play'/>
+          </div> */}
         </>
       }
     </StyledLoginArea>
@@ -113,6 +127,7 @@ function LoginArea(props) {
 
 LoginArea.propTypes = {
   user: PropTypes.object,
+  authUser: PropTypes.object,
   loginShowing: PropTypes.string,
   onClickPlay: PropTypes.func,
   handleClickLogIn: PropTypes.func,

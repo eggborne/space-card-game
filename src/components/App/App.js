@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import Header from '../Header';
-import UserProfileDisplay from '../UserProfileDisplay';
+import HeaderMenu from '../HeaderMenu';
 import Footer from '../Footer';
 import TitleScreen from '../TitleScreen/TitleScreen';
 import GameModeSelectScreen from '../GameModeSelectScreen/GameModeSelectScreen';
@@ -22,7 +22,6 @@ console.table(randomOpponents);
 
 const StyledApp = styled.main`
   position: relative;
-  background-color: #111;
   color: #ddd;
   width: var(--main-width);
   height: var(--actual-height);
@@ -30,7 +29,6 @@ const StyledApp = styled.main`
   flex-direction: column;
   align-items: center;
   justify-content: space-between;
-  
   transition: all 500ms ease;
 `;
 
@@ -76,7 +74,7 @@ function App() {
     const docRef = doc(db, "userData", uid);
     const docSnap = await getDoc(docRef);
     if (docSnap.exists()) {
-      console.warn('SETTING DB USERDATA FOR USER!! -------------------------------------------------');
+      console.warn('SETTING DB USERDATA FOR USER!! --------------------', docSnap.data().displayName);
       return setUser(docSnap.data());
     } else {
       // docSnap.data() will be undefined in this case
@@ -214,14 +212,14 @@ function App() {
       scale: loaded ? '1' : '0.75'
     }}>
       <Header
-        currentUser={auth.currentUser}
+        authUser={auth.currentUser}
         {...user}
         phase={phase}
         profileMenuOpen={profileMenuOpen}
         onClickProfileMenu={handleToggleProfileMenu}
       />
-      {(userLoggedIn || user.displayName === 'Guest') &&
-        <UserProfileDisplay
+      {(phase !== 'title' && (userLoggedIn || user.displayName === 'Guest')) &&
+        <HeaderMenu
           open={profileMenuOpen}
           userLoggedIn={userLoggedIn}
           currentUser={auth.currentUser}
@@ -233,6 +231,7 @@ function App() {
       <TitleScreen
         userLoggedIn={userLoggedIn}
         user={user}
+        authUser={auth.currentUser}
         showing={phase === 'title'}
         handleClickLogIn={handleClickLogIn}
         handleClickPlay={handleClickPlay}

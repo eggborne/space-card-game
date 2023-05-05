@@ -4,76 +4,48 @@ import Button from './Buttons/Button';
 import PropTypes from 'prop-types';
 
 const StyledUserProfileDisplay = styled.div`
-  position: absolute;
-  left: 0;
-  top: var(--header-height);
-  width: var(--main-width);
-  // min-height: calc(var(--header-height) * 6);
-  background-color: var(--header-color);
-  color: #bbb;
+  display: grid;
+  grid-template-columns: min-content 1fr;
+  grid-auto-rows: min-content;
+  border: 0.1rem solid #00000044;
+  border-radius: 0.5rem;
+  background-color: #00000022;
+  gap: 1rem;
   padding: 1rem;
-  transform-origin: top;
-  transform: translateY(calc(-100% - var(--header-height)));
-  transition: all 300ms ease;
-  z-index: 1;
 
-  &.open {
-    transform: none;
+  & > button {
+    grid-row-start: 2;
+    grid-column-start: 1;
+    height: 3rem;
+    padding: 0;
+    background-color: maroon !important;
   }
 
-  & .PlayerPortrait {
-    opacity: 0.3;
+  & > .footer-area {
+    font-size: 70%;
+    opacity: 0.8;
+    grid-column-start: 1;
+    grid-column-end: 3;
+    display: flex;
+    justify-content: space-between;
+    gap: 0.5rem;
+    height: min-content;
+    align-self: flex-end;
   }
 
-  & > .profile-grid {
-    display: grid;
-    grid-template-columns: min-content 1fr;
-    grid-auto-rows: min-content;
-    border: 0.1rem solid #00000044;
-    border-radius: 0.5rem;
-    background-color: #00000022;
-    gap: 1rem;
-    padding: 1rem;
-
-    & > button {
-      grid-row-start: 2;
-      grid-column-start: 1;
-      height: 3rem;
-      padding: 0;
-      background-color: maroon !important;
-    }
-
-    & > .footer-area {
-      font-size: 70%;
-      opacity: 0.8;
-      grid-column-start: 1;
-      grid-column-end: 3;
-      display: flex;
-      justify-content: space-between;
-      gap: 0.5rem;
-      height: min-content;
-      align-self: flex-end;
-    }
-
-    & > .stat-list {
-      grid-row-start: 1;
-      grid-column-start: 2;
-      display: flex;
-      flex-direction: column;
-      gap: 0.5rem;
-    }
-  }
-
-  & > h1 {
-    font-size: 1.4rem;
+  & > .stat-list {
+    grid-row-start: 1;
+    grid-column-start: 2;
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
   }
 `;
 
 function UserProfileDisplay(props) {
   console.log('UserProfileDisplay props is', props);
   return (
-    <StyledUserProfileDisplay className={props.open && 'open'}>
-      <div className='profile-grid'>
+    <StyledUserProfileDisplay>
         <PlayerPortrait
           size='calc(var(--header-height) * 2)'
           imagePath={props.imagePath}
@@ -98,14 +70,12 @@ function UserProfileDisplay(props) {
           </div>
         </>
         }
-      </div>
     </StyledUserProfileDisplay>
   );
 }
 
 UserProfileDisplay.propTypes = {
   userLoggedIn: PropTypes.bool,
-  open: PropTypes.bool,
   currentUser: PropTypes.object,
   displayName: PropTypes.string,
   email: PropTypes.string,
