@@ -14,11 +14,15 @@ import {
   updateProfile
 } from "firebase/auth";
 import { collection, doc, setDoc, getDoc } from "firebase/firestore";
-import { characters, randomOpponents } from '../../characters.js';
+import { characters, randomOpponents, defaultOpponent } from '../../characters.js';
 import { randomInt, pause } from '../../util.js';
+import NameGenerator from '../../namegenerator.js';
 
 console.table(characters);
 console.table(randomOpponents);
+
+const nameGenerator = new NameGenerator();
+nameGenerator.getRules();
 
 const StyledApp = styled.main`
   position: relative;
@@ -30,6 +34,12 @@ const StyledApp = styled.main`
   align-items: center;
   justify-content: space-between;
   transition: all 500ms ease;
+
+  & .scroll-container {
+    width: 100%;
+    overflow-y: auto;
+    padding-bottom: var(--footer-height);
+  }
 `;
 
 function App() {
@@ -167,17 +177,37 @@ function App() {
     setGameMode(newMode);
   }
 
+  function getRandomCharacterOpponent() {
+    const randomX = randomInt(0, 7);
+    const characterData = Object.values(randomOpponents)[randomX];
+    return {
+      ...characterData,
+      imagePath: 'images/opponentsheet.jpg',
+      sheetCoords: { x: randomX, y: 3 },
+    };
+  }
+  
+  function getRandomNamedOpponent() {
+    const randomX = randomInt(0, 5);
+    const characterData = {...defaultOpponent};
+    const randomName = nameGenerator.getName().fullName;
+    console.log('RANDOM NAME!', randomName);
+    return {
+      ...characterData,
+      displayName: randomName,
+      imagePath: 'images/opponentsheet.jpg',
+      sheetCoords: { x: randomX, y: 2 },
+    };
+  }
+
   function handleAcceptGameMode() {
     if (gameMode === 'Campaign') {
 
     } else if (gameMode === 'Quick Match') {
-      let randomX = randomInt(0, 5);
-      let characterData = Object.values(randomOpponents)[randomX];
-      setOpponent({
-        ...characterData,
-        imagePath: 'images/opponentsheet.jpg',
-        sheetCoords: { x: randomX, y: 3 },
-      });
+      const randomOpponent = false ? getRandomCharacterOpponent() : getRandomNamedOpponent();
+      console.log('GOT RANDOM OPPONENT ////////////////////////////////////////////////////////////');
+      console.table(randomOpponent);
+      setOpponent(randomOpponent);
       setPhase('game-board-showing');
     }
   }
@@ -218,42 +248,46 @@ function App() {
         profileMenuOpen={profileMenuOpen}
         onClickProfileMenu={handleToggleProfileMenu}
       />
-      {(phase !== 'title' && (userLoggedIn || user.displayName === 'Guest')) &&
-        <HeaderMenu
-          open={profileMenuOpen}
+      <div className='scroll-container'>
+
+        {(phase !== 'title' && (userLoggedIn || user.displayName === 'Guest')) &&
+          <HeaderMenu
+            open={profileMenuOpen}
+            userLoggedIn={userLoggedIn}
+            currentUser={auth.currentUser}
+            {...user}
+            phase={phase}
+            onClickLogOut={handleClickLogOut}
+          />
+        }
+        <TitleScreen
           userLoggedIn={userLoggedIn}
-          currentUser={auth.currentUser}
-          {...user}
-          phase={phase}
+          user={user}
+          authUser={auth.currentUser}
+          showing={phase === 'title'}
+          handleClickLogIn={handleClickLogIn}
+          handleClickPlay={handleClickPlay}
           onClickLogOut={handleClickLogOut}
+          handleClickRegister={handleClickRegister}
+          handleChooseAvatar={handleChooseAvatar}
+          avatarChoiceModalShowing={avatarChoiceModalShowing}
+          setAvatarChoiceModalShowing={() => setAvatarChoiceModalShowing(true)}
+          handleCloseAvatarModal={handleCloseAvatarModal}
         />
-      }
-      <TitleScreen
-        userLoggedIn={userLoggedIn}
-        user={user}
-        authUser={auth.currentUser}
-        showing={phase === 'title'}
-        handleClickLogIn={handleClickLogIn}
-        handleClickPlay={handleClickPlay}
-        onClickLogOut={handleClickLogOut}
-        handleClickRegister={handleClickRegister}
-        handleChooseAvatar={handleChooseAvatar}
-        avatarChoiceModalShowing={avatarChoiceModalShowing}
-        setAvatarChoiceModalShowing={() => setAvatarChoiceModalShowing(true)}
-        handleCloseAvatarModal={handleCloseAvatarModal}
-      />
-      <GameModeSelectScreen
-        showing={phase === 'game-mode-select'}
-        gameMode={gameMode}
-        switchGameMode={handleSwitchGameMode}
-      />
-      {phase === 'game-board-showing' &&
-        <GameScreen
-          showing={phase === 'game-board-showing'}
-          user={{ ...user }}
-          opponent={{ ...opponent }}
+        <GameModeSelectScreen
+          showing={phase === 'game-mode-select'}
+          gameMode={gameMode}
+          switchGameMode={handleSwitchGameMode}
         />
-      }
+        </div>
+        {phase === 'game-board-showing' &&
+          <GameScreen
+            showing={phase === 'game-board-showing'}
+            user={{ ...user }}
+            opponent={{ ...opponent }}
+          />
+        }
+      
       <Footer
         phase={phase}
         onClickBackToTitle={() => setPhase('title')}

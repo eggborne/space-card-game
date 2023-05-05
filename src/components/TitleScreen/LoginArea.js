@@ -14,8 +14,6 @@ const StyledLoginArea = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
-  padding: 1rem 0;
-  padding-bottom: 0;
 
   & .logged-in.bottom-button-area {
     display: flex;

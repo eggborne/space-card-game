@@ -29,6 +29,7 @@ const GameBoardPlayerArea = styled.div`
 `;
 
 function GameScreen(props) {
+  console.log('GameScreen props: ', props);
   const [versusScreenShowing, setVersusScreenShowing] = useState(true)
   return (
     <StyledGameBoard

@@ -717,6 +717,12 @@ export const characters = {
   // },
 };
 
+export const defaultOpponent = {
+  id: '',
+  displayName: '',
+  strategy: defaultStrategy,
+}
+
 export const randomOpponents = {
   bennett: {
     id: 'bennett',
