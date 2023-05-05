@@ -4,7 +4,8 @@ import { randomInt } from './util';
 const getNameRules = () =>
 axios({
   method: 'get',
-  url: 'https://www.eggborne.com/scripts/pazaakgetnamerules.php',
+  // url: 'https://www.eggborne.com/scripts/pazaakgetnamerules.php',
+  url: 'https://eggborne.com/namegenerator/php/getallrulesets.php',
   headers: {
     'Content-type': 'application/x-www-form-urlencoded'
   }
@@ -244,16 +245,24 @@ export default class NameGenerator {
 
     this.getRules = async () => {
       const retrievedRules = await getNameRules();
+      console.log('retrieved', retrievedRules);
       const ruleSet = retrievedRules.data[0];
+      console.log('ruleSet', ruleSet);
       for (let item in ruleSet) {
-        if (ruleSet[item][0] === '[' || ruleSet[item][0] === '{') {
-          nameRules[item] = JSON.parse(ruleSet[item]);
-        } else {
-          nameRules[item] = ruleSet[item];
+        if (item[0] === '[' || item[0] === '{') {
+          item = JSON.parse(item);
         }
       }
-      // console.warn('GOT NAME RULES');
-      // console.log(nameRules);
+      for (let rule in ruleSet[0]) {
+        let ruleValue = ruleSet[0][rule]
+        if (ruleValue[0] === '[' || ruleValue[0] === '{') {
+          nameRules[rule] = JSON.parse(ruleValue);
+        } else {
+          nameRules[rule] = ruleValue;
+        }
+      }
+      console.warn('GOT NAME RULES');
+      console.log(nameRules);
     }
 
     this.produceName = (pattern) => {
