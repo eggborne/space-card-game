@@ -14,10 +14,34 @@ const StyledLoginArea = styled.div`
   flex-direction: column;
   align-items: center;
   padding: 1rem 0;
-  padding-bottom: 6rem;
+  padding-bottom: 0;
+
+  & .logged-in-bottom-button-area {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 1rem;
+    width: 100%;
+    border-bottom-left-radius: var(--border-radius);
+    border-bottom-right-radius: var(--border-radius);
+    padding-bottom: 1rem;
+
+    & button:first-of-type {
+      background-color: maroon !important;
+      height: 3rem;
+      padding: 0;
+    }
+    & button:last-of-type {
+      background-color: green !important;
+      width: 70%;
+      height: 5rem;
+      margin: 2rem;
+      padding: 0;
+    }
+  }
 
   & .bottom-button-area {
-    position: absolute;
     display: flex;
     width: 100%;
     bottom: 0;
@@ -61,7 +85,7 @@ function LoginArea(props) {
   console.log('LoginArea props', props);
   return (
     <StyledLoginArea>
-      {!props.showLogOut ? 
+      {!props.userLoggedIn ? 
         <>
           <LoginRegisterForm
             loginShowing={loginShowing}
@@ -77,7 +101,10 @@ function LoginArea(props) {
         :
         <>
           <div style={{margin: '2rem 0'}}>Logged in as {props.user.displayName} ({props.user.email})</div>
-          <Button onClick={props.onClickLogOut} label='Log out'/>
+          <div className='logged-in-bottom-button-area'>
+            <Button onClick={props.onClickLogOut} label='Log out'/>
+            <Button onClick={props.onClickPlay} label='Play'/>
+          </div>
         </>
       }
     </StyledLoginArea>
@@ -87,10 +114,11 @@ function LoginArea(props) {
 LoginArea.propTypes = {
   user: PropTypes.object,
   loginShowing: PropTypes.string,
+  onClickPlay: PropTypes.func,
   handleClickLogIn: PropTypes.func,
   handleClickRegister: PropTypes.func,
   setAvatarChoiceModalShowing: PropTypes.func,
-  showLogOut: PropTypes.bool,
+  userLoggedIn: PropTypes.bool,
 };
 
 export default LoginArea;

@@ -30,8 +30,10 @@ function TitleScreen(props) {
       <StyledTitleScreen style={{ display: props.showing ? 'grid' : 'none'}} >
         <LoginArea 
           user={props.user}
-          showLogOut={(props.user.displayName !== '' && (props.user.displayName !== 'Guest'))}
+          // showLogOut={(props.user.displayName !== '' && (props.user.displayName !== 'Guest'))}
+          userLoggedIn={props.userLoggedIn}
           handleClickLogIn={props.handleClickLogIn} 
+          onClickPlay={props.handleClickPlay} 
           onClickLogOut={props.onClickLogOut} 
           handleClickRegister={props.handleClickRegister}
           setAvatarChoiceModalShowing={props.setAvatarChoiceModalShowing}
@@ -49,9 +51,11 @@ function TitleScreen(props) {
 }
 
 TitleScreen.propTypes = {
+  userLoggedIn: PropTypes.bool,
   user: PropTypes.object,
   showing: PropTypes.bool,
   handleClickLogIn: PropTypes.func,
+  handleClickPlay: PropTypes.func,
   onClickLogOut: PropTypes.func,
   handleClickRegister: PropTypes.func,
   handleChooseAvatar: PropTypes.func,

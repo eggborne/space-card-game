@@ -66,11 +66,13 @@ function Header(props) {
             <div>
               <div style={{ fontSize: '100%', fontWeight: 'bold' }}>{props.displayName}</div>
             </div>
-            <PlayerPortrait
-              size='calc(var(--header-height) - 1rem)'
-              imagePath={props.imagePath}
-              sheetCoords={{ ...props.sheetCoords }}
-            />
+            <div style={{ cursor: 'pointer' }} onClick={props.onClickProfileMenu}>
+              <PlayerPortrait
+                size='calc(var(--header-height) - 1rem)'
+                imagePath={props.imagePath}
+                sheetCoords={{ ...props.sheetCoords }}
+              />
+            </div>
           </div>
           :
           <div style={{ marginRight: '1rem', fontSize: '90%' }}>not logged in</div>

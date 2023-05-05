@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import Header from '../Header';
 import UserProfileDisplay from '../UserProfileDisplay';
 import Footer from '../Footer';
@@ -17,9 +17,7 @@ import { collection, doc, setDoc, getDoc } from "firebase/firestore";
 import { characters, randomOpponents } from '../../characters.js';
 import { randomInt, pause } from '../../util.js';
 
-console.warn('got characters');
 console.table(characters);
-console.warn('got randomOpponents');
 console.table(randomOpponents);
 
 const StyledApp = styled.main`
@@ -32,12 +30,25 @@ const StyledApp = styled.main`
   flex-direction: column;
   align-items: center;
   justify-content: space-between;
-  background-image: url(images/starfield.png);
-  background-size: cover;
-  background-position: center;
+  
+  transition: all 500ms ease;
 `;
 
 function App() {
+
+  auth.onAuthStateChanged(async (alreadyLoggedIn) => {
+    if (!!alreadyLoggedIn !== userLoggedIn) {
+      console.log('setting userLoggedIn', !!alreadyLoggedIn, 'while userLoggedIn was', userLoggedIn)
+      setUserLoggedIn(!!alreadyLoggedIn);
+      if (user.email === '') {
+        console.warn('setting userData on auth state change')
+        await setUserDataForId(alreadyLoggedIn.uid);
+      }
+    }
+  });
+
+  const [loaded, setLoaded] = useState(false);
+  const [userLoggedIn, setUserLoggedIn] = useState(false);
   const [phase, setPhase] = useState('title');
   const [gameMode, setGameMode] = useState('Quick Match');
   const [user, setUser] = useState({
@@ -55,6 +66,24 @@ function App() {
   const [avatarChoiceModalShowing, setAvatarChoiceModalShowing] = useState(false);
   const [profileMenuOpen, setProfileMenuOpen] = useState(false);
 
+  useEffect(() => {
+    if (!loaded) {
+      setLoaded(true);
+    }
+  }, [loaded]);
+
+  async function setUserDataForId(uid) {
+    const docRef = doc(db, "userData", uid);
+    const docSnap = await getDoc(docRef);
+    if (docSnap.exists()) {
+      console.warn('SETTING DB USERDATA FOR USER!! -------------------------------------------------');
+      return setUser(docSnap.data());
+    } else {
+      // docSnap.data() will be undefined in this case
+      console.log("No such userData document!");
+    }
+  }
+
   function handleClickLogIn(user) {
     console.warn('handleClickLogin got user');
     console.table(user);
@@ -63,19 +92,8 @@ function App() {
       signInWithEmailAndPassword(auth, user.email, user.password)
         .then(async (userCredential) => {
           console.log(`You've successfully signed in as ${userCredential.user.email}!`);
-
-          // get userData with userId === userCredential.user.uid
-          const docRef = doc(db, "userData", userCredential.user.uid);
-          const docSnap = await getDoc(docRef);
-
-          if (docSnap.exists()) {
-            console.warn('SETTING DB USERDATA FOR USER!! -------------------------------------------------');
-            setUser(docSnap.data());
-            setPhase('game-mode-select');
-          } else {
-            // docSnap.data() will be undefined in this case
-            console.log("No such userData document!");
-          }
+          await setUserDataForId(userCredential.user.uid);
+          setPhase('game-mode-select');
         })
         .catch((error) => {
           console.log(`There was an error signing in: ${error.message}!`);
@@ -115,6 +133,7 @@ function App() {
 
   async function handleChooseAvatar(newSheetCoords) {
     if (auth.currentUser) {
+      console.warn('running handleChooseAvatar with auth.currentUser');
       const newUserData = {
         email: auth.currentUser.email,
         displayName: auth.currentUser.displayName,
@@ -126,7 +145,9 @@ function App() {
       console.table(newUserData);
       await handleCreatingNewUser(newUserData);
     } else {
-      setUser({ ...user, sheetCoords: newSheetCoords });
+      console.warn('running handleChooseAvatar AS GUEST');
+      const guestUser = { ...user, sheetCoords: newSheetCoords };
+      setUser(guestUser);
     }
 
     setAvatarChoiceModalShowing(false);
@@ -141,6 +162,9 @@ function App() {
     console.log('user is now', user);
   }
 
+  function handleClickPlay() {
+    setPhase('game-mode-select')
+  }
   function handleSwitchGameMode(newMode) {
     setGameMode(newMode);
   }
@@ -185,7 +209,10 @@ function App() {
 
 
   return (
-    <StyledApp >
+    <StyledApp style={{
+      opacity: loaded ? '1' : '0',
+      scale: loaded ? '1' : '0.75'
+    }}>
       <Header
         currentUser={auth.currentUser}
         {...user}
@@ -193,9 +220,10 @@ function App() {
         profileMenuOpen={profileMenuOpen}
         onClickProfileMenu={handleToggleProfileMenu}
       />
-      {(auth.currentUser || user.displayName === 'Guest') &&
+      {(userLoggedIn || user.displayName === 'Guest') &&
         <UserProfileDisplay
           open={profileMenuOpen}
+          userLoggedIn={userLoggedIn}
           currentUser={auth.currentUser}
           {...user}
           phase={phase}
@@ -203,9 +231,11 @@ function App() {
         />
       }
       <TitleScreen
+        userLoggedIn={userLoggedIn}
         user={user}
         showing={phase === 'title'}
         handleClickLogIn={handleClickLogIn}
+        handleClickPlay={handleClickPlay}
         onClickLogOut={handleClickLogOut}
         handleClickRegister={handleClickRegister}
         handleChooseAvatar={handleChooseAvatar}
@@ -218,7 +248,7 @@ function App() {
         gameMode={gameMode}
         switchGameMode={handleSwitchGameMode}
       />
-      {phase === 'game-board-showing' && 
+      {phase === 'game-board-showing' &&
         <GameScreen
           showing={phase === 'game-board-showing'}
           user={{ ...user }}

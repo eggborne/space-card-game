@@ -36,6 +36,9 @@ body {
   min-height: var(--actual-height);
   max-height: var(--actual-height);
   overflow: hidden;
+  background-image: url(../public/images/starfield.png);
+  background-size: cover;
+  background-position: center;
 }
 
 input, select {

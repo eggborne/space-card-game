@@ -13,7 +13,7 @@ const StyledUserProfileDisplay = styled.div`
   color: #bbb;
   padding: 1rem;
   transform-origin: top;
-  transform: translateY(-100%);
+  transform: translateY(calc(-100% - var(--header-height)));
   transition: all 300ms ease;
   z-index: 1;
 
@@ -44,12 +44,13 @@ const StyledUserProfileDisplay = styled.div`
     }
 
     & > .footer-area {
-      font-size: 75%;
+      font-size: 70%;
       opacity: 0.8;
       grid-column-start: 1;
       grid-column-end: 3;
       display: flex;
       justify-content: space-between;
+      gap: 0.5rem;
       height: min-content;
       align-self: flex-end;
     }
@@ -80,13 +81,13 @@ function UserProfileDisplay(props) {
         />
         <div className='stat-list'>
           <h1 className='stat-row'>{props.displayName}</h1>
-          {props.currentUser &&
+          {props.userLoggedIn &&
             <>
               <div className='stat-row'>{props.email}</div>
             </>
           }
         </div>
-        {props.currentUser &&
+        {props.userLoggedIn &&
         <>
           <Button onClick={props.onClickLogOut} label='Log out'/>
           <div className='footer-area'>
@@ -103,6 +104,7 @@ function UserProfileDisplay(props) {
 }
 
 UserProfileDisplay.propTypes = {
+  userLoggedIn: PropTypes.bool,
   open: PropTypes.bool,
   currentUser: PropTypes.object,
   displayName: PropTypes.string,
