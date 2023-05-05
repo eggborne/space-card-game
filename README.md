@@ -13,6 +13,8 @@ A sci-fi-themed card game made with React.
 * CSS
 * NPM
 * Webpack
+* PHP
+* MySQL
 
 <!-- ## Component Diagram
 
