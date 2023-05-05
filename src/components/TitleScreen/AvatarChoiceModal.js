@@ -31,6 +31,7 @@ const StyledAvatarChoiceModal = styled.div`
     grid-template-columns: repeat(4, 1fr);
     grid-template-rows: repeat(6, 1fr);
     height: 24rem;
+    overflow-x: hidden;
     overflow-y: scroll;
   }
 

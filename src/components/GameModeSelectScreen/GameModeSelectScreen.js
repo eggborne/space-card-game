@@ -11,7 +11,7 @@ const StyledGameModeSelectScreen = styled.div`
   flex-direction: column;
   align-items: center;
   justify-content: flex-start;
-  gap: 2rem;
+  gap: 1.5rem;
   padding-bottom: var(--expanded-footer-height);
   padding-top: calc(var(--header-height) + 1rem);
 `;

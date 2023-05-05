@@ -2,9 +2,9 @@ import PropTypes from 'prop-types';
 import styled from 'styled-components';
 
 const StyledGameModeSelectItem = styled.div`
-  height: 14rem;
+  // height: 14rem;
   width: 20rem;
-  padding: 1rem;
+  padding: 2rem 1rem;
   background-color: rgb(50, 51, 93);
   color: #eee;
   display: flex;
@@ -22,7 +22,7 @@ function GameModeSelectItem(props) {
     <StyledGameModeSelectItem 
     onClick={props.onClick} 
     style={{
-      opacity: props.selected ? '1' : '0.5',
+      filter: props.selected ? 'none' : 'brightness(75%)',
       scale: props.selected ? '1' : '0.9',
       outline: props.selected ? '0.25rem solid lightgreen' : 'none',
     }}

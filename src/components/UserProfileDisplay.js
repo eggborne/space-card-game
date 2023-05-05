@@ -12,6 +12,7 @@ const StyledUserProfileDisplay = styled.div`
   background-color: #00000022;
   gap: 1rem;
   padding: 1rem;
+  margin-top: 1rem;
 
   & > button {
     grid-row-start: 2;
@@ -39,6 +40,7 @@ const StyledUserProfileDisplay = styled.div`
     display: flex;
     flex-direction: column;
     gap: 0.5rem;
+    font-size: 0.8rem;
   }
 `;
 
