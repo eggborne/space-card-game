@@ -38,7 +38,7 @@ function TitleScreen(props) {
           handleClickRegister={props.handleClickRegister}
           setAvatarChoiceModalShowing={props.setAvatarChoiceModalShowing}
         />
-        <Button label='Options' />
+        <Button onClick={props.handleClickOptions} label='Options' />
         <Button label='How to Play' />
         <WideButton label='High Scores' />
       </StyledTitleScreen>
@@ -57,6 +57,7 @@ TitleScreen.propTypes = {
   showing: PropTypes.bool,
   handleClickLogIn: PropTypes.func,
   handleClickPlay: PropTypes.func,
+  handleClickOptions: PropTypes.func,
   onClickLogOut: PropTypes.func,
   handleClickRegister: PropTypes.func,
   handleChooseAvatar: PropTypes.func,

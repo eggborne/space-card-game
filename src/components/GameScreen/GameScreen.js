@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import styled from 'styled-components';
 import VersusScreen from './VersusScreen';
 
-const StyledGameBoard = styled.div`
+const StyledGameScreen = styled.div`
   padding: 1rem;
   align-self: stretch;
   // background-color: rgb(13, 71, 16);
@@ -17,7 +17,7 @@ const StyledGameBoard = styled.div`
   padding-bottom: var(--expanded-footer-height);
 `;
 
-const GameBoardPlayerArea = styled.div`
+const GameScreenPlayerArea = styled.div`
   display: grid;
   grid-template-columns: 1fr 1fr;
   align-items: center;
@@ -32,7 +32,7 @@ function GameScreen(props) {
   console.log('GameScreen props: ', props);
   const [versusScreenShowing, setVersusScreenShowing] = useState(true)
   return (
-    <StyledGameBoard
+    <StyledGameScreen
       style={{ display: props.showing ? 'flex' : 'none' }}
     >
       <VersusScreen user={props.user} opponent={props.opponent} showing={versusScreenShowing} />
@@ -40,7 +40,7 @@ function GameScreen(props) {
         <div>this is the actual game board</div>
       }
       
-    </StyledGameBoard>
+    </StyledGameScreen>
   );
 }
 

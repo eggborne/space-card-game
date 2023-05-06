@@ -9,7 +9,7 @@ const StyledScreenVeil = styled.div`
   width: 100vw;
   height: var(--actual-height);
   background-color: #000000cc;
-  z-index: 1;
+  z-index: 2;
   transition: opacity 200ms ease;
 `;
 

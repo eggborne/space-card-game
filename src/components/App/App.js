@@ -5,6 +5,9 @@ import Footer from '../Footer';
 import TitleScreen from '../TitleScreen/TitleScreen';
 import GameModeSelectScreen from '../GameModeSelectScreen/GameModeSelectScreen';
 import GameScreen from '../GameScreen/GameScreen';
+import OptionsScreen from '../OptionsScreen/OptionsScreen';
+import Modal from '../Modal';
+import ScreenVeil from '../ScreenVeil';
 import styled from 'styled-components';
 import { db, auth } from '../../firebase.js';
 import {
@@ -59,6 +62,7 @@ function App() {
   const [userLoggedIn, setUserLoggedIn] = useState(false);
   const [phase, setPhase] = useState('title');
   const [gameMode, setGameMode] = useState('Quick Match');
+  const [logOutModalShowing, setLogOutModalShowing] = useState(false)
   const [user, setUser] = useState({
     email: '',
     displayName: '',
@@ -173,8 +177,13 @@ function App() {
   function handleClickPlay() {
     setPhase('game-mode-select')
   }
+
   function handleSwitchGameMode(newMode) {
     setGameMode(newMode);
+  }
+
+  function handleClickOptions() {
+    setPhase('options');
   }
 
   function getRandomCharacterOpponent() {
@@ -216,7 +225,7 @@ function App() {
     setAvatarChoiceModalShowing(false);
   }
 
-  function handleClickLogOut() {
+  function handleConfirmLogOut() {
     signOut(auth)
       .then(function () {
         console.log("You have successfully signed out!");
@@ -226,9 +235,15 @@ function App() {
           imagePath: 'images/avatarsheetlq.jpg',
           sheetCoords: { x: 0, y: 0 },
         });
+        setUserLoggedIn(false);
+        setLogOutModalShowing(false);
       }).catch(function (error) {
         console.log(`There was an error signing out: ${error.message}!`);
       });
+  }
+
+  function handleClickLogOut() {
+    setLogOutModalShowing(true);
   }
 
   function handleToggleProfileMenu() {
@@ -247,6 +262,15 @@ function App() {
         phase={phase}
         profileMenuOpen={profileMenuOpen}
         onClickProfileMenu={handleToggleProfileMenu}
+      />
+      <ScreenVeil showing={logOutModalShowing && userLoggedIn} onClickClose={handleCloseAvatarModal} />
+      <Modal 
+        showing={logOutModalShowing && userLoggedIn}
+        headline={'Log out?'}
+        color='maroon'
+        buttonLabel='Do it'
+        bodyComponent={<></>}
+        onClickOK={handleConfirmLogOut}
       />
       <div className='scroll-container'>
 
@@ -267,6 +291,7 @@ function App() {
           showing={phase === 'title'}
           handleClickLogIn={handleClickLogIn}
           handleClickPlay={handleClickPlay}
+          handleClickOptions={handleClickOptions}
           onClickLogOut={handleClickLogOut}
           handleClickRegister={handleClickRegister}
           handleChooseAvatar={handleChooseAvatar}
@@ -274,12 +299,16 @@ function App() {
           setAvatarChoiceModalShowing={() => setAvatarChoiceModalShowing(true)}
           handleCloseAvatarModal={handleCloseAvatarModal}
         />
+        <OptionsScreen 
+          showing={phase === 'options'}
+        />
         <GameModeSelectScreen
           showing={phase === 'game-mode-select'}
           gameMode={gameMode}
           switchGameMode={handleSwitchGameMode}
         />
         </div>
+
         {phase === 'game-board-showing' &&
           <GameScreen
             showing={phase === 'game-board-showing'}

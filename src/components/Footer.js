@@ -16,6 +16,8 @@ const StyledFooter = styled.footer`
   align-items: center;
   font-size: 90%;
   padding: 0 1rem;
+  border-top-left-radius: calc(var(--border-radius) / 2);
+  border-top-right-radius: calc(var(--border-radius) / 2);
   transition: all 200ms ease;
 
   & a {
@@ -56,6 +58,10 @@ function Footer(props) {
           <>
             <FooterBackButton onClick={props.onClickBackToGameSelect} className='Button footer-back-button' label='<'/>
             <Hamburger />
+          </>
+          : props.phase === 'options' ?
+          <>
+            <Button onClick={props.onClickBackToTitle} label='Back' />
           </>
           :
           <>
