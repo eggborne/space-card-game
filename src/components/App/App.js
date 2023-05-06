@@ -16,9 +16,9 @@ import {
   signOut,
   updateProfile
 } from "firebase/auth";
-import { collection, doc, setDoc, getDoc } from "firebase/firestore";
+import { doc, setDoc, getDoc } from "firebase/firestore";
 import { characters, randomOpponents, defaultOpponent } from '../../characters.js';
-import { randomInt, pause } from '../../util.js';
+import { randomInt } from '../../util.js';
 import NameGenerator from '../../namegenerator.js';
 
 console.table(characters);
@@ -307,8 +307,6 @@ function App() {
           gameMode={gameMode}
           switchGameMode={handleSwitchGameMode}
         />
-        </div>
-
         {phase === 'game-board-showing' &&
           <GameScreen
             showing={phase === 'game-board-showing'}
@@ -316,6 +314,8 @@ function App() {
             opponent={{ ...opponent }}
           />
         }
+        </div>
+
       
       <Footer
         phase={phase}

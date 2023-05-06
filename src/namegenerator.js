@@ -326,7 +326,7 @@ export default class NameGenerator {
               // // console.warn(newPiece, 'shorter than', unit.lengthRange.min, 'at point', nameData.wordUnits[wordType]);
             }
           }          
-          nameData.wordUnits[wordType].push(newPiece);
+          return nameData.wordUnits[wordType].push(newPiece);
         });
       }
       return nameData;
@@ -461,7 +461,7 @@ export default class NameGenerator {
         nameData.banned = true;
       }
       let names = Object.values({ ...nameData.wordUnits });      
-      names.map((word, i) => { names[i] = word.join('') });      
+      names.map((word, i) => names[i] = word.join(''));      
       nameData.fullName = names.join(' ');
       if (this.usedKeys.indexOf(nameData.fullName) === -1) {
         let nameArray = nameData.fullName.split(' ');

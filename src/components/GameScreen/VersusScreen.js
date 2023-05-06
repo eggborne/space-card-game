@@ -1,8 +1,6 @@
-import { useEffect } from 'react';
 import PlayerPortrait from '../PlayerPortrait';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
-import { pause } from '../../util.js';
 
 const StyledVersusScreen = styled.div`
   padding: 1rem;
@@ -15,7 +13,8 @@ const StyledVersusScreen = styled.div`
   justify-content: center;
   gap: 2rem;
   padding-bottom: var(--expanded-footer-height);
-  transition: transform 900ms ease-in, opacity 700ms ease;
+  transition: transform 900ms ease-in, opacity 900ms ease;
+  transform-origin 50% 45%;
 
   &.zoomed-off {
     transform: translateX(0) scale(8);
@@ -50,18 +49,7 @@ const VersusScreenPlayerArea = styled.div`
   }
 `;
 
-async function animate() {
-  document.getElementById('player-area-1').classList.add('onscreen');
-  document.getElementById('player-area-2').classList.add('onscreen');
-  await pause(1600);
-  document.getElementById('versus-screen').classList.add('zoomed-off');
-}
-
 function VersusScreen(props) {
-  
-  useEffect(() => {
-    animate();
-  });
 
   return (
     <StyledVersusScreen id='versus-screen'
