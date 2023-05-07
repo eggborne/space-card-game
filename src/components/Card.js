@@ -2,13 +2,14 @@ import PropTypes from 'prop-types';
 import styled from 'styled-components';
 
 const StyledCard = styled.div`
+  --card-max-height: calc(var(--section-height) - (var(--main-padding) * 0.75));
   position: relative;
   background-color: #990909;
   width: var(--card-width);
   height: var(--card-height);
   max-width: calc((var(--main-width) / 5) - (var(--main-padding) * 1.5));
-  max-height: calc(var(--section-height) - (var(--main-padding) * 0.75));
-  // min-width: var(--card-width);
+  max-height: var(--card-max-height);
+  max-width: calc(var(--card-max-height) * (11/16));
   border-radius: 0.25rem;
   border: 0.1rem solid #00000099;
   display: flex;
