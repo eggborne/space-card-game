@@ -19,6 +19,14 @@
   --button-green: rgb(9, 88, 9);
   --button-orange: rgb(157, 126, 33);
   --button-red: rgb(97, 26, 26);
+
+  --game-board-height: calc(var(--actual-height) - var(--expanded-footer-height));
+  --main-padding: 0.25rem;
+  --section-height: calc((var(--game-board-height) / 6));
+  --card-x-space: calc(var(--main-width) - (var(--section-height) * 1.5));
+  --card-width: calc((var(--main-width) / 5) - (var(--main-padding) * 1.5));
+  --card-height: calc(var(--section-height) - (var(--main-padding) * 1.5));
+  --card-border-radius: calc(var(--card-width) * 0.2);
 }
 
 *, * *, * * * {

@@ -3,15 +3,13 @@ import PropTypes from 'prop-types';
 import styled from 'styled-components';
 
 const StyledPlayerArea = styled.div`
-  --main-padding: 0.25rem;
-  --section-height: calc((var(--total-height) / 6));
-  --card-x-space: calc(var(--main-width) - (var(--section-height) * 1.5));
-  --card-height: calc(var(--section-height) - (var(--main-padding) * 1.5));
+  
   width: 100%;
   height: 100%;
   display: flex;
   flex-direction: column;
   align-items: stretch;
+  background: pink;
 
   // background-color: #00550066;
 
@@ -25,16 +23,11 @@ const HandArea = styled.div`
   align-items: center;
   justify-content: space-between;
   height: calc(var(--section-height));
-  padding: 0 var(--main-padding);
-  padding: var(--main-padding);
 
-  // background-color: #00550044;
+  background-color: #00550044;
 
   & > .portrait-area, .turn-indicator-area {
-    width: var(--section-height);
-    display: flex;
-    align-items: center;
-    justify-content: center;
+    padding: 0 1rem;
   }
 
   .turn-indicator-area {
@@ -49,7 +42,8 @@ const HandCards = styled.div`
   gap: calc(var(--main-padding) * 0.75);
 
   & > div {
-    --card-height: calc(var(--section-height) * 0.85);
+    --card-width: calc(((var(--main-width) / 5) - (var(--main-padding) * 1.5)) * 0.85);
+    --card-height: calc((var(--section-height) - (var(--main-padding) * 1.5)) * 0.85);
   }
 `;
 
@@ -105,9 +99,9 @@ function PlayerArea(props) {
           <Card value={-5} />
           <Card value={6} />
         </HandCards>
-        <div className='turn-indicator-area'>
+        {/* <div className='turn-indicator-area'>
           <TurnIndicator />  
-        </div>
+        </div> */}
       </HandArea>
     </StyledPlayerArea>
   );

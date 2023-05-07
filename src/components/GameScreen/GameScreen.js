@@ -7,8 +7,8 @@ import PlayerPortrait from '../PlayerPortrait';
 import { pause } from '../../util.js';
 
 const StyledGameScreen = styled.div`
-  --total-height: calc(var(--actual-height) - var(--expanded-footer-height));
-  height: var(--total-height);
+  
+  height: var(--game-board-height);
   padding: 1rem;
   align-self: stretch;
   color: #eee;
