@@ -72,6 +72,7 @@ function GameScreen(props) {
             portrait={
               <PlayerPortrait 
                 size='4.5rem'
+                displayName={props.opponent.displayName}
                 imagePath={props.opponent.imagePath}
                 sheetCoords={props.opponent.sheetCoords}
               />
@@ -82,6 +83,7 @@ function GameScreen(props) {
             portrait={
               <PlayerPortrait 
                 size='4.5rem'
+                displayName={props.user.displayName}
                 imagePath={props.user.imagePath}
                 sheetCoords={props.user.sheetCoords}
               />

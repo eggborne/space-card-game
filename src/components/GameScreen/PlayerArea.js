@@ -6,12 +6,14 @@ const StyledPlayerArea = styled.div`
   --main-padding: 0.25rem;
   --section-height: calc((var(--total-height) / 6));
   --card-x-space: calc(var(--main-width) - (var(--section-height) * 1.5));
-  --card-height: calc(var(--section-height) - (var(--main-padding) * 3));
+  --card-height: calc(var(--section-height) - (var(--main-padding) * 1.5));
   width: 100%;
   height: 100%;
   display: flex;
   flex-direction: column;
   align-items: stretch;
+
+  // background-color: #00550066;
 
   &:first-of-type {
     border-bottom: 0.25rem groove #00000044;
@@ -22,22 +24,22 @@ const HandArea = styled.div`
   display: flex;
   align-items: center;
   justify-content: space-between;
-  height: var(--section-height);
+  height: calc(var(--section-height));
   padding: 0 var(--main-padding);
-  background-color: orange;
   padding: var(--main-padding);
 
+  // background-color: #00550044;
+
   & > .portrait-area, .turn-indicator-area {
-    width: 4.5rem;
+    width: var(--section-height);
     display: flex;
     align-items: center;
     justify-content: center;
   }
 
   .turn-indicator-area {
-    width: 4rem;
+    width: 3rem;
   }
-
 `;
 
 const HandCards = styled.div`
@@ -47,13 +49,12 @@ const HandCards = styled.div`
   gap: calc(var(--main-padding) * 0.75);
 
   & > div {
-    --card-height: calc(var(--section-height) * 0.7);
+    --card-height: calc(var(--section-height) * 0.85);
   }
 `;
 
 const DealArea = styled.div`
-  height: calc(var(--section-height) * 2);
-  background-color: darkblue;
+  flex-grow: 1;
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -77,23 +78,23 @@ const TurnIndicator = styled.div`
 `;
 
 function PlayerArea(props) {
-
+  const isCPU = !props.playerObject.email;
   return (
-    <StyledPlayerArea style={{ flexDirection: props.playerObject.email ? 'column' : 'column-reverse'}}>
+    <StyledPlayerArea style={{ flexDirection: isCPU ? 'column-reverse' : 'column'}}>
       <DealArea>
         <div className='deal-row'>
           <Card value={1} />
           <Card value={2} />
           <Card value={3} />
           <Card value={4} />
-          <Card value={5} />
+          <Card value={0} />
         </div>
         <div className='deal-row'>
+          <Card value={5} />
           <Card value={6} />
           <Card value={7} />
           <Card value={8} />
           <Card value={9} />
-          <Card value={0} />
         </div>
       </DealArea>
       <HandArea>

@@ -3,7 +3,7 @@ import styled from 'styled-components';
 
 const StyledCard = styled.div`
   --card-aspect-height: 16;
-  --card-aspect-width: 10;
+  --card-aspect-width: 11;
   background-color: #990909;
   height: var(--card-height);
   width: calc(var(--card-height) * (var(--card-aspect-width) / var(--card-aspect-height)));
@@ -14,12 +14,16 @@ const StyledCard = styled.div`
   flex-direction: column;
   align-items: center;
   justify-content: center;
+
+  &.placeholder {
+    opacity: 0;
+  }
 `;
 
 function Card(props) {
 
   return (
-    <StyledCard>
+    <StyledCard className={ props.value ? '' : 'placeholder'}>
       {props.value}
     </StyledCard>
   );
