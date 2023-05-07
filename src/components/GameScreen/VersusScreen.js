@@ -3,7 +3,6 @@ import PropTypes from 'prop-types';
 import styled from 'styled-components';
 
 const StyledVersusScreen = styled.div`
-  padding: 1rem;
   align-self: stretch;
   color: #eee;
   flex-grow: 1;
@@ -13,8 +12,10 @@ const StyledVersusScreen = styled.div`
   justify-content: center;
   gap: 2rem;
   padding-bottom: var(--expanded-footer-height);
+  padding-top: var(--header-height);
   transition: transform 900ms ease-in, opacity 900ms ease;
-  transform-origin 50% 45%;
+  // transform-origin 50% 47.5%;
+  transform-origin 50% calc(50% - 1rem);
 
   &.zoomed-off {
     transform: translateX(0) scale(8);
@@ -31,7 +32,7 @@ const VersusScreenPlayerArea = styled.div`
   gap: 1rem;
   width: 14rem;
   font-weight: bold;
-  transition: all 500ms ease;
+  transition: transform 500ms ease, opacity 500ms ease;
 
   &:first-of-type {
     transform: translateX(-100%);
