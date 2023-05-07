@@ -1,7 +1,11 @@
-import PropTypes from 'prop-types';
+import React from 'react';
 import styled from 'styled-components';
 
-const StyledCard = styled.div`
+interface CardProps {
+  value: number;
+}
+
+const StyledCard = styled['div']`
   --card-aspect-height: 16;
   --card-aspect-width: 11;
   background-color: #990909;
@@ -20,17 +24,30 @@ const StyledCard = styled.div`
   }
 `;
 
-function Card(props) {
-
+const Card = ({ value }: CardProps) => {
   return (
-    <StyledCard className={ props.value ? '' : 'placeholder'}>
-      {props.value}
+    <StyledCard className={ value ? '' : 'placeholder'}>
+      {value}
     </StyledCard>
   );
 }
+  
 
-Card.propTypes = {
-  value: PropTypes.number,
-};
+
+
+
+
+
+
+
+
+
+// function Card(props) {
+//   return (
+    // <StyledCard className={ props.value ? '' : 'placeholder'}>
+    //   {props.value}
+    // </StyledCard>
+//   );
+// }
 
 export default Card;

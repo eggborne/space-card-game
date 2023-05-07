@@ -1,4 +1,4 @@
-import Card from '../Card';
+import Card from '../Card.tsx';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
 
