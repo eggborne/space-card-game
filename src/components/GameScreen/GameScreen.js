@@ -90,7 +90,6 @@ function GameScreen(props) {
             }
           />
         </GameBoard>
-      
     </StyledGameScreen>
   );
 }

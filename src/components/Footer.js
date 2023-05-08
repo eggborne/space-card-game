@@ -67,7 +67,7 @@ function Footer(props) {
                 <FooterGameButton color='green' label='End Turn' />
                 <FooterGameButton color='orange' label='Stand' />
               </div>
-              <Hamburger />
+              <Hamburger onClickBackToTitle={props.onClickBackToTitle} />
             </>
             : props.phase === 'options' ?
               <>

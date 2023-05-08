@@ -1,5 +1,7 @@
 import { useState } from 'react';
+import PropTypes from 'prop-types';
 import styled from 'styled-components';
+import HamburgerMenu from './HamburgerMenu';
 
 const StyledHamburger = styled.div`
   box-sizing: border-box;
@@ -31,7 +33,7 @@ const StyledHamburger = styled.div`
   }
 `;
 
-function Hamburger() {
+function Hamburger(props) {
   const [open, setOpen] = useState(false);
 
   function toggleHamburgerAppearance() {
@@ -62,16 +64,23 @@ function Hamburger() {
     setOpen(!open);
   };
   return (
-    <StyledHamburger 
-      style={{backgroundColor: open ? 'var(--hamburger-open-bg-color' : 'var(--hamburger-bg-color'}} 
-      onClick={toggleHamburgerAppearance}
-    >
-      <div className='hamburger-bar' id='top-hamburger-bar'></div>
-      <div className='hamburger-bar' id='middle-hamburger-bar'></div>
-      <div className='hamburger-bar' id='middle-hamburger-bar-2'></div>
-      <div className='hamburger-bar' id='bottom-hamburger-bar'></div>
-    </StyledHamburger>
+    <>
+      <StyledHamburger 
+        style={{backgroundColor: open ? 'var(--hamburger-open-bg-color' : 'var(--hamburger-bg-color'}} 
+        onClick={toggleHamburgerAppearance}
+      >
+        <div className='hamburger-bar' id='top-hamburger-bar'></div>
+        <div className='hamburger-bar' id='middle-hamburger-bar'></div>
+        <div className='hamburger-bar' id='middle-hamburger-bar-2'></div>
+        <div className='hamburger-bar' id='bottom-hamburger-bar'></div>
+      </StyledHamburger>
+      <HamburgerMenu open={open} onClickBackToTitle={props.onClickBackToTitle} />
+    </>
   );
+}
+
+Hamburger.propTypes = {
+  onClickBackToTitle: PropTypes.func,
 }
 
 export default Hamburger;
