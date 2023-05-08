@@ -31,7 +31,6 @@ const StyledHamburgerMenu = styled.div`
 
 function HamburgerMenu(props) {
   function handleClickEndGame() {
-    console.log('clicked end game');
     props.onClickEndGame();
   }
   return (

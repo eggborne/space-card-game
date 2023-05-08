@@ -23,12 +23,9 @@ const PortraitNameLabel = styled.div`
 function PlayerPortrait(props) {
   let labelFontSize = '1';
   if (props.displayName) {
-    console.log('for', props.displayName);
     let portraitSize = parseInt(props.size);
     let wordsInName = props.displayName.split(' ').length;
     let totalLength = props.displayName.length;
-    console.log('wordsInName: ', wordsInName)
-    console.log('totalLength: ', totalLength)
     if ((wordsInName <= 2 && totalLength > 10) || (wordsInName > 2 && totalLength > 12)) {
       labelFontSize = portraitSize / 5;
       if (totalLength > 18) {
@@ -39,8 +36,6 @@ function PlayerPortrait(props) {
       labelFontSize = portraitSize / 5.5;
     }
     labelFontSize = labelFontSize + 'rem';
-    console.log('labelFontSize: ' + labelFontSize)
-    console.log('----------------------------')
   }
   return (
     <PortraitContainer>

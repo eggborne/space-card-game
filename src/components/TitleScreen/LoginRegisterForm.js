@@ -110,7 +110,6 @@ function LoginRegisterForm(props) {
 
   function handleLogIn(e) {
     e.preventDefault();
-    console.log('form handleLogin got displayName', e.target.displayName)
     const user = {
       displayName: (e.target.displayName && e.target.displayName.value) || 'Guest',
     }
@@ -118,8 +117,7 @@ function LoginRegisterForm(props) {
       user.password = e.target.password.value;
       user.email = e.target.email.value
     }
-    // add to db here?
-    console.log('form loggin in user', user);
+    console.log('form logging in user', user);
     props.handleClickLogIn(user);
   }
 

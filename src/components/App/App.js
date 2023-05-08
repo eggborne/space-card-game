@@ -50,7 +50,6 @@ function App() {
 
   auth.onAuthStateChanged(async (alreadyLoggedIn) => {
     if (!!alreadyLoggedIn !== userLoggedIn) {
-      console.log('setting userLoggedIn', !!alreadyLoggedIn, 'while userLoggedIn was', userLoggedIn)
       setUserLoggedIn(!!alreadyLoggedIn);
       if (user.email === '') {
         console.warn('setting userData on auth state change')
