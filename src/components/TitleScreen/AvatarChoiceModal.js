@@ -68,7 +68,7 @@ function getArrayOfPortraits() {
       avatarRow.push(
         <PlayerPortrait
           size='calc(var(--main-width) * 0.165)'
-          imagePath='./images/avatarsheetlq.jpg'
+          imagePath='/images/avatarsheetlq.jpg'
           sheetCoords={{ x, y }}
         />
         );
