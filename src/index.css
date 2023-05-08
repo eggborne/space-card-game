@@ -33,7 +33,8 @@
   --card-x-space: calc(var(--main-width) - (var(--section-height) * 1.5));
   --card-width: calc((var(--main-width) / 5) - (var(--main-padding) * 1.5));
   --card-height: calc(var(--section-height) - (var(--main-padding) * 1.5));
-  --card-max-height: calc(var(--section-height) - (var(--main-padding) * 0.75));
+  --card-max-height: calc(var(--section-height) - (var(--main-padding) * 0.5));
+  --card-max-width: calc(var(--card-max-height) * (10/16));
   --card-border-radius: calc(var(--card-width) * 0.15);
   --card-padding: calc(var(--card-width) * 0.1);
 }
@@ -68,9 +69,24 @@ h1, h2, h3, h4 {
   margin: 0;
 }
 
-@media screen and (min-width: 768px) {
+@media screen and (min-width: 540px) {
+  :root {
+    --main-width: 80vw;
+    --card-border-radius: calc(var(--card-height) * 0.1);
+    --card-padding: calc(var(--card-height) * 0.075);
+  }
+
+  #root {
+    display: flex;
+    justify-content: center;
+  }
+}
+
+@media screen and (min-width: 640px) {
   :root {
     --main-width: 60vw;
+    --card-border-radius: calc(var(--card-height) * 0.1);
+    --card-padding: calc(var(--card-height) * 0.075);
   }
 
   #root {
@@ -81,6 +97,8 @@ h1, h2, h3, h4 {
 @media screen and (min-width: 1024px) {
   :root {
     --main-width: 50vw;
+    --card-border-radius: calc(var(--card-height) * 0.1);
+    --card-padding: calc(var(--card-height) * 0.075);
   }
 
   #root {

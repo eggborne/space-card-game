@@ -12,7 +12,7 @@ const StyledCard = styled.div`
   height: var(--card-height);
   max-width: calc((var(--main-width) / 5) - (var(--main-padding) * 1.5));
   max-height: var(--card-max-height);
-  max-width: calc(var(--card-max-height) * (11/16));
+  max-width: var(--card-max-width);
   border-radius: 0.25rem;
   border: 0.1rem solid #00000099;
   display: flex;
@@ -44,32 +44,33 @@ const StyledCard = styled.div`
 const CardKnob = styled.div`
   position: relative;
   border-radius: calc(var(--card-border-radius) / 2);
-  border: 0.1rem solid #00000055;
   width: 100%;
   height: 27.5%;
   display: flex;
   align-items: center;
   justify-content: center;
   border: 0.1rem inset #00000055;
+  --arrow-outer-size: calc(var(--card-height) / 8);
+  --arrow-inner-size: calc(var(--card-height) / 12);
 
   & > .arrow-up {
     position: relative;
     width: 0; 
     height: 0; 
-    border-left: calc(var(--card-width) / 5) solid transparent;
-    border-right: calc(var(--card-width) / 5) solid transparent;
-    border-bottom: calc(var(--card-width) / 5) solid #00000055;
+    border-left: var(--arrow-outer-size) solid transparent;
+    border-right: var(--arrow-outer-size) solid transparent;
+    border-bottom: var(--arrow-outer-size) solid #00000055;
 
     ::after {
       position: absolute;
       content: '';
-      top: calc(var(--card-width) / 28);
-      right: calc(var(--card-width) / -7);
+      top: calc(var(--arrow-inner-size) / 3.5);
+      right: calc(var(--arrow-inner-size) * -1);
       width: 0; 
       height: 0; 
-      border-left: calc(var(--card-width) / 7) solid transparent;
-      border-right: calc(var(--card-width) / 7) solid transparent;
-      border-bottom: calc(var(--card-width) / 7) solid var(--card-white);
+      border-left: var(--arrow-inner-size) solid transparent;
+      border-right: var(--arrow-inner-size) solid transparent;
+      border-bottom: var(--arrow-inner-size) solid var(--card-white);
     }
   }
   
@@ -77,20 +78,20 @@ const CardKnob = styled.div`
     position: relative;
     width: 0; 
     height: 0; 
-    border-left: calc(var(--card-width) / 5) solid transparent;
-    border-right: calc(var(--card-width) / 5) solid transparent;
-    border-top: calc(var(--card-width) / 5) solid #00000055;
+    border-left: var(--arrow-outer-size) solid transparent;
+    border-right: var(--arrow-outer-size) solid transparent;
+    border-top: var(--arrow-outer-size) solid #00000055;
 
     ::after {
       position: absolute;
       content: '';
-      bottom: calc(var(--card-width) / 28);
-      right: calc(var(--card-width) / -7);
+      bottom: calc(var(--arrow-inner-size) / 3.5);
+      right: calc(var(--arrow-inner-size) * -1);
       width: 0; 
       height: 0; 
-      border-left: calc(var(--card-width) / 7) solid transparent;
-      border-right: calc(var(--card-width) / 7) solid transparent;
-      border-top: calc(var(--card-width) / 7) solid var(--card-white);
+      border-left: var(--arrow-inner-size) solid transparent;
+      border-right: var(--arrow-inner-size) solid transparent;
+      border-top: var(--arrow-inner-size) solid var(--card-white);
     }
   }
 
@@ -102,19 +103,21 @@ const CardKnob = styled.div`
 
 const ValueDisplay = styled.div`
   font-weight: bold;
-  font-size: calc(var(--card-width) / 4);
+  font-size: calc(var(--card-height) / 5);
   position: absolute;
-  top: calc(var(--card-padding) + 30%);
-  translate: 0 -50%;
   border-radius: calc(var(--card-border-radius) / 4);
+  transform: translateY(-50%);
+  top: calc(36%);
   width: 65%;
-  height: 27.5%;
+  height: 25%;
   background-color: black;
   display: flex;
   align-items: center;
   justify-content: center;
   color: white;
   border: 0.1rem inset #ffffff99;
+  z-index: 1;
+  // opacity: 0.5;
 `;
 
 function Card(props) {
@@ -134,13 +137,11 @@ function Card(props) {
         <CardKnob style={{ backgroundColor: knobColors[0] }}>
           <div className='arrow-up'></div>
         </CardKnob>
+        <ValueDisplay>{props.value}</ValueDisplay>
         <CardKnob style={{ backgroundColor: knobColors[1] }}>
           <div className='arrow-down'></div>
         </CardKnob>
         <CardKnob className='bottom' style={{ backgroundColor: knobColors[2] }}></CardKnob>
-        <ValueDisplay>
-          {props.value}
-        </ValueDisplay>
       </div>
     </StyledCard>
   );

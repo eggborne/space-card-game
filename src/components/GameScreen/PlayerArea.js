@@ -10,7 +10,7 @@ const StyledPlayerArea = styled.div`
   display: flex;
   flex-direction: column;
   align-items: stretch;
-  background: pink;
+  justify-content: space-between;
 
   // background-color: #00550066;
 
@@ -24,11 +24,14 @@ const HandArea = styled.div`
   align-items: center;
   justify-content: space-between;
   height: calc(var(--section-height));
+  padding-right: calc(var(--main-padding) * 2);
 
   background-color: #00550044;
 
   & > .portrait-area, .turn-indicator-area {
-    padding: 0 1rem;
+    flex-grow: 1;
+    display: flex;
+    justify-content: center;
   }
 
   .turn-indicator-area {
@@ -40,11 +43,9 @@ const HandCards = styled.div`
   flex-grow: 1;
   display: flex;
   justify-content: center;
-  gap: calc(var(--main-padding) * 0.75);
-
+  
   & > div {
-    --card-width: calc(((var(--main-width) / 5) - (var(--main-padding) * 1.5)) * 0.85);
-    --card-height: calc((var(--section-height) - (var(--main-padding) * 1.5)) * 0.85);
+    transform: scale(0.85);
   }
 `;
 

@@ -6,12 +6,12 @@ import styled from 'styled-components';
 
 const StyledCardBack = styled.div`
   position: relative;
-  background-color: var(--card-gray);
+  background-color: var(--card-white);
   width: var(--card-width);
   height: var(--card-height);
   max-width: calc((var(--main-width) / 5) - (var(--main-padding) * 1.5));
   max-height: var(--card-max-height);
-  max-width: calc(var(--card-max-height) * (11/16));
+  max-width: var(--card-max-width);
   border-radius: 0.25rem;
   border: 0.1rem solid #00000099;
   display: flex;
