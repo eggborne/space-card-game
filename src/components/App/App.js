@@ -67,7 +67,7 @@ function App() {
   const [user, setUser] = useState({
     email: '',
     displayName: '',
-    imagePath: '/images/avatarsheetlq.jpg',
+    imagePath: 'images/avatarsheetlq.jpg',
     sheetCoords: { x: 0, y: 0 },
 
   });
@@ -117,7 +117,7 @@ function App() {
       setUser({
         email: 'guest@guest.guest',
         displayName: user.displayName,
-        imagePath: '/images/avatarsheetlq.jpg',
+        imagePath: 'images/avatarsheetlq.jpg',
       });
 
       setAvatarChoiceModalShowing(true);
@@ -151,7 +151,7 @@ function App() {
       const newUserData = {
         email: auth.currentUser.email,
         displayName: auth.currentUser.displayName,
-        imagePath: '/images/avatarsheetlq.jpg',
+        imagePath: 'images/avatarsheetlq.jpg',
         sheetCoords: newSheetCoords,
         id: auth.currentUser.uid,
       };
@@ -234,7 +234,7 @@ function App() {
         setUser({
           email: '',
           displayName: '',
-          imagePath: '/images/avatarsheetlq.jpg',
+          imagePath: 'images/avatarsheetlq.jpg',
           sheetCoords: { x: 0, y: 0 },
         });
         setUserLoggedIn(false);
