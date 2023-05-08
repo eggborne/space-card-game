@@ -1,5 +1,4 @@
 import styled from 'styled-components';
-import PlayerPortrait from './PlayerPortrait';
 import PropTypes from 'prop-types';
 
 const StyledScreenVeil = styled.div`

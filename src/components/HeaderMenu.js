@@ -1,6 +1,4 @@
 import styled from 'styled-components';
-import PlayerPortrait from './PlayerPortrait';
-import Button from './Buttons/Button';
 import PropTypes from 'prop-types';
 import UserProfileDisplay from './UserProfileDisplay';
 

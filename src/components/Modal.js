@@ -1,4 +1,3 @@
-import { useState } from 'react';
 import Button from './Buttons/Button';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';

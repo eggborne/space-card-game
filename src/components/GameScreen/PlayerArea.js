@@ -65,14 +65,6 @@ const DealArea = styled.div`
 
 `;
 
-const TurnIndicator = styled.div`
-  border-radius: 50%;
-  background-color: red;
-  border: 0.1rem solid #00000088;
-  width: calc(var(--section-height) / 3);
-  height: calc(var(--section-height) / 3);
-`;
-
 function PlayerArea(props) {
   const isCPU = !props.playerObject.email;
   return (
@@ -114,9 +106,6 @@ function PlayerArea(props) {
             </>
           }
         </HandCards>
-        {/* <div className='turn-indicator-area'>
-          <TurnIndicator />  
-        </div> */}
       </HandArea>
     </StyledPlayerArea>
   );
