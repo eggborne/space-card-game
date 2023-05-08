@@ -1,7 +1,6 @@
 import { useState } from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
-import HamburgerMenu from './HamburgerMenu';
 
 const StyledHamburger = styled.div`
   box-sizing: border-box;
@@ -61,26 +60,24 @@ function Hamburger(props) {
         middleBar2.style.transform = 'rotate(-40deg) scaleX(1.1)';
       }, 150);
     }
+    props.onClickToggle();
     setOpen(!open);
   };
   return (
-    <>
-      <StyledHamburger 
-        style={{backgroundColor: open ? 'var(--hamburger-open-bg-color' : 'var(--hamburger-bg-color'}} 
-        onClick={toggleHamburgerAppearance}
-      >
-        <div className='hamburger-bar' id='top-hamburger-bar'></div>
-        <div className='hamburger-bar' id='middle-hamburger-bar'></div>
-        <div className='hamburger-bar' id='middle-hamburger-bar-2'></div>
-        <div className='hamburger-bar' id='bottom-hamburger-bar'></div>
-      </StyledHamburger>
-      <HamburgerMenu open={open} onClickBackToTitle={props.onClickBackToTitle} />
-    </>
+    <StyledHamburger 
+      style={{backgroundColor: open ? 'var(--hamburger-open-bg-color' : 'var(--hamburger-bg-color'}} 
+      onClick={toggleHamburgerAppearance}
+    >
+      <div className='hamburger-bar' id='top-hamburger-bar'></div>
+      <div className='hamburger-bar' id='middle-hamburger-bar'></div>
+      <div className='hamburger-bar' id='middle-hamburger-bar-2'></div>
+      <div className='hamburger-bar' id='bottom-hamburger-bar'></div>
+    </StyledHamburger>
   );
 }
 
 Hamburger.propTypes = {
-  onClickBackToTitle: PropTypes.func,
+  onClickToggle: PropTypes.func,
 }
 
 export default Hamburger;

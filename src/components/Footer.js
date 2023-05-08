@@ -20,6 +20,7 @@ const StyledFooter = styled.footer`
   border-top-left-radius: calc(var(--border-radius) / 2);
   border-top-right-radius: calc(var(--border-radius) / 2);
   transition: all 200ms ease;
+  z-index: 2;
 
   & a {
     color: orange;
@@ -63,11 +64,11 @@ function Footer(props) {
           </>
           : props.phase === 'game-board-showing' ?
             <>
-              <div className='game-button-area'>
+              <div className='game-button-area' style={{ opacity: props.hamburgerOpen ? '0.4' : '1', pointerEvents: props.hamburgerOpen ? 'none' : 'all'}}>
                 <FooterGameButton color='green' label='End Turn' />
                 <FooterGameButton color='orange' label='Stand' />
               </div>
-              <Hamburger onClickBackToTitle={props.onClickBackToTitle} />
+              <Hamburger onClickToggle={props.handleToggleHamburger} />
             </>
             : props.phase === 'options' ?
               <>
@@ -86,6 +87,8 @@ Footer.propTypes = {
   onClickBackToTitle: PropTypes.func,
   onClickBackToGameSelect: PropTypes.func,
   onClickAcceptGameMode: PropTypes.func,
+  handleToggleHamburger: PropTypes.func,
+  hamburgerOpen: PropTypes.bool,
 };
 
 export default Footer;

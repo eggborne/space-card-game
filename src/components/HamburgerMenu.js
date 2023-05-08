@@ -32,7 +32,7 @@ const StyledHamburgerMenu = styled.div`
 function HamburgerMenu(props) {
   function handleClickEndGame() {
     console.log('clicked end game');
-    props.onClickBackToTitle();
+    props.onClickEndGame();
   }
   return (
     <StyledHamburgerMenu 
@@ -45,7 +45,7 @@ function HamburgerMenu(props) {
 
 HamburgerMenu.propTypes = {
   open: PropTypes.bool,
-  onClickBackToTitle: PropTypes.func,
+  onClickEndGame: PropTypes.func,
 }
 
 export default HamburgerMenu;

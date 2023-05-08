@@ -4,6 +4,7 @@ import styled from 'styled-components';
 import VersusScreen from './VersusScreen';
 import PlayerArea from './PlayerArea';
 import PlayerPortrait from '../PlayerPortrait';
+import HamburgerMenu from '../HamburgerMenu';
 import { pause } from '../../util.js';
 
 const StyledGameScreen = styled.div`
@@ -41,7 +42,6 @@ function GameScreen(props) {
   const [gameBoardShowing, setGameBoardShowing] = useState(false);
 
   useEffect(() => {
-    console.warn('GameScreen useEffect');
     animate();
   });
 
@@ -57,40 +57,47 @@ function GameScreen(props) {
   }
 
   return (
-    <StyledGameScreen
-      style={{ display: props.showing ? 'flex' : 'none' }}
-    >
-      <VersusScreen user={props.user} opponent={props.opponent} showing={versusScreenShowing} />
-        <GameBoard 
-          style={{
-            transform: gameBoardShowing ? 'scale(1)' : 'scale(0.5)',
-            opacity: gameBoardShowing ? '1' : '0',
-          }}
-        >
-          <PlayerArea 
-            playerObject={props.opponent}
-            portrait={
-              <PlayerPortrait 
-                size='4.5rem'
-                displayName={props.opponent.displayName}
-                imagePath={props.opponent.imagePath}
-                sheetCoords={props.opponent.sheetCoords}
-              />
-            }
-          />
-          <PlayerArea 
-            playerObject={props.user}
-            portrait={
-              <PlayerPortrait 
-                size='4.5rem'
-                displayName={props.user.displayName}
-                imagePath={props.user.imagePath}
-                sheetCoords={props.user.sheetCoords}
-              />
-            }
-          />
-        </GameBoard>
-    </StyledGameScreen>
+    <>
+      <HamburgerMenu 
+        open={props.hamburgerOpen} 
+        onClickEndGame={props.onClickEndGame} 
+      />
+
+      <StyledGameScreen
+        style={{ display: props.showing ? 'flex' : 'none' }}
+      >
+        <VersusScreen user={props.user} opponent={props.opponent} showing={versusScreenShowing} />
+          <GameBoard 
+            style={{
+              transform: gameBoardShowing ? 'scale(1)' : 'scale(0.5)',
+              opacity: gameBoardShowing ? '1' : '0',
+            }}
+          >
+            <PlayerArea 
+              playerObject={props.opponent}
+              portrait={
+                <PlayerPortrait 
+                  size='4.5rem'
+                  displayName={props.opponent.displayName}
+                  imagePath={props.opponent.imagePath}
+                  sheetCoords={props.opponent.sheetCoords}
+                />
+              }
+            />
+            <PlayerArea 
+              playerObject={props.user}
+              portrait={
+                <PlayerPortrait 
+                  size='4.5rem'
+                  displayName={props.user.displayName}
+                  imagePath={props.user.imagePath}
+                  sheetCoords={props.user.sheetCoords}
+                />
+              }
+            />
+          </GameBoard>
+      </StyledGameScreen>
+    </>
   );
 }
 
@@ -98,7 +105,9 @@ GameScreen.propTypes = {
   user: PropTypes.object,
   opponent: PropTypes.object,
   showing: PropTypes.bool,
+  hamburgerOpen: PropTypes.bool,
   gameMode: PropTypes.string,
+  onClickEndGame: PropTypes.func,
 };
 
 export default GameScreen;

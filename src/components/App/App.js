@@ -77,6 +77,7 @@ function App() {
   });
   const [avatarChoiceModalShowing, setAvatarChoiceModalShowing] = useState(false);
   const [profileMenuOpen, setProfileMenuOpen] = useState(false);
+  const [hamburgerOpen, setHamburgerOpen] = useState(false);
 
   useEffect(() => {
     if (!loaded) {
@@ -250,6 +251,14 @@ function App() {
     setProfileMenuOpen(!profileMenuOpen);
   }
 
+  function handleToggleHamburger() {
+    setHamburgerOpen(!hamburgerOpen);
+  }
+
+  function handleClickEndGame() {
+    setHamburgerOpen(false);
+    setPhase('title');
+  }
 
   return (
     <StyledApp style={{
@@ -263,7 +272,7 @@ function App() {
         profileMenuOpen={profileMenuOpen}
         onClickProfileMenu={handleToggleProfileMenu}
       />
-      <ScreenVeil showing={logOutModalShowing && userLoggedIn} onClickClose={handleCloseAvatarModal} />
+      <ScreenVeil showing={hamburgerOpen || (logOutModalShowing && userLoggedIn)} onClickClose={hamburgerOpen ? () => setHamburgerOpen(false) : handleCloseAvatarModal} />
       <Modal 
         showing={logOutModalShowing && userLoggedIn}
         headline={'Log out?'}
@@ -310,8 +319,10 @@ function App() {
         {phase === 'game-board-showing' &&
           <GameScreen
             showing={phase === 'game-board-showing'}
+            hamburgerOpen={hamburgerOpen}
             user={{ ...user }}
             opponent={{ ...opponent }}
+            onClickEndGame={handleClickEndGame}
           />
         }
         </div>
@@ -322,6 +333,8 @@ function App() {
         onClickBackToTitle={() => setPhase('title')}
         onClickBackToGameSelect={() => setPhase('game-mode-select')}
         onClickAcceptGameMode={handleAcceptGameMode}
+        handleToggleHamburger={handleToggleHamburger}
+        hamburgerOpen={hamburgerOpen}
       />
     </StyledApp>
   );
