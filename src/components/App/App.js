@@ -144,7 +144,7 @@ function App() {
       });
   }
 
-  async function handleChooseAvatar(newSheetCoords) {
+  async function handleChooseAvatar(newSheetCoords, guestName) {
     if (auth.currentUser) {
       console.warn('running handleChooseAvatar with auth.currentUser');
       const newUserData = {
@@ -159,7 +159,7 @@ function App() {
       await handleCreatingNewUser(newUserData);
     } else {
       console.warn('running handleChooseAvatar AS GUEST');
-      const guestUser = { ...user, sheetCoords: newSheetCoords };
+      const guestUser = { ...user, sheetCoords: newSheetCoords, displayName: guestName };
       setUser(guestUser);
     }
 

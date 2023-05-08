@@ -22,6 +22,14 @@ const StyledAvatarChoiceModal = styled.div`
   // scale: 0.9;
   transition: all 200ms ease;
 
+  & input {
+    padding: 0.5rem;
+    font-style: inherit;
+    font-size: inherit;
+    text-align: center;
+    margin-bottom: 1rem;
+  }
+
   & > h2 {
     margin-bottom: 1rem;
   }
@@ -82,7 +90,8 @@ function AvatarChoiceModal(props) {
   const [userAvatarChoice, setUserAvatarChoice] = useState({ x: 0, y: 0 });
 
   function handleSubmitAvatarChoice() {
-    props.onClickOK(userAvatarChoice);
+    const guestName = props.playingAsGuest ? document.getElementById('guest-name-input').value || 'Guest' : null;
+    props.onClickOK(userAvatarChoice, guestName);
   }
 
   return (
@@ -91,6 +100,12 @@ function AvatarChoiceModal(props) {
       pointerEvents: props.showing ? 'all' : 'none',
       // scale: props.showing ? '1' : '0.9',
     }}>
+      {props.playingAsGuest && 
+        <>
+          <h2>Enter Name</h2>
+          <input id='guest-name-input' type='text' placeholder='Guest' />
+        </>
+      }
       <h2>Choose Avatar</h2>
       <div className='avatar-grid'>
         {getArrayOfPortraits().map((row, y) =>  
@@ -113,6 +128,7 @@ function AvatarChoiceModal(props) {
 }
 
 AvatarChoiceModal.propTypes = {
+  playingAsGuest: PropTypes.bool,
   showing: PropTypes.bool,
   onClickOK: PropTypes.func,
 };

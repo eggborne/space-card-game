@@ -43,6 +43,7 @@ function TitleScreen(props) {
         <WideButton label='High Scores' />
       </StyledTitleScreen>
       <AvatarChoiceModal 
+        playingAsGuest={!props.userLoggedIn}
         showing={props.avatarChoiceModalShowing} 
         onClickOK={props.handleChooseAvatar} 
       />
