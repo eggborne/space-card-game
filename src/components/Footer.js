@@ -48,36 +48,35 @@ const FooterBackButton = styled(Button)`
 `;
 
 function Footer(props) {
-  const footerStyle = {
-    height: props.phase === 'title' ? 'var(--footer-height)' : 'var(--expanded-footer-height)',
-    justifyContent: props.phase !== 'game-board-showing' ? 'center' : 'flex-end',
-  }
   return (
-    <StyledFooter style={footerStyle}>
+    <StyledFooter style={{
+      height: props.phase === 'title' ? 'var(--footer-height)' : 'var(--expanded-footer-height)',
+      justifyContent: props.phase !== 'game-board-showing' ? 'center' : 'flex-end',
+    }}>
       {props.phase === 'title' ?
         <>made for <a href="http://epicodus.com">Epicodus</a> by <a href="http://mikedonovan.dev">mike@mikedonovan.dev</a></>
         :
         props.phase === 'game-mode-select' ?
-        <>
-          <FooterBackButton onClick={props.onClickBackToTitle} className='Button footer-back-button' label='<'/>
-          <Button className='main-footer' onClick={props.onClickAcceptGameMode} color='green' label='OK' />
-        </>
-        : props.phase === 'game-board-showing' ?
           <>
-        <div className='game-button-area'>
-            <FooterGameButton color='green' label='End Turn' />
-            <FooterGameButton color='orange' label='Stand' />
-        </div>
-            <Hamburger />
+            <FooterBackButton onClick={props.onClickBackToTitle} className='Button footer-back-button' label='<' />
+            <Button className='main-footer' onClick={props.onClickAcceptGameMode} color='green' label='OK' />
           </>
-          : props.phase === 'options' ?
-          <>
-            <Button onClick={props.onClickBackToTitle} label='Back' />
-          </>
-          :
-          <>
-            blargh
-          </>
+          : props.phase === 'game-board-showing' ?
+            <>
+              <div className='game-button-area'>
+                <FooterGameButton color='green' label='End Turn' />
+                <FooterGameButton color='orange' label='Stand' />
+              </div>
+              <Hamburger />
+            </>
+            : props.phase === 'options' ?
+              <>
+                <Button onClick={props.onClickBackToTitle} label='Back' />
+              </>
+              :
+              <>
+                blargh
+              </>
       }
     </StyledFooter>
   );

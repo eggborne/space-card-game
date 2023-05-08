@@ -24,7 +24,7 @@ const HandArea = styled.div`
   align-items: center;
   justify-content: space-between;
   height: calc(var(--section-height));
-  padding-right: calc(var(--main-padding) * 2);
+  
 
   background-color: #00550044;
 
@@ -80,20 +80,22 @@ function PlayerArea(props) {
       <DealArea>
         <div className='deal-row'>
           <Card type='main' value={1} />
-          <Card value={2} />
-          <Card value={-2} />
-          <Card value={-3} />
+          <Card type='main' value={2} />
+          <Card type='main' value={5} />
+          <Card value={8} />
           <Card value={0} />
         </div>
         <div className='deal-row'>
-          <Card value={5} />
+          <Card value={-3} />
           <Card value={6} />
+          <Card value={-2} />
           <Card value={7} />
-          <Card type='main' value={8} />
           <Card value={9} />
         </div>
       </DealArea>
-      <HandArea>
+      <HandArea 
+        style={ isCPU ? {flexDirection: 'row-reverse', paddingRight: `calc(var(--main-padding) * 2)`} : {flexDirection: 'row', paddingLeft: `calc(var(--main-padding) * 2)`} }
+      >
         <div className='portrait-area'>{props.portrait}</div>
         <HandCards>
           {isCPU ? 
@@ -105,10 +107,10 @@ function PlayerArea(props) {
             </>
             :
             <>
-              <Card color='red' value={1} />
-              <Card color='red' value={3} />
-              <Card color='red' value={-5} />
-              <Card color='red' value={6} />
+              <Card value={1} />
+              <Card value={3} />
+              <Card value={-5} />
+              <Card value={6} />
             </>
           }
         </HandCards>
