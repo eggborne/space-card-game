@@ -7,7 +7,8 @@ const StyledHamburgerMenu = styled.div`
   bottom: var(--expanded-footer-height);
   right: 0;
   min-height: 60vh;
-  min-width: 60vw;
+  // min-width: 60vw;
+  width: calc(var(--main-width) * 0.8);
   box-sizing: border-box;
   display: flex;
   flex-direction: column;
@@ -17,7 +18,6 @@ const StyledHamburgerMenu = styled.div`
   padding: 1rem;
   background-color: var(--hamburger-bg-color);
   border: solid #00000044;
-  cursor: pointer;
   border-top-left-radius: var(--border-radius);
   border-width: var(--button-border-width);
   transform: translateX(100%);

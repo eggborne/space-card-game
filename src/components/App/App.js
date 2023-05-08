@@ -37,6 +37,7 @@ const StyledApp = styled.main`
   align-items: center;
   justify-content: space-between;
   transition: all 500ms ease;
+  overflow: hidden;
 
   & .scroll-container {
     width: 100%;
@@ -280,6 +281,7 @@ function App() {
         buttonLabel='Do it'
         bodyComponent={<></>}
         onClickOK={handleConfirmLogOut}
+        onClickCancel={() => setLogOutModalShowing(false)}
       />
       <div className='scroll-container'>
 

@@ -39,6 +39,9 @@ const StyledModal = styled.div`
   & > .bottom-button-area {
     margin: 1rem;
     margin-top: 2rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
   }
 `;
 
@@ -51,9 +54,11 @@ function Modal(props) {
       backgroundColor: props.color,
       // scale: props.showing ? '1' : '0.9',
     }}>
-      <h2>Log out?</h2>
+      <h2>{props.headline}</h2>
+      <div>{props.bodyComponent}</div>
       <div className='bottom-button-area'>
         <Button color='red' onClick={props.onClickOK} label={props.buttonLabel} />
+        <Button onClick={props.onClickCancel} label='Cancel' />
       </div>
     </StyledModal>
   );
@@ -66,6 +71,7 @@ Modal.propTypes = {
   buttonLabel: PropTypes.string,
   bodyComponent: PropTypes.object,
   onClickOK: PropTypes.func,
+  onClickCancel: PropTypes.func,
 };
 
 export default Modal;

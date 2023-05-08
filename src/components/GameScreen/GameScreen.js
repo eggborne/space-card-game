@@ -6,6 +6,7 @@ import PlayerArea from './PlayerArea';
 import PlayerPortrait from '../PlayerPortrait';
 import HamburgerMenu from '../HamburgerMenu';
 import { pause } from '../../util.js';
+import Modal from '../Modal';
 
 const StyledGameScreen = styled.div`
   
@@ -40,6 +41,7 @@ function GameScreen(props) {
   
   const [versusScreenShowing, setVersusScreenShowing] = useState(true);
   const [gameBoardShowing, setGameBoardShowing] = useState(false);
+  const [endGameModalShowing, setEndGameModalShowing] = useState(false);
 
   useEffect(() => {
     animate();
@@ -56,11 +58,15 @@ function GameScreen(props) {
     setVersusScreenShowing(false);
   }
 
+  function handleConfirmEndGame() {
+    props.onClickEndGame();
+  }
+
   return (
     <>
       <HamburgerMenu 
         open={props.hamburgerOpen} 
-        onClickEndGame={props.onClickEndGame} 
+        onClickEndGame={() => setEndGameModalShowing(true)} 
       />
 
       <StyledGameScreen
@@ -97,6 +103,15 @@ function GameScreen(props) {
             />
           </GameBoard>
       </StyledGameScreen>
+      <Modal 
+        showing={endGameModalShowing}
+        headline={'End game?'}
+        color='maroon'
+        buttonLabel='Do it'
+        bodyComponent={<>You will forfeit your wager.</>}
+        onClickOK={handleConfirmEndGame}
+        onClickCancel={() => setEndGameModalShowing(false)}
+      />
     </>
   );
 }

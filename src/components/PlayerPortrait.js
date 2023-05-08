@@ -35,6 +35,9 @@ function PlayerPortrait(props) {
         labelFontSize = portraitSize / 9;
       }
     }
+    if (wordsInName === 1 && totalLength > 7) {
+      labelFontSize = portraitSize / 5.5;
+    }
     labelFontSize = labelFontSize + 'rem';
     console.log('labelFontSize: ' + labelFontSize)
     console.log('----------------------------')
