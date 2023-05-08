@@ -1,6 +1,7 @@
 import Card from '../Card';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
+import CardBack from '../CardBack';
 
 const StyledPlayerArea = styled.div`
   
@@ -77,27 +78,38 @@ function PlayerArea(props) {
     <StyledPlayerArea style={{ flexDirection: isCPU ? 'column-reverse' : 'column'}}>
       <DealArea>
         <div className='deal-row'>
-          <Card value={1} />
+          <Card type='main' value={1} />
           <Card value={2} />
-          <Card value={3} />
-          <Card value={4} />
+          <Card value={-2} />
+          <Card value={-3} />
           <Card value={0} />
         </div>
         <div className='deal-row'>
           <Card value={5} />
           <Card value={6} />
           <Card value={7} />
-          <Card value={8} />
+          <Card type='main' value={8} />
           <Card value={9} />
         </div>
       </DealArea>
       <HandArea>
         <div className='portrait-area'>{props.portrait}</div>
         <HandCards>
-          <Card value={1} />
-          <Card value={3} />
-          <Card value={-5} />
-          <Card value={6} />
+          {isCPU ? 
+            <>
+              <CardBack />
+              <CardBack />
+              <CardBack />
+              <CardBack />
+            </>
+            :
+            <>
+              <Card color='red' value={1} />
+              <Card color='red' value={3} />
+              <Card color='red' value={-5} />
+              <Card color='red' value={6} />
+            </>
+          }
         </HandCards>
         {/* <div className='turn-indicator-area'>
           <TurnIndicator />  

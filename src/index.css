@@ -20,13 +20,22 @@
   --button-orange: rgb(157, 126, 33);
   --button-red: rgb(97, 26, 26);
 
+  --card-gray: rgb(213, 213, 213);
+  --card-dark-gray: rgb(185, 185, 185);
+  --card-white: #e7e7e7;
+  --card-red: rgb(211, 0, 0);
+  --card-blue: rgb(0, 0, 192);
+  --card-yellow: rgb(204, 204, 0);
+
   --game-board-height: calc(var(--actual-height) - var(--expanded-footer-height));
   --main-padding: 0.25rem;
   --section-height: calc((var(--game-board-height) / 6));
   --card-x-space: calc(var(--main-width) - (var(--section-height) * 1.5));
   --card-width: calc((var(--main-width) / 5) - (var(--main-padding) * 1.5));
   --card-height: calc(var(--section-height) - (var(--main-padding) * 1.5));
-  --card-border-radius: calc(var(--card-width) * 0.2);
+  --card-max-height: calc(var(--section-height) - (var(--main-padding) * 0.75));
+  --card-border-radius: calc(var(--card-width) * 0.15);
+  --card-padding: calc(var(--card-width) * 0.1);
 }
 
 *, * *, * * * {
@@ -36,9 +45,7 @@
 body {
   background-color: rgb(22, 7, 23);
   margin: 0;
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
-    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
-    sans-serif;
+  font-family: 'Open Sans', sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   height: var(--actual-height);
