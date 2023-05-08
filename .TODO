@@ -3,29 +3,42 @@
 // and also no PHP
 // and better integration of the Name Generator (https://github.com/eggborne/customizable-name-generator)
 
+5/8 ----------------------------------------
+
+Production build needs line in package.json:
+"homepage": "/spacecards",
+(may be fixed by prepending image reference with %PUBLIC_URL% as in public/index.html ???)
+
+NameGenerator let a triple 'S' through despite using the current 'Star Wars' ruleset (should not!)
+
+> FooterGameButtons should be passed as props to Footer?
+> Game class imported from its own file?
+
+--------------------------------------------
+
 1. Make a single GUEST match against 'Opponent' work
 
     components needed:
 
-    GameScreen
-      > PlayerArea x 2 (50% of board)
-        > CardArea (~65% of PlayerArea)
-          > Card x 9 (90% of CardArea)
+    // GameScreen
+      // > PlayerArea x 2 (50% of board)
+        // > CardArea (~65% of PlayerArea)
+          // > Card x 9 (90% of CardArea)
           > ScoreDisplay (10% of CardArea)
             > score
             > SetWinIndicator (3 knobs)
-        > HandArea (~35% of PlayerArea)
-          > PlayerPortrait
-          > Card x 4
+        // > HandArea (~35% of PlayerArea)
+          // > PlayerPortrait
+          // > Card x 4
           > TurnIndicator
 
-    Card (CSS for shapes usable from old project?)
+    // Card (CSS for shapes usable from old project?)
 
-    Footer (when phase is 'game-board-showing')
+    // Footer (when phase is 'game-board-showing')
       > GameControlArea
         > buttons for Stand, Draw, hamburger menu with 'quit game'
 
-2. Set up login system so as to enable App state 'userLoggedIn' to be set within handleClickLogin
+// 2. Set up login system so as to enable App state 'userLoggedIn' to be set within handleClickLogin
 
 3. for render, check 'userLoggedIn' to use sequence:
 
