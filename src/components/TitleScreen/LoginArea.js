@@ -14,6 +14,7 @@ const StyledLoginArea = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
+  padding-top: 1rem;
 
   & .logged-in.bottom-button-area {
     display: flex;
@@ -83,7 +84,7 @@ function LoginArea(props) {
   const [loginShowing, setLoginShowing] = useState('login');
   console.log('LoginArea props', props);
   return (
-    <StyledLoginArea className='mefnu-style'>
+    <StyledLoginArea className='menu-style'>
       {!props.userLoggedIn ? 
         <>
           <LoginRegisterForm

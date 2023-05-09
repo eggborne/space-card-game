@@ -22,7 +22,7 @@ const StyledHamburgerMenu = styled.div`
   border-top-left-radius: var(--border-radius);
   border-width: var(--button-border-width);
   transform: translateX(100%);
-  transition: transform 400ms ease;
+  transition: transform 300ms ease-in;
   will-change: transform;
   z-index: 2;
 

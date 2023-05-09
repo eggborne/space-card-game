@@ -24,10 +24,13 @@ const StyledHeader = styled.header`
   ::before {
     border-top-left-radius: 0;
     border-top-right-radius: 0;
+    top: 0;
+    height: calc(var(--header-height) - (var(--main-padding) * 1.5));
   }
 
   & > h1 {
     font-size: 1.4rem;
+    color: lightgreen;
   }
 
   & > .user-info-area {
@@ -50,7 +53,7 @@ function Header(props) {
     <StyledHeader className='menu-style' style={{
       transform: props.phase === 'game-board-showing' ? 'translateY(-100%)' : 'translateY(0)',
     }}>
-      <h1>Pazaak.live</h1>
+      <h1>pazaak.live</h1>
       {props.authUser && (showUserInfo || props.phase === 'title') ?
         <div className='user-info-area'>
           <div>

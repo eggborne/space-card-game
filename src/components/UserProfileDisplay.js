@@ -12,7 +12,6 @@ const StyledUserProfileDisplay = styled.div`
   background-color: #00000022;
   gap: 1rem;
   padding: 1rem;
-  margin-top: 1rem;
 
   & > button {
     grid-row-start: 2;
@@ -47,7 +46,7 @@ const StyledUserProfileDisplay = styled.div`
 function UserProfileDisplay(props) {
   console.log('UserProfileDisplay props is', props);
   return (
-    <StyledUserProfileDisplay>
+    <StyledUserProfileDisplay style={{ padding: props.phase === 'title' ? '1rem' : '1rem'}}>
         <PlayerPortrait
           size='calc(var(--header-height) * 2)'
           imagePath={props.user.imagePath}

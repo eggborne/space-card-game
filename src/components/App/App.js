@@ -71,17 +71,22 @@ function App() {
     }
   });
 
-  const [loaded, setLoaded] = useState(false);
-  const [userLoggedIn, setUserLoggedIn] = useState(false);
-  const [phase, setPhase] = useState('title');
-  const [gameMode, setGameMode] = useState('Quick Match');
-  const [logOutModalShowing, setLogOutModalShowing] = useState(false);
-  const [user, setUser] = useState({
+  const defaultUserState = {
     email: '',
     displayName: '',
     imagePath: 'images/avatarsheetlq.jpg',
     sheetCoords: { x: 0, y: 0 },
-    startingCards: [1, 1, 1, 1, 2, 2, 2, 3, 3, 4],
+    startingCards: [
+      { value: 1, },
+      { value: 1, },
+      { value: 1, },
+      { value: 2, },
+      { value: 2, },
+      { value: 2, },
+      { value: 3, },
+      { value: 3, },
+      { value: 4, },
+    ],
     statistics: {
       setWins: 0,
       totalSets: 0,
@@ -92,20 +97,25 @@ function App() {
       credits: 10,
       cpuDefeated: [],
       wonCards: [],
-
       sideDeck: [ // 10 cards chosen by user before game, 4 are randomly chosen for hand
-
       ],
     },
-
     messages: [],
+  };
 
-  });
-  const [opponent, setOpponent] = useState({
+  const defaultOpponentState = {
     displayName: '',
     imagePath: 'images/opponentsheet.jpg',
     sheetCoords: { x: randomInt(0, 7), y: randomInt(0, 2) },
-  });
+  };
+
+  const [loaded, setLoaded] = useState(false);
+  const [userLoggedIn, setUserLoggedIn] = useState(false);
+  const [phase, setPhase] = useState('title');
+  const [gameMode, setGameMode] = useState('Quick Match');
+  const [logOutModalShowing, setLogOutModalShowing] = useState(false);
+  const [user, setUser] = useState(defaultUserState);
+  const [opponent, setOpponent] = useState(defaultOpponentState);
   const [avatarChoiceModalShowing, setAvatarChoiceModalShowing] = useState(false);
   const [profileMenuOpen, setProfileMenuOpen] = useState(false);
   const [hamburgerOpen, setHamburgerOpen] = useState(false);
@@ -222,7 +232,7 @@ function App() {
   }
 
   function getRandomCharacterOpponent() {
-    const randomX = randomInt(0, 7);
+    const randomX = randomInt(0, 5);
     const characterData = Object.values(randomOpponents)[randomX];
     return {
       ...characterData,
@@ -232,7 +242,7 @@ function App() {
   }
 
   function getRandomNamedOpponent() {
-    const randomX = randomInt(0, 5);
+    const randomX = randomInt(0, 7);
     const characterData = { ...defaultOpponent };
     const randomName = nameGenerator.getName().fullName;
     console.log('RANDOM NAME!', randomName);
@@ -245,11 +255,12 @@ function App() {
   }
 
   function handleAcceptGameMode() {
+    setProfileMenuOpen(false);
     if (gameMode === 'Campaign') {
 
     } else if (gameMode === 'Quick Match') {
-      const randomOpponent = false ? getRandomCharacterOpponent() : getRandomNamedOpponent();
-      console.log('GOT RANDOM OPPONENT ////////////////////////////////////////////////////////////');
+      const randomOpponent = randomInt(0, 5) ? getRandomNamedOpponent() : getRandomCharacterOpponent();
+      console.log('GOT RANDOM OPPONENT ////////////////');
       console.table(randomOpponent);
       setOpponent(randomOpponent);
       setPhase('game-board-showing');
@@ -264,14 +275,10 @@ function App() {
     signOut(auth)
       .then(function () {
         console.log("You have successfully signed out!");
-        setUser({
-          email: '',
-          displayName: '',
-          imagePath: 'images/avatarsheetlq.jpg',
-          sheetCoords: { x: 0, y: 0 },
-        });
+        setUser(defaultUserState);
         setUserLoggedIn(false);
         setLogOutModalShowing(false);
+        setProfileMenuOpen(false);
       }).catch(function (error) {
         console.log(`There was an error signing out: ${error.message}!`);
       });
@@ -299,19 +306,20 @@ function App() {
 
   function handleClickEndGame() {
     setHamburgerOpen(false);
+    document.getElementById('starfield').play();
     setPhase('title');
   }
 
   return (
     <>
-    {loaded && <video id='starfield' loop={true} muted={true}>
-      <source src="https://mikedonovan.dev/pazaak/assets/images/starfieldlq.mp4" type="video/mp4" />
-    </video>}
+      {loaded && <video id='starfield' loop={true} muted={true}>
+        <source src="https://mikedonovan.dev/pazaak/assets/images/starfieldlq.mp4" type="video/mp4" />
+      </video>}
       <StyledApp style={{
         opacity: loaded ? '1' : '0',
         scale: loaded ? '1' : '0.75'
       }}>
-        
+
         <Header
           authUser={auth.currentUser}
           user={user}
@@ -326,7 +334,7 @@ function App() {
           headline={'Log out?'}
           color='maroon'
           buttonLabel='Do it'
-          bodyComponent={<></>}
+          bodyComponent={<>{user.email}</>}
           onClickOK={handleConfirmLogOut}
           onClickCancel={() => setLogOutModalShowing(false)}
         />

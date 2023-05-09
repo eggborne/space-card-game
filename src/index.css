@@ -9,9 +9,6 @@
   --border-radius: 1rem;
   --main-box-shadow: 0 0 0.5rem 0.1rem rgba(0, 0, 0, 0.583);
 
-  --header-color: #555;
-  --footer-color: #555;
-
   --menu-color: darkred;
   --inner-shade-color: #00000066;
 
@@ -23,7 +20,9 @@
   --button-green: rgb(9, 88, 9);
   --button-orange: rgb(157, 126, 33);
   --button-red: rgb(97, 26, 26);
-
+  
+  --game-board-green: rgb(13, 71, 16);
+  
   --card-gray: rgb(213, 213, 213);
   --card-dark-gray: rgb(185, 185, 185);
   --card-white: #e7e7e7;
@@ -85,7 +84,6 @@ h1, h2, h3, h4 {
   height: var(--actual-height);
   width: auto;
   background-position: center;
-  /* z-index: -1; */
 }
 
 .menu-style {
@@ -155,5 +153,14 @@ h1, h2, h3, h4 {
   #root {
     display: flex;
     justify-content: center;
+  }
+}
+
+@keyframes bouncing {
+  from {
+    transform: translateX(0%);
+  }
+  to {
+    transform: translateX(var(--bounce-amount));
   }
 }

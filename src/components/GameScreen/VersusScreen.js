@@ -1,5 +1,7 @@
 import PlayerPortrait from '../PlayerPortrait';
 import PropTypes from 'prop-types';
+import { useState } from 'react';
+import { useEffect } from 'react';
 import styled from 'styled-components';
 
 const StyledVersusScreen = styled.div`
@@ -13,7 +15,7 @@ const StyledVersusScreen = styled.div`
   gap: 2rem;
   padding-bottom: var(--expanded-footer-height);
   padding-top: var(--header-height);
-  transition: transform 1000ms ease-in, opacity 900ms ease;
+  transition: transform 1500ms ease-in, opacity 900ms ease;
   // transform-origin 50% 47.5%;
   transform-origin 50% calc(50% - 1rem);
 
@@ -47,27 +49,35 @@ const VersusScreenPlayerArea = styled.div`
   &.onscreen {
     transform: translateX(0);
     opacity: 1;
+    animation: bouncing 200ms ease-out forwards;
+    animation-delay: 500ms;
+  }
+
+  &.onscreen:first-of-type {
+    --bounce-amount: -10%;
+  }
+  &.onscreen:last-of-type {
+    --bounce-amount: 10%;
   }
 `;
 
 function VersusScreen(props) {
-
   return (
     <StyledVersusScreen id='versus-screen'
       style={{ display: props.showing ? 'flex' : 'none' }}
     >
       <VersusScreenPlayerArea id='player-area-1'>
         <div>{props.opponent.displayName}</div>
-        <PlayerPortrait 
-          size='6rem'
+        <PlayerPortrait
+          size='7.25rem'
           imagePath={props.opponent.imagePath}
           sheetCoords={props.opponent.sheetCoords}
         />
       </VersusScreenPlayerArea>
       <h2>VS.</h2>
-      <VersusScreenPlayerArea  id='player-area-2'>
-        <PlayerPortrait 
-          size='6rem'
+      <VersusScreenPlayerArea id='player-area-2'>
+        <PlayerPortrait
+          size='7.25rem'
           imagePath={props.user.imagePath}
           sheetCoords={props.user.sheetCoords}
         />

@@ -9,16 +9,17 @@ const StyledHeaderMenu = styled.div`
   width: var(--main-width);
   color: #bbb;
   padding: 1rem;
-  border-bottom-left-radius: calc(var(--border-radius) / 2);
-  border-bottom-right-radius: calc(var(--border-radius) / 2);
+  // padding-top: 0;
   transform-origin: top;
   transform: translateY(calc(-100% - var(--header-height)));
-  transition: transform 300ms ease;
-  padding-top: 1.5rem;
+  // -webkit-transform: scaleY(0) perspective(var(--main-width)) rotateX(-60deg); 
+  transition: transform 300ms ease-in;
+  margin: 0 !important;
   z-index: 1;
 
   &.open {
     transform: translateY(0);
+    // -webkit-transform: scaleY(1) perspective(var(--main-width)) rotateX(0deg); 
   }
 
   & .PlayerPortrait {
@@ -78,7 +79,7 @@ function HeaderMenu(props) {
       currentUser={props.currentUser}
       user={props.user}
       phase={props.phase}
-      onClickLogOut={props.handleClickLogOut}
+      onClickLogOut={props.onClickLogOut}
     />
     </StyledHeaderMenu>
   );

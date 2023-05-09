@@ -22,12 +22,11 @@ const StyledGameScreen = styled.div`
   gap: 2rem;
   overflow: hidden;
 `;
-  
+
 const GameBoard = styled.div`
   position: absolute;
   height: calc(var(--actual-height) - var(--expanded-footer-height));
   min-width: var(--main-width);
-  // background-color: rgb(13, 71, 16);
   display: grid;
   grid-template-rows: 1fr 1fr;
   align-items: center;
@@ -38,7 +37,7 @@ const GameBoard = styled.div`
 
 function GameScreen(props) {
   console.log('GameScreen props: ', props);
-  
+
   const [versusScreenShowing, setVersusScreenShowing] = useState(true);
   const [gameBoardShowing, setGameBoardShowing] = useState(false);
   const [endGameModalShowing, setEndGameModalShowing] = useState(false);
@@ -50,9 +49,9 @@ function GameScreen(props) {
   async function animate() {
     document.getElementById('player-area-1').classList.add('onscreen');
     document.getElementById('player-area-2').classList.add('onscreen');
-    await pause(1500);
+    await pause(1750);
     document.getElementById('versus-screen').classList.add('zoomed-off');
-    await pause(300);
+    await pause(600);
     setGameBoardShowing(true);
     await pause(400);
     setVersusScreenShowing(false);
@@ -64,46 +63,46 @@ function GameScreen(props) {
 
   return (
     <>
-      <HamburgerMenu 
-        open={props.hamburgerOpen} 
-        onClickEndGame={() => setEndGameModalShowing(true)} 
+      <HamburgerMenu
+        open={props.hamburgerOpen}
+        onClickEndGame={() => setEndGameModalShowing(true)}
       />
 
       <StyledGameScreen
         style={{ display: props.showing ? 'flex' : 'none' }}
       >
         <VersusScreen user={props.user} opponent={props.opponent} showing={versusScreenShowing} />
-          <GameBoard 
-            style={{
-              transform: gameBoardShowing ? 'scale(1)' : 'scale(0.5)',
-              opacity: gameBoardShowing ? '1' : '0',
-            }}
-          >
-            <PlayerArea 
-              playerObject={props.opponent}
-              portrait={
-                <PlayerPortrait 
-                  size='4.5rem'
-                  displayName={props.opponent.displayName}
-                  imagePath={props.opponent.imagePath}
-                  sheetCoords={props.opponent.sheetCoords}
-                />
-              }
-            />
-            <PlayerArea 
-              playerObject={props.user}
-              portrait={
-                <PlayerPortrait 
-                  size='4.5rem'
-                  displayName={props.user.displayName}
-                  imagePath={props.user.imagePath}
-                  sheetCoords={props.user.sheetCoords}
-                />
-              }
-            />
-          </GameBoard>
+        <GameBoard
+          style={{
+            transform: gameBoardShowing ? 'scale(1)' : 'scale(0.5)',
+            opacity: gameBoardShowing ? '1' : '0',
+          }}
+        >
+          <PlayerArea
+            playerObject={props.opponent}
+            portrait={
+              <PlayerPortrait
+                size='4.5rem'
+                displayName={props.opponent.displayName}
+                imagePath={props.opponent.imagePath}
+                sheetCoords={props.opponent.sheetCoords}
+              />
+            }
+          />
+          <PlayerArea
+            playerObject={props.user}
+            portrait={
+              <PlayerPortrait
+                size='4.5rem'
+                displayName={props.user.displayName}
+                imagePath={props.user.imagePath}
+                sheetCoords={props.user.sheetCoords}
+              />
+            }
+          />
+        </GameBoard>
       </StyledGameScreen>
-      <Modal 
+      <Modal
         showing={endGameModalShowing}
         headline={'End game?'}
         color='maroon'
