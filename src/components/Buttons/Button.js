@@ -7,12 +7,9 @@ const StyledButton = styled.button`
   border-color: #00000077;
   border-width: 0.2rem;
   color: #ddd;  
-  font-family: inherit;
-  font-size: inherit;
   font-weight: bold;
-  padding: 1rem 0;
+  padding: 1.25rem;
   font-family: inherit;
-  font-size: inherit;
   min-width: 6rem;
   cursor: pointer;
   transition: opacity 200ms ease;
@@ -38,7 +35,8 @@ function Button(props) {
       tabIndex={props.tabIndex}
       onClick={props.onClick}
       style={{
-        backgroundColor: `var(--button-${props.color || 'standard'})`
+        backgroundColor: `var(--button-${props.color || 'standard'})`,
+        fontSize: props.fontSize || '1.2rem',
       }}
       className={props.className} // needs this for 'const WideButton' in TitleScreen to work ??
     >

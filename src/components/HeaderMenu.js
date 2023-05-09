@@ -14,7 +14,7 @@ const StyledHeaderMenu = styled.div`
   border-bottom-right-radius: calc(var(--border-radius) / 2);
   transform-origin: top;
   transform: translateY(calc(-100% - var(--header-height)));
-  transition: all 300ms ease;
+  transition: transform 300ms ease;
   padding-top: 1.5rem;
   z-index: 1;
 

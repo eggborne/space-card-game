@@ -10,12 +10,10 @@ const StyledFooterGameButton = styled.button`
   font-family: inherit;
   font-size: calc(var(--expanded-footer-height) * 0.25) !important;
   font-weight: bold;
-  padding: 0 1rem;
   font-family: inherit;
-  font-size: inherit;
   min-width: 6rem;
   width: 47.5%;
-  height: calc(var(--expanded-footer-height) - 1rem);
+  height: calc(var(--expanded-footer-height) * 0.6);
   cursor: pointer;
   transition: opacity 200ms ease;
 

@@ -10,15 +10,12 @@ const StyledFooter = styled.footer`
   left: 0;
   width: var(--main-width);
   align-self: stretch;
-  background-color: var(--footer-color);
   color: #bbb;
   display: flex;
   align-items: center;
   justify-content: space-between;
   font-size: 90%;
-  padding: 0.5rem;
-  border-top-left-radius: calc(var(--border-radius) / 2);
-  border-top-right-radius: calc(var(--border-radius) / 2);
+  padding: 0 0.75rem;
   transition: all 200ms ease;
   z-index: 2;
 
@@ -30,7 +27,6 @@ const StyledFooter = styled.footer`
 
   & > .game-button-area {
     display: flex;
-    justify-content: center;
     gap: 2%;
     flex-grow: 1;
   }
@@ -50,7 +46,7 @@ const FooterBackButton = styled(Button)`
 
 function Footer(props) {
   return (
-    <StyledFooter style={{
+    <StyledFooter className='menu-style' style={{
       height: props.phase === 'title' ? 'var(--footer-height)' : 'var(--expanded-footer-height)',
       justifyContent: props.phase !== 'game-board-showing' ? 'center' : 'flex-end',
     }}>

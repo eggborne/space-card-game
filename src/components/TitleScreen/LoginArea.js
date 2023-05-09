@@ -7,7 +7,7 @@ import styled from 'styled-components';
 
 const StyledLoginArea = styled.div`
   position: relative;
-  background-color: olivedrab;
+  background-color: #22ff2222;
   border-radius: var(--border-radius);
   grid-column-start: 1;
   grid-column-end: 3;
@@ -83,7 +83,7 @@ function LoginArea(props) {
   const [loginShowing, setLoginShowing] = useState('login');
   console.log('LoginArea props', props);
   return (
-    <StyledLoginArea>
+    <StyledLoginArea className='mefnu-style'>
       {!props.userLoggedIn ? 
         <>
           <LoginRegisterForm
@@ -110,7 +110,7 @@ function LoginArea(props) {
         </div>
           <div className='logged-in bottom-button-area'>
             {/* <Button onClick={props.onClickLogOut} label='Log out'/> */}
-            <Button onClick={props.onClickPlay} label='Play'/>
+            <Button fontSize='2rem' onClick={props.onClickPlay} label='Play'/>
           </div>
           {/* <div style={{margin: '2rem 0'}}>Logged in as {props.user.displayName} ({props.user.email})</div>
           <div className='logged-in bottom-button-area'>

@@ -21,6 +21,19 @@ import { characters, randomOpponents, defaultOpponent } from '../../characters.j
 import { randomInt } from '../../util.js';
 import NameGenerator from '../../namegenerator.js';
 
+let clickFunction = window.PointerEvent ? 'onPointerDown' : window.TouchEvent ? 'onTouchStart' : 'onClick';
+
+console.error('USING CLICK -------', clickFunction, ' ------------------------');
+
+const ROOT = document.documentElement;
+const DEVICE_PIXEL_RATIO = window.devicePixelRatio;
+const RULES = {
+  cardRatio: {
+    min: 1.475,
+    max: 1.525
+  }
+};
+
 console.table(characters);
 console.table(randomOpponents);
 
@@ -82,6 +95,7 @@ function App() {
   useEffect(() => {
     if (!loaded) {
       setLoaded(true);
+      document.getElementById('starfield').play();
     }
   }, [loaded]);
 
@@ -265,11 +279,15 @@ function App() {
       opacity: loaded ? '1' : '0',
       scale: loaded ? '1' : '0.75'
     }}>
+      <video id='starfield' loop={true} muted={true}>
+        <source src="https://mikedonovan.dev/pazaak/assets/images/starfieldlq.mp4" type="video/mp4" />
+      </video>
       <Header
         authUser={auth.currentUser}
         {...user}
         phase={phase}
         profileMenuOpen={profileMenuOpen}
+        avatarChoiceModalShowing={avatarChoiceModalShowing}
         onClickProfileMenu={handleToggleProfileMenu}
       />
       <ScreenVeil showing={hamburgerOpen || (logOutModalShowing && userLoggedIn)} onClickClose={hamburgerOpen ? () => setHamburgerOpen(false) : handleCloseAvatarModal} />
