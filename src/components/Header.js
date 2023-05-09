@@ -17,7 +17,14 @@ const StyledHeader = styled.header`
   padding-right: 0.5rem;
   transform-origin: top;
   transition: all 200ms ease;
+  border-top-left-radius: 0;
+  border-top-right-radius: 0;
   z-index: 2;
+
+  ::before {
+    border-top-left-radius: 0;
+    border-top-right-radius: 0;
+  }
 
   & > h1 {
     font-size: 1.4rem;
@@ -53,8 +60,8 @@ function Header(props) {
           <div style={{ cursor: 'pointer' }} onClick={props.phase !== 'title' ? props.onClickProfileMenu : null}>
             <PlayerPortrait
               size='calc(var(--header-height) - 1.5rem)'
-              imagePath={props.imagePath}
-              sheetCoords={{ ...props.sheetCoords }}
+              imagePath={props.user.imagePath}
+              sheetCoords={{ ...props.user.sheetCoords }}
             />
           </div>
         </div>
@@ -62,13 +69,13 @@ function Header(props) {
         props.email === 'guest@guest.guest' && showUserInfo ?
           <div className='user-info-area'>
             <div>
-              <div style={{ fontSize: '100%', fontWeight: 'bold' }}>{props.displayName}</div>
+              <div style={{ fontSize: '100%', fontWeight: 'bold' }}>{props.user.displayName}</div>
             </div>
             <div style={{ cursor: 'pointer' }} onClick={props.phase !== 'title' ? props.onClickProfileMenu : null}>
               <PlayerPortrait
                 size='calc(var(--header-height) - 1.5rem)'
-                imagePath={props.imagePath}
-                sheetCoords={{ ...props.sheetCoords }}
+                imagePath={props.user.imagePath}
+                sheetCoords={{ ...props.user.sheetCoords }}
               />
             </div>
           </div>
@@ -81,13 +88,10 @@ function Header(props) {
 
 Header.propTypes = {
   phase: PropTypes.string,
+  user: PropTypes.object,
   profileMenuOpen: PropTypes.bool,
   avatarChoiceModalShowing: PropTypes.bool,
   authUser: PropTypes.object,
-  displayName: PropTypes.string,
-  email: PropTypes.string,
-  imagePath: PropTypes.string,
-  sheetCoords: PropTypes.objectOf(PropTypes.number),
   onClickProfileMenu: PropTypes.func,
 };
 

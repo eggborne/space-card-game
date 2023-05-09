@@ -48,6 +48,9 @@
   box-sizing: border-box;
 }
 
+html {
+  background-color: black;
+}
 body {
   margin: 0;
   font-family: 'Open Sans', sans-serif;
@@ -57,9 +60,9 @@ body {
   min-height: var(--actual-height);
   max-height: var(--actual-height);
   overflow: hidden;
-  /* background-image: url(../public/images/starfield.png); */
   background-size: cover;
   background-position: center;
+  background-color: black;
 }
 
 input, select {
@@ -78,11 +81,11 @@ h1, h2, h3, h4 {
   translate: -50% -50%;
   top: 50%;
   left: 50%;
+  height: 100vw;
   height: var(--actual-height);
   width: auto;
   background-position: center;
-  z-index: -1;
-  /* display: none; */
+  /* z-index: -1; */
 }
 
 .menu-style {
@@ -104,6 +107,15 @@ h1, h2, h3, h4 {
   z-index: -1;
 }
 
+@media screen and (max-width: 540px) {
+  #starfield {
+    /* height: var(--actual-height); */
+    /* width: var(--main-width); */
+    /* transform: none; */
+  }
+}
+
+
 @media screen and (min-width: 540px) {
   :root {
     --main-width: 80vw;
@@ -122,6 +134,10 @@ h1, h2, h3, h4 {
     --main-width: 60vw;
     --card-border-radius: calc(var(--card-height) * 0.1);
     --card-padding: calc(var(--card-height) * 0.075);
+  }
+
+  #starfield {
+    transform: rotate(90);
   }
 
   #root {

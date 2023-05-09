@@ -50,14 +50,19 @@ function UserProfileDisplay(props) {
     <StyledUserProfileDisplay>
         <PlayerPortrait
           size='calc(var(--header-height) * 2)'
-          imagePath={props.imagePath}
-          sheetCoords={{ ...props.sheetCoords }}
+          imagePath={props.user.imagePath}
+          sheetCoords={{ ...props.user.sheetCoords }}
         />
         <div className='stat-list'>
-          <h1 className='stat-row'>{props.displayName}</h1>
+          <h1 className='stat-row'>{props.user.displayName}</h1>
           {props.userLoggedIn &&
             <>
-              <div className='stat-row'>{props.email}</div>
+              <div className='stat-row'>{props.user.email}</div>
+              <div className='stat-row'>{props.user.progress.credits} credits</div>
+              <div className='stat-row'>{props.user.statistics.setWins} / {props.user.statistics.totalSets} sets won</div>
+              <div className='stat-row'>{props.user.statistics.matchWins} / {props.user.statistics.totalMatches} matches won</div>
+              <div className='stat-row'>{props.user.progress.cpuDefeated.length || 'No'} opponents defeated</div>
+              <div className='stat-row'>{props.user.progress.wonCards.length || 'No'} special cards</div>
             </>
           }
         </div>
@@ -67,7 +72,7 @@ function UserProfileDisplay(props) {
           <div className='footer-area'>
             {/* <div className='stat-row'>{props.currentUser.metadata.createdAt}</div> */}
             <div className='stat-row'>Account created: {props.currentUser.metadata.creationTime}</div>
-            {/* <div className='stat-row'>{props.currentUser.metadata.lastLoginAt}</div> */}
+            {/* <div className='stat-row'>Last login: {getTimeSinceFromSeconds((Date.now()) - props.currentUser.metadata.lastLoginAt)}</div> */}
             <div className='stat-row'>Last login: {props.currentUser.metadata.lastSignInTime}</div>
           </div>
         </>
@@ -78,11 +83,8 @@ function UserProfileDisplay(props) {
 
 UserProfileDisplay.propTypes = {
   userLoggedIn: PropTypes.bool,
+  user: PropTypes.object,
   currentUser: PropTypes.object,
-  displayName: PropTypes.string,
-  email: PropTypes.string,
-  imagePath: PropTypes.string,
-  sheetCoords: PropTypes.objectOf(PropTypes.number),
   onClickLogOut: PropTypes.func,
 };
 

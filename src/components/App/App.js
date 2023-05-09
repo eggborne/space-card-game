@@ -18,7 +18,7 @@ import {
 } from "firebase/auth";
 import { doc, setDoc, getDoc } from "firebase/firestore";
 import { characters, randomOpponents, defaultOpponent } from '../../characters.js';
-import { randomInt } from '../../util.js';
+import { randomInt, pause } from '../../util.js';
 import NameGenerator from '../../namegenerator.js';
 
 let clickFunction = window.PointerEvent ? 'onPointerDown' : window.TouchEvent ? 'onTouchStart' : 'onClick';
@@ -65,7 +65,7 @@ function App() {
     if (!!alreadyLoggedIn !== userLoggedIn) {
       setUserLoggedIn(!!alreadyLoggedIn);
       if (user.email === '') {
-        console.warn('setting userData on auth state change')
+        console.warn('setting userData on auth state change');
         await setUserDataForId(alreadyLoggedIn.uid);
       }
     }
@@ -75,12 +75,30 @@ function App() {
   const [userLoggedIn, setUserLoggedIn] = useState(false);
   const [phase, setPhase] = useState('title');
   const [gameMode, setGameMode] = useState('Quick Match');
-  const [logOutModalShowing, setLogOutModalShowing] = useState(false)
+  const [logOutModalShowing, setLogOutModalShowing] = useState(false);
   const [user, setUser] = useState({
     email: '',
     displayName: '',
     imagePath: 'images/avatarsheetlq.jpg',
     sheetCoords: { x: 0, y: 0 },
+    startingCards: [1, 1, 1, 1, 2, 2, 2, 3, 3, 4],
+    statistics: {
+      setWins: 0,
+      totalSets: 0,
+      matchWins: 0,
+      totalMatches: 0,
+    },
+    progress: {
+      credits: 10,
+      cpuDefeated: [],
+      wonCards: [],
+
+      sideDeck: [ // 10 cards chosen by user before game, 4 are randomly chosen for hand
+
+      ],
+    },
+
+    messages: [],
 
   });
   const [opponent, setOpponent] = useState({
@@ -95,6 +113,7 @@ function App() {
   useEffect(() => {
     if (!loaded) {
       setLoaded(true);
+    } else {
       document.getElementById('starfield').play();
     }
   }, [loaded]);
@@ -162,6 +181,7 @@ function App() {
     if (auth.currentUser) {
       console.warn('running handleChooseAvatar with auth.currentUser');
       const newUserData = {
+        ...user,
         email: auth.currentUser.email,
         displayName: auth.currentUser.displayName,
         imagePath: 'images/avatarsheetlq.jpg',
@@ -190,7 +210,7 @@ function App() {
   }
 
   function handleClickPlay() {
-    setPhase('game-mode-select')
+    setPhase('game-mode-select');
   }
 
   function handleSwitchGameMode(newMode) {
@@ -210,10 +230,10 @@ function App() {
       sheetCoords: { x: randomX, y: 3 },
     };
   }
-  
+
   function getRandomNamedOpponent() {
     const randomX = randomInt(0, 5);
-    const characterData = {...defaultOpponent};
+    const characterData = { ...defaultOpponent };
     const randomName = nameGenerator.getName().fullName;
     console.log('RANDOM NAME!', randomName);
     return {
@@ -265,8 +285,16 @@ function App() {
     setProfileMenuOpen(!profileMenuOpen);
   }
 
-  function handleToggleHamburger() {
-    setHamburgerOpen(!hamburgerOpen);
+  async function handleToggleHamburger() {
+    if (hamburgerOpen) {
+      setHamburgerOpen(!hamburgerOpen);
+      await pause(20);
+      document.getElementById('starfield').play();
+    } else {
+      document.getElementById('starfield').pause();
+      await pause(20);
+      setHamburgerOpen(!hamburgerOpen);
+    }
   }
 
   function handleClickEndGame() {
@@ -275,87 +303,88 @@ function App() {
   }
 
   return (
-    <StyledApp style={{
-      opacity: loaded ? '1' : '0',
-      scale: loaded ? '1' : '0.75'
-    }}>
-      <video id='starfield' loop={true} muted={true}>
-        <source src="https://mikedonovan.dev/pazaak/assets/images/starfieldlq.mp4" type="video/mp4" />
-      </video>
-      <Header
-        authUser={auth.currentUser}
-        {...user}
-        phase={phase}
-        profileMenuOpen={profileMenuOpen}
-        avatarChoiceModalShowing={avatarChoiceModalShowing}
-        onClickProfileMenu={handleToggleProfileMenu}
-      />
-      <ScreenVeil showing={hamburgerOpen || (logOutModalShowing && userLoggedIn)} onClickClose={hamburgerOpen ? () => setHamburgerOpen(false) : handleCloseAvatarModal} />
-      <Modal 
-        showing={logOutModalShowing && userLoggedIn}
-        headline={'Log out?'}
-        color='maroon'
-        buttonLabel='Do it'
-        bodyComponent={<></>}
-        onClickOK={handleConfirmLogOut}
-        onClickCancel={() => setLogOutModalShowing(false)}
-      />
-      <div className='scroll-container'>
-
-        {(phase !== 'title' && (userLoggedIn || user.displayName === 'Guest')) &&
-          <HeaderMenu
-            open={profileMenuOpen}
-            userLoggedIn={userLoggedIn}
-            currentUser={auth.currentUser}
-            {...user}
-            phase={phase}
-            onClickLogOut={handleClickLogOut}
-          />
-        }
-        <TitleScreen
-          userLoggedIn={userLoggedIn}
-          user={user}
+    <>
+    {loaded && <video id='starfield' loop={true} muted={true}>
+      <source src="https://mikedonovan.dev/pazaak/assets/images/starfieldlq.mp4" type="video/mp4" />
+    </video>}
+      <StyledApp style={{
+        opacity: loaded ? '1' : '0',
+        scale: loaded ? '1' : '0.75'
+      }}>
+        
+        <Header
           authUser={auth.currentUser}
-          showing={phase === 'title'}
-          handleClickLogIn={handleClickLogIn}
-          handleClickPlay={handleClickPlay}
-          handleClickOptions={handleClickOptions}
-          onClickLogOut={handleClickLogOut}
-          handleClickRegister={handleClickRegister}
-          handleChooseAvatar={handleChooseAvatar}
+          user={user}
+          phase={phase}
+          profileMenuOpen={profileMenuOpen}
           avatarChoiceModalShowing={avatarChoiceModalShowing}
-          setAvatarChoiceModalShowing={() => setAvatarChoiceModalShowing(true)}
-          handleCloseAvatarModal={handleCloseAvatarModal}
+          onClickProfileMenu={handleToggleProfileMenu}
         />
-        <OptionsScreen 
-          showing={phase === 'options'}
+        <ScreenVeil showing={hamburgerOpen || (logOutModalShowing && userLoggedIn)} onClickClose={hamburgerOpen ? () => setHamburgerOpen(false) : handleCloseAvatarModal} />
+        <Modal
+          showing={logOutModalShowing && userLoggedIn}
+          headline={'Log out?'}
+          color='maroon'
+          buttonLabel='Do it'
+          bodyComponent={<></>}
+          onClickOK={handleConfirmLogOut}
+          onClickCancel={() => setLogOutModalShowing(false)}
         />
-        <GameModeSelectScreen
-          showing={phase === 'game-mode-select'}
-          gameMode={gameMode}
-          switchGameMode={handleSwitchGameMode}
-        />
-        {phase === 'game-board-showing' &&
-          <GameScreen
-            showing={phase === 'game-board-showing'}
-            hamburgerOpen={hamburgerOpen}
-            user={{ ...user }}
-            opponent={{ ...opponent }}
-            onClickEndGame={handleClickEndGame}
-          />
-        }
-        </div>
+        <div className='scroll-container'>
 
-      
-      <Footer
-        phase={phase}
-        onClickBackToTitle={() => setPhase('title')}
-        onClickBackToGameSelect={() => setPhase('game-mode-select')}
-        onClickAcceptGameMode={handleAcceptGameMode}
-        handleToggleHamburger={handleToggleHamburger}
-        hamburgerOpen={hamburgerOpen}
-      />
-    </StyledApp>
+          {(phase !== 'title' && (userLoggedIn || user.displayName === 'Guest')) &&
+            <HeaderMenu
+              open={profileMenuOpen}
+              userLoggedIn={userLoggedIn}
+              currentUser={auth.currentUser}
+              user={user}
+              phase={phase}
+              onClickLogOut={handleClickLogOut}
+            />
+          }
+          <TitleScreen
+            userLoggedIn={userLoggedIn}
+            user={user}
+            authUser={auth.currentUser}
+            showing={phase === 'title'}
+            handleClickLogIn={handleClickLogIn}
+            handleClickPlay={handleClickPlay}
+            handleClickOptions={handleClickOptions}
+            onClickLogOut={handleClickLogOut}
+            handleClickRegister={handleClickRegister}
+            handleChooseAvatar={handleChooseAvatar}
+            avatarChoiceModalShowing={avatarChoiceModalShowing}
+            setAvatarChoiceModalShowing={() => setAvatarChoiceModalShowing(true)}
+            handleCloseAvatarModal={handleCloseAvatarModal}
+          />
+          <OptionsScreen
+            showing={phase === 'options'}
+          />
+          <GameModeSelectScreen
+            showing={phase === 'game-mode-select'}
+            gameMode={gameMode}
+            switchGameMode={handleSwitchGameMode}
+          />
+          {phase === 'game-board-showing' &&
+            <GameScreen
+              showing={phase === 'game-board-showing'}
+              hamburgerOpen={hamburgerOpen}
+              user={{ ...user }}
+              opponent={{ ...opponent }}
+              onClickEndGame={handleClickEndGame}
+            />
+          }
+        </div>
+        <Footer
+          phase={phase}
+          onClickBackToTitle={() => setPhase('title')}
+          onClickBackToGameSelect={() => setPhase('game-mode-select')}
+          onClickAcceptGameMode={handleAcceptGameMode}
+          handleToggleHamburger={handleToggleHamburger}
+          hamburgerOpen={hamburgerOpen}
+        />
+      </StyledApp>
+    </>
   );
 }
 

@@ -13,7 +13,7 @@ const StyledVersusScreen = styled.div`
   gap: 2rem;
   padding-bottom: var(--expanded-footer-height);
   padding-top: var(--header-height);
-  transition: transform 900ms ease-in, opacity 900ms ease;
+  transition: transform 1000ms ease-in, opacity 900ms ease;
   // transform-origin 50% 47.5%;
   transform-origin 50% calc(50% - 1rem);
 

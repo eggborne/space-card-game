@@ -7,7 +7,6 @@ const StyledHeaderMenu = styled.div`
   right: 0;
   top: var(--header-height);
   width: var(--main-width);
-  background-color: var(--header-color);
   color: #bbb;
   padding: 1rem;
   border-bottom-left-radius: calc(var(--border-radius) / 2);
@@ -19,7 +18,7 @@ const StyledHeaderMenu = styled.div`
   z-index: 1;
 
   &.open {
-    transform: translateY(-1rem);
+    transform: translateY(0);
   }
 
   & .PlayerPortrait {
@@ -73,14 +72,11 @@ const StyledHeaderMenu = styled.div`
 function HeaderMenu(props) {
   console.log('HeaderMenu props is', props);
   return (
-    <StyledHeaderMenu className={props.open && 'open'}>
+    <StyledHeaderMenu className={props.open ? 'menu-style open' : 'menu-style'}>
     <UserProfileDisplay 
       userLoggedIn={props.userLoggedIn}
       currentUser={props.currentUser}
-      displayName={props.displayName}
-      email={props.email}
-      imagePath={props.imagePath}
-      sheetCoords={props.sheetCoords}
+      user={props.user}
       phase={props.phase}
       onClickLogOut={props.handleClickLogOut}
     />
@@ -90,12 +86,9 @@ function HeaderMenu(props) {
 
 HeaderMenu.propTypes = {
   userLoggedIn: PropTypes.bool,
+  user: PropTypes.object,
   open: PropTypes.bool,
   currentUser: PropTypes.object,
-  displayName: PropTypes.string,
-  email: PropTypes.string,
-  imagePath: PropTypes.string,
-  sheetCoords: PropTypes.objectOf(PropTypes.number),
   onClickLogOut: PropTypes.func,
 };
 

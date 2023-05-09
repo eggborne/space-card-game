@@ -1,17 +1,17 @@
 // this is essentially a total rewrite of https://github.com/eggborne/pazaak (mikedonovan.dev/pazaak)
 // but with no class components and full use of Hooks
-// and also no PHP
+// and also no PHP (except for getting Name Generator ruleset)
 // and better integration of the Name Generator (https://github.com/eggborne/customizable-name-generator)
 
 5/8 ----------------------------------------
 
 Production build needs line in package.json:
 "homepage": "/spacecards",
-(may be fixed by prepending image reference with %PUBLIC_URL% as in public/index.html ???)
+(may be fixed by prepending image reference with %PUBLIC_URL% as in public/index.html ???) --> NO
 
-NameGenerator let a triple 'S' through despite using the current 'Star Wars' ruleset (should not!)
+NameGenerator let a triple 'S' through despite using the current 'Star Wars 3' ruleset (should not!)
 
-> FooterGameButtons should be passed as props to Footer?
+> FooterGameButtons should be passed as props to Footer? 
 > Game class imported from its own file?
 
 --------------------------------------------
