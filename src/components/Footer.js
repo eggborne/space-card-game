@@ -82,6 +82,7 @@ function Footer(props) {
               : props.phase === 'opponent-selection' ?
               <>
                 <FooterBackButton onClick={props.onClickBackToDeckSelect} label='<' />
+                <Button className='main-footer' onClick={props.onClickConfirmOpponent} color='green' label='START!' />
               </>
               :
               <>
@@ -99,6 +100,7 @@ Footer.propTypes = {
   onClickAcceptGameMode: PropTypes.func,
   onClickBackToDeckSelect: PropTypes.func,
   onClickConfirmDeck: PropTypes.func,
+  onClickConfirmOpponent: PropTypes.func,
   userDeck: PropTypes.arrayOf(PropTypes.object),
   handleToggleHamburger: PropTypes.func,
   hamburgerOpen: PropTypes.bool,

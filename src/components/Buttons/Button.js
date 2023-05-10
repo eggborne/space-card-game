@@ -19,7 +19,10 @@ const StyledButton = styled.button`
   }
 
   &.main-footer {
-    width: 32.5%;
+    padding: 0;
+    min-width: 35%;
+    height: calc(var(--expanded-footer-height) * 0.7);
+    font-size: 1.75rem !important;
   }
 
   :disabled {
