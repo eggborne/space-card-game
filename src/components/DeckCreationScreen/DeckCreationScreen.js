@@ -2,7 +2,6 @@ import PropTypes from 'prop-types';
 import { useState } from 'react';
 import styled from 'styled-components';
 import Card from '../Card';
-import CardSpace from '../CardSpace';
 import { useEffect } from 'react';
 
 const StyledDeckCreationScreen = styled.div`
@@ -84,12 +83,12 @@ function DeckCreationScreen(props) {
 
   const emptyAvailableCardComponents = [];
   for (let i=0; i< emptyAvailableCardSpaces; i++) {
-    emptyAvailableCardComponents.push(<CardSpace key={`available-space-${i}`} scale={0.8} />);
+    emptyAvailableCardComponents.push(<Card value={0} key={`available-space-${i}`} scale={0.8} />);
   }
 
   const emptySelectionComponents = [];
   for (let i=0; i< emptySelectedCardSpaces; i++) {
-    emptySelectionComponents.push(<CardSpace key={`selected-space-${i}`} scale={0.75} />);
+    emptySelectionComponents.push(<Card value={0} key={`selected-space-${i}`} scale={0.75} />);
   }
 
   return (
@@ -100,7 +99,7 @@ function DeckCreationScreen(props) {
           selectedCards.indexOf(cardObj) === -1 ? 
             <Card onClick={() => handleSelectCardClick(cardObj)} key={`available-card-${cardObj.id}`} value={cardObj.value} scale={0.8} />
             :
-            <CardSpace key={`available-card-space-${cardObj.id}`} scale={0.8}/>
+            <Card value={0} key={`available-card-space-${cardObj.id}`} scale={0.8}/>
           )
         }
         {emptyAvailableCardComponents.map(cardObj => cardObj )}

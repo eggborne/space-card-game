@@ -36,7 +36,11 @@ const StyledCard = styled.div`
   }
 
   &.placeholder {
-    opacity: 0;
+    background-color: #ffffff27;
+    
+    & > .knob-container {
+      display: none;
+    }
   }
 
 `;
@@ -76,7 +80,6 @@ const ValueDisplay = styled.div`
   color: white;
   border: 0.1rem inset #ffffff99;
   z-index: 1;
-  // opacity: 0.5;
 `;
 
 function Card(props) {
