@@ -45,6 +45,13 @@ function OpponentSelectionScreen(props) {
     };
   }
 
+  function handleClickCharacterCard(opponentArg, imageCoords) {
+    const newOpponent = {...opponentArg};
+    newOpponent.sheetCoords = imageCoords;
+    setSelectedOpponent(newOpponent.name);
+    props.onSelectOpponent(newOpponent);
+  }
+
   return (
     <StyledOpponentSelectionScreen style={{ display: props.showing ? 'flex' : 'none' }}>
       <h1 className='opponent-list-header'>Choose Opponent</h1>
@@ -52,7 +59,7 @@ function OpponentSelectionScreen(props) {
         {characterList.map((characterObj, c) =>
           <CharacterInfoCard
             key={c}
-            onClick={() => setSelectedOpponent(characterObj.name)}
+            onClick={() => handleClickCharacterCard(characterObj, coordsForIndex(c))}
             selected={selectedOpponent === characterObj.name}
             characterObj={characterObj}
             portraitComponent={
@@ -72,7 +79,7 @@ function OpponentSelectionScreen(props) {
 OpponentSelectionScreen.propTypes = {
   showing: PropTypes.bool,
   characters: PropTypes.object,
-  onClickConfirmOpponent: PropTypes.func,
+  onSelectOpponent: PropTypes.func,
 };
 
 export default OpponentSelectionScreen;

@@ -376,6 +376,22 @@ function App() {
     setUser(newUser);
   }
 
+  function handleSelectOpponent(newOpponent) {
+    console.log('handlesel got arg')
+    console.log(newOpponent);
+    console.log('handlesel maybe merge state.opponent?')
+    console.log(opponent);
+    const mergedOpponent = { ...opponent, ...newOpponent };
+    console.log('handlesel mergedOpponent is');
+    console.log(mergedOpponent);
+    setOpponent(mergedOpponent);
+  }
+
+  function handleConfirmOpponent() {
+    setPhase('game-board-showing')
+
+  }
+
   function handleClickEndGame() {
     setHamburgerOpen(false);
     document.getElementById('starfield').play();
@@ -456,6 +472,7 @@ function App() {
           <OpponentSelectionScreen
             showing={phase === 'opponent-selection'}
             characters={characters}
+            onSelectOpponent={handleSelectOpponent}
           />
           {phase === 'game-board-showing' &&
             <GameScreen
@@ -474,6 +491,7 @@ function App() {
           onClickAcceptGameMode={handleAcceptGameMode}
           onClickBackToDeckSelect={() => setPhase('deck-selection')}
           onClickConfirmDeck={handleConfirmDeck}
+          onClickConfirmOpponent={handleConfirmOpponent}
           userDeck={user.deck}
           handleToggleHamburger={handleToggleHamburger}
           hamburgerOpen={hamburgerOpen}
