@@ -21,10 +21,6 @@ const StyledFooterGameButton = styled.button`
     border-color: #00ff00aa
   }
 
-  &.main-footer {
-    width: 45%;
-  }
-
   :disabled {
     opacity: 0.5;
     pointer-events: none;

@@ -45,6 +45,7 @@ const StyledUserProfileDisplay = styled.div`
 
 function UserProfileDisplay(props) {
   console.log('UserProfileDisplay props is', props);
+  const isGuest = props.user.email === 'guest@guest.guest';
   return (
     <StyledUserProfileDisplay style={{ padding: props.phase === 'title' ? '1rem' : '1rem'}}>
         <PlayerPortrait
@@ -54,9 +55,9 @@ function UserProfileDisplay(props) {
         />
         <div className='stat-list'>
           <h1 className='stat-row'>{props.user.displayName}</h1>
-          {props.userLoggedIn &&
+          {props.userLoggedIn || isGuest &&
             <>
-              <div className='stat-row'>{props.user.email}</div>
+              {!isGuest && <div className='stat-row'>{props.user.email}</div>}
               <div className='stat-row'>{props.user.progress.credits} credits</div>
               <div className='stat-row'>{props.user.statistics.setWins} / {props.user.statistics.totalSets} sets won</div>
               <div className='stat-row'>{props.user.statistics.matchWins} / {props.user.statistics.totalMatches} matches won</div>

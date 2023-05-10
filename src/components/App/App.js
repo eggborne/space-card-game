@@ -20,6 +20,8 @@ import { doc, setDoc, getDoc } from "firebase/firestore";
 import { characters, randomOpponents, defaultOpponent } from '../../characters.js';
 import { randomInt, pause } from '../../util.js';
 import NameGenerator from '../../namegenerator.js';
+import DeckCreationScreen from '../DeckCreationScreen/DeckCreationScreen';
+import OpponentSelectionScreen from '../OpponentSelectionScreen/OpponentSelectionScreen';
 
 let clickFunction = window.PointerEvent ? 'onPointerDown' : window.TouchEvent ? 'onTouchStart' : 'onClick';
 
@@ -61,31 +63,25 @@ const StyledApp = styled.main`
 
 function App() {
 
-  auth.onAuthStateChanged(async (alreadyLoggedIn) => {
-    if (!!alreadyLoggedIn !== userLoggedIn) {
-      setUserLoggedIn(!!alreadyLoggedIn);
-      if (user.email === '') {
-        console.warn('setting userData on auth state change');
-        await setUserDataForId(alreadyLoggedIn.uid);
-      }
-    }
-  });
-
   const defaultUserState = {
     email: '',
     displayName: '',
     imagePath: 'images/avatarsheetlq.jpg',
     sheetCoords: { x: 0, y: 0 },
     startingCards: [
-      { value: 1, },
-      { value: 1, },
-      { value: 1, },
-      { value: 2, },
-      { value: 2, },
-      { value: 2, },
-      { value: 3, },
-      { value: 3, },
-      { value: 4, },
+      { value: 1, id: 999},
+      { value: 1, id: 998},
+      { value: 1, id: 997},
+      { value: 1, id: 996},
+      { value: 2, id: 995},
+      { value: 2, id: 994},
+      { value: 2, id: 993},
+      { value: 3, id: 992},
+      { value: 3, id: 991},
+      { value: 3, id: 990},
+      { value: 4, id: 989},
+      { value: 4, id: 988},
+      
     ],
     statistics: {
       setWins: 0,
@@ -96,7 +92,11 @@ function App() {
     progress: {
       credits: 10,
       cpuDefeated: [],
-      wonCards: [],
+      wonCards: [
+        { value: 6, id: 987},
+        { value: -4, id: 986},
+        { value: -2, id: 985},
+      ],
       sideDeck: [ // 10 cards chosen by user before game, 4 are randomly chosen for hand
       ],
     },
@@ -112,13 +112,29 @@ function App() {
   const [loaded, setLoaded] = useState(false);
   const [userLoggedIn, setUserLoggedIn] = useState(false);
   const [phase, setPhase] = useState('title');
-  const [gameMode, setGameMode] = useState('Quick Match');
+  const [gameMode, setGameMode] = useState('Campaign');
   const [logOutModalShowing, setLogOutModalShowing] = useState(false);
   const [user, setUser] = useState(defaultUserState);
   const [opponent, setOpponent] = useState(defaultOpponentState);
   const [avatarChoiceModalShowing, setAvatarChoiceModalShowing] = useState(false);
   const [profileMenuOpen, setProfileMenuOpen] = useState(false);
   const [hamburgerOpen, setHamburgerOpen] = useState(false);
+
+  const [currentGame, setCurrentGame] = useState({
+    user: {
+      deck: [],
+      hand: [],
+      matchScore: 0,
+      setsWon: 0,
+    },
+    opponent: {
+      deck: [],
+      hand: [],
+      matchScore: 0,
+      setsWon: 0,
+    },
+    turnPhase: 'waiting',
+  });
 
   useEffect(() => {
     if (!loaded) {
@@ -128,11 +144,21 @@ function App() {
     }
   }, [loaded]);
 
+  auth.onAuthStateChanged(async (alreadyLoggedIn) => {
+    if (!!alreadyLoggedIn !== userLoggedIn) {
+      setUserLoggedIn(!!alreadyLoggedIn);
+      if (user.email === '') {
+        console.warn('setting userData on auth state change');
+        await setUserDataForId(alreadyLoggedIn.uid);
+      }
+    }
+  });
+
   async function setUserDataForId(uid) {
     const docRef = doc(db, "userData", uid);
     const docSnap = await getDoc(docRef);
     if (docSnap.exists()) {
-      console.warn('SETTING DB USERDATA FOR USER!! --------------------', docSnap.data().displayName);
+      console.warn('SETTING RETRIEVED DB USERDATA FOR USER!! --------------------', docSnap.data().displayName);
       return setUser(docSnap.data());
     } else {
       // docSnap.data() will be undefined in this case
@@ -140,12 +166,13 @@ function App() {
     }
   }
 
-  function handleClickLogIn(user) {
+  function handleClickLogIn(incomingUser) {
     console.warn('handleClickLogin got user');
-    console.table(user);
-    if (user.password) {
+    console.table(incomingUser);
+    console.log(user);
+    if (incomingUser.password) {
       console.log('--- user used password');
-      signInWithEmailAndPassword(auth, user.email, user.password)
+      signInWithEmailAndPassword(auth, incomingUser.email, incomingUser.password)
         .then(async (userCredential) => {
           console.log(`You've successfully signed in as ${userCredential.user.email}!`);
           await setUserDataForId(userCredential.user.uid);
@@ -157,6 +184,7 @@ function App() {
     } else {
       console.log('--- user is GUEST');
       setUser({
+        ...user,
         email: 'guest@guest.guest',
         displayName: user.displayName,
         imagePath: 'images/avatarsheetlq.jpg',
@@ -257,7 +285,7 @@ function App() {
   function handleAcceptGameMode() {
     setProfileMenuOpen(false);
     if (gameMode === 'Campaign') {
-
+      setPhase('deck-selection');
     } else if (gameMode === 'Quick Match') {
       const randomOpponent = randomInt(0, 5) ? getRandomNamedOpponent() : getRandomCharacterOpponent();
       console.log('GOT RANDOM OPPONENT ////////////////');
@@ -265,6 +293,30 @@ function App() {
       setOpponent(randomOpponent);
       setPhase('game-board-showing');
     }
+  }
+
+  function deckHasCardWithId(id) {
+    return currentGame.user.deck.filter(card => card.id === id).length > 0;
+  }
+
+  async function handleConfirmDeck() {
+    const chosenDeck = currentGame.user.deck;
+    if (chosenDeck.length < 10) {
+      const randomNeeded = 10 - chosenDeck.length;
+      let usedCardIds = [];
+      const remainingCards = defaultUserState.startingCards.filter(card => !deckHasCardWithId(card.id) );
+      for (let i = 0; i < randomNeeded; i++) {
+        const cardsLeft = remainingCards;
+        const randomCard = cardsLeft[randomInt(0, cardsLeft.length - 1)];
+        console.log(randomCard)
+        chosenDeck.push(randomCard);
+        usedCardIds.push(randomCard.id);
+      }
+    }
+    const newCurrentGame = {...currentGame};
+    newCurrentGame.user.deck = chosenDeck;
+    setCurrentGame(newCurrentGame);
+    setPhase('opponent-selection')
   }
 
   function handleCloseAvatarModal() {
@@ -304,6 +356,17 @@ function App() {
     }
   }
 
+  function handleAddCardToDeck(cardObj, remove) {
+    if (!remove) {
+      console.warn('adding to deck!');
+      console.table(cardObj);
+    }
+    const newUserDeck = remove ? [...currentGame.user.deck].filter(card => card !== cardObj) : [...currentGame.user.deck, cardObj];
+    const updatedGame = { ...currentGame };
+    updatedGame.user.deck = newUserDeck;
+    setCurrentGame(updatedGame);
+  }
+
   function handleClickEndGame() {
     setHamburgerOpen(false);
     document.getElementById('starfield').play();
@@ -339,7 +402,6 @@ function App() {
           onClickCancel={() => setLogOutModalShowing(false)}
         />
         <div className='scroll-container'>
-
           {(phase !== 'title' && (userLoggedIn || user.displayName === 'Guest')) &&
             <HeaderMenu
               open={profileMenuOpen}
@@ -373,6 +435,16 @@ function App() {
             gameMode={gameMode}
             switchGameMode={handleSwitchGameMode}
           />
+          <DeckCreationScreen
+            showing={phase === 'deck-selection'}
+            cardSelection={user.startingCards}
+            currentGame={currentGame}
+            onAddCardToDeck={handleAddCardToDeck}
+          />
+          <OpponentSelectionScreen
+            showing={phase === 'opponent-selection'}
+            characters={characters}
+          />
           {phase === 'game-board-showing' &&
             <GameScreen
               showing={phase === 'game-board-showing'}
@@ -388,6 +460,9 @@ function App() {
           onClickBackToTitle={() => setPhase('title')}
           onClickBackToGameSelect={() => setPhase('game-mode-select')}
           onClickAcceptGameMode={handleAcceptGameMode}
+          onClickBackToDeckSelect={() => setPhase('deck-selection')}
+          onClickConfirmDeck={handleConfirmDeck}
+          userDeck={currentGame.user.deck}
           handleToggleHamburger={handleToggleHamburger}
           hamburgerOpen={hamburgerOpen}
         />

@@ -13,13 +13,13 @@ const StyledCard = styled.div`
   max-width: calc((var(--main-width) / 5) - (var(--main-padding) * 1.5));
   max-height: var(--card-max-height);
   max-width: var(--card-max-width);
-  border-radius: 0.25rem;
   border: 0.1rem solid #00000099;
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
   color: black;
+  z-index: 0;
   
   border-radius: var(--card-border-radius);
   
@@ -53,48 +53,6 @@ const CardKnob = styled.div`
   --arrow-outer-size: calc(var(--card-height) / 8);
   --arrow-inner-size: calc(var(--card-height) / 12);
 
-  & > .arrow-up {
-    position: relative;
-    width: 0; 
-    height: 0; 
-    border-left: var(--arrow-outer-size) solid transparent;
-    border-right: var(--arrow-outer-size) solid transparent;
-    border-bottom: var(--arrow-outer-size) solid #00000055;
-
-    ::after {
-      position: absolute;
-      content: '';
-      top: calc(var(--arrow-inner-size) / 3.5);
-      right: calc(var(--arrow-inner-size) * -1);
-      width: 0; 
-      height: 0; 
-      border-left: var(--arrow-inner-size) solid transparent;
-      border-right: var(--arrow-inner-size) solid transparent;
-      border-bottom: var(--arrow-inner-size) solid var(--card-white);
-    }
-  }
-  
-  & > .arrow-down {
-    position: relative;
-    width: 0; 
-    height: 0; 
-    border-left: var(--arrow-outer-size) solid transparent;
-    border-right: var(--arrow-outer-size) solid transparent;
-    border-top: var(--arrow-outer-size) solid #00000055;
-
-    ::after {
-      position: absolute;
-      content: '';
-      bottom: calc(var(--arrow-inner-size) / 3.5);
-      right: calc(var(--arrow-inner-size) * -1);
-      width: 0; 
-      height: 0; 
-      border-left: var(--arrow-inner-size) solid transparent;
-      border-right: var(--arrow-inner-size) solid transparent;
-      border-top: var(--arrow-inner-size) solid var(--card-white);
-    }
-  }
-
   &.bottom {
     border-bottom-left-radius: 0;
     border-bottom-right-radius: 0;
@@ -103,7 +61,8 @@ const CardKnob = styled.div`
 
 const ValueDisplay = styled.div`
   font-weight: bold;
-  font-size: calc(var(--card-height) / 5);
+  // font-size: calc(var(--card-height) / 5);
+  font-size: calc(var(--card-width) / 4);
   position: absolute;
   border-radius: calc(var(--card-border-radius) / 4);
   transform: translateY(-50%);
@@ -129,9 +88,14 @@ function Card(props) {
   ];
   return (
     <StyledCard
+      onClick={props.onClick}
       className={
         props.value ? '' : 'placeholder'
       }
+      style={{ 
+        width: `calc(var(--card-width) * ${props.scale || 1})`,
+        height: `calc(var(--card-height) * ${props.scale || 1})`,
+      }}
     >
       <div className='knob-container'>
         <CardKnob style={{ backgroundColor: knobColors[0] }}>
@@ -149,7 +113,8 @@ function Card(props) {
 
 Card.propTypes = {
   value: PropTypes.number,
-  color: PropTypes.string,
+  scale: PropTypes.number,
+  onClick: PropTypes.func,
 };
 
 export default Card;

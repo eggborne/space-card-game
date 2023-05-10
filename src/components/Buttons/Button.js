@@ -19,7 +19,7 @@ const StyledButton = styled.button`
   }
 
   &.main-footer {
-    width: 45%;
+    width: 32.5%;
   }
 
   :disabled {

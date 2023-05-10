@@ -19,9 +19,9 @@ const StyledLoginRegisterForm = styled.div`
     height: 5rem;
     padding: 0;
   }
-  & button:last-of-type {
+  & > form:first-of-type button:last-of-type {
     width: 14rem;
-    background-color: gray !important;
+    background-color: rgb(66, 94, 23) !important;
   }
 
   & > form {

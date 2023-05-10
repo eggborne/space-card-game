@@ -19,7 +19,7 @@ const StyledGameModeSelectScreen = styled.div`
 function GameModeSelectScreen(props) {
   return (
     <StyledGameModeSelectScreen style={{ display: props.showing ? 'flex' : 'none' }}>
-      <h1 className='section-header'>Game Mode</h1>
+      <h1 className='section-header'>Select Mode</h1>
       <GameModeSelectItem
         onClick={() => props.switchGameMode('Campaign')}
         selected={props.gameMode === 'Campaign'}

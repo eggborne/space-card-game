@@ -45,17 +45,21 @@ const FooterBackButton = styled(Button)`
 `;
 
 function Footer(props) {
+  console.log('Footer props: ', props);
   return (
-    <StyledFooter className='menu-style' style={{
-      height: props.phase === 'title' ? 'var(--footer-height)' : 'var(--expanded-footer-height)',
-      justifyContent: props.phase !== 'game-board-showing' ? 'center' : 'flex-end',
-    }}>
+    <StyledFooter 
+      className='menu-style' 
+      style={{
+        height: props.phase === 'title' ? 'var(--footer-height)' : 'var(--expanded-footer-height)',
+        justifyContent: props.phase !== 'game-board-showing' ? 'center' : 'flex-end',
+      }}
+    >
       {props.phase === 'title' ?
         <>made for <a href="http://epicodus.com">Epicodus</a> by <a href="http://mikedonovan.dev">mike@mikedonovan.dev</a></>
         :
         props.phase === 'game-mode-select' ?
           <>
-            <FooterBackButton onClick={props.onClickBackToTitle} className='Button footer-back-button' label='<' />
+            <FooterBackButton onClick={props.onClickBackToTitle} label='<' />
             <Button className='main-footer' onClick={props.onClickAcceptGameMode} color='green' label='OK' />
           </>
           : props.phase === 'game-board-showing' ?
@@ -70,10 +74,20 @@ function Footer(props) {
               <>
                 <Button onClick={props.onClickBackToTitle} label='Back' />
               </>
+              : props.phase === 'deck-selection' ?
+              <>
+                <FooterBackButton onClick={props.onClickBackToGameSelect} label='<' />
+                <Button className='main-footer' onClick={props.onClickConfirmDeck} color='green' label='OK' />
+              </>
+              : props.phase === 'opponent-selection' ?
+              <>
+                <FooterBackButton onClick={props.onClickBackToDeckSelect} label='<' />
+              </>
               :
               <>
-                blargh
+                end of conditionals
               </>
+
       }
     </StyledFooter>
   );
@@ -83,6 +97,9 @@ Footer.propTypes = {
   onClickBackToTitle: PropTypes.func,
   onClickBackToGameSelect: PropTypes.func,
   onClickAcceptGameMode: PropTypes.func,
+  onClickBackToDeckSelect: PropTypes.func,
+  onClickConfirmDeck: PropTypes.func,
+  userDeck: PropTypes.arrayOf(PropTypes.object),
   handleToggleHamburger: PropTypes.func,
   hamburgerOpen: PropTypes.bool,
 };

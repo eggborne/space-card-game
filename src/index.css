@@ -39,8 +39,10 @@
   --card-height: calc(var(--section-height) - (var(--main-padding) * 1.5));
   --card-max-height: calc(var(--section-height) - (var(--main-padding) * 0.5));
   --card-max-width: calc(var(--card-max-height) * (10/16));
-  --card-border-radius: calc(var(--card-width) * 0.15);
-  --card-padding: calc(var(--card-width) * 0.1);
+  /* --card-border-radius: calc(var(--card-width) * 0.15); */
+  --card-border-radius: calc(var(--card-height) * 0.07);
+  /* --card-padding: calc(var(--card-width) * 0.1); */
+  --card-padding: calc(var(--card-height) * 0.05);
 }
 
 *, * *, * * * {
@@ -74,6 +76,48 @@ input, select {
 h1, h2, h3, h4 {
   margin: 0;
 }
+
+.arrow-up {
+  position: relative;
+  width: 0; 
+  height: 0; 
+  border-left: var(--arrow-outer-size) solid transparent;
+  border-right: var(--arrow-outer-size) solid transparent;
+  border-bottom: var(--arrow-outer-size) solid #00000055;
+}
+
+.arrow-up::after {
+    position: absolute;
+    content: '';
+    top: calc(var(--arrow-inner-size) / 3.5);
+    right: calc(var(--arrow-inner-size) * -1);
+    width: 0; 
+    height: 0; 
+    border-left: var(--arrow-inner-size) solid transparent;
+    border-right: var(--arrow-inner-size) solid transparent;
+    border-bottom: var(--arrow-inner-size) solid var(--card-white);
+  }
+
+.arrow-down {
+  position: relative;
+  width: 0; 
+  height: 0; 
+  border-left: var(--arrow-outer-size) solid transparent;
+  border-right: var(--arrow-outer-size) solid transparent;
+  border-top: var(--arrow-outer-size) solid #00000055;
+}
+
+.arrow-down::after {
+    position: absolute;
+    content: '';
+    bottom: calc(var(--arrow-inner-size) / 3.5);
+    right: calc(var(--arrow-inner-size) * -1);
+    width: 0; 
+    height: 0; 
+    border-left: var(--arrow-inner-size) solid transparent;
+    border-right: var(--arrow-inner-size) solid transparent;
+    border-top: var(--arrow-inner-size) solid var(--card-white);
+  } 
 
 #starfield {
   position: fixed;

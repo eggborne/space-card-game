@@ -48,7 +48,7 @@ const StyledHeader = styled.header`
 
 function Header(props) {
   console.log('Header props is', props);
-  const showUserInfo = props.phase === 'game-mode-select' || props.phase === 'game-board-showing';
+  const showUserInfo = props.phase === 'game-mode-select' || props.phase === 'game-board-showing' || props.phase === 'deck-selection' || props.phase === 'opponent-selection';
   return (
     <StyledHeader className='menu-style' style={{
       transform: props.phase === 'game-board-showing' ? 'translateY(-100%)' : 'translateY(0)',
@@ -69,7 +69,7 @@ function Header(props) {
           </div>
         </div>
         :
-        props.email === 'guest@guest.guest' && showUserInfo ?
+        props.user.email === 'guest@guest.guest' && showUserInfo ?
           <div className='user-info-area'>
             <div>
               <div style={{ fontSize: '100%', fontWeight: 'bold' }}>{props.user.displayName}</div>
