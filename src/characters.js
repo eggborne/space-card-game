@@ -222,9 +222,9 @@ export const characters = {
     displayName: 'Yoda',
     species: 'Unknown',
     placeOfOrigin: 'Dagobah',
-    skillLevel: 5,
+    skillLevel: 500,
     prize: {
-      credits: 600,
+      credits: 5,
       cards: [
         { id: 82, value: -6, type: '-' },
         { id: 81, value: 1, type: '±' },
@@ -264,9 +264,9 @@ export const characters = {
     displayName: 'The Emperor',
     species: 'Human',
     placeOfOrigin: 'Naboo',
-    skillLevel: 6,
+    skillLevel: 750,
     prize: {
-      credits: 1200,
+      credits: 10,
       cards: [
         { id: 80, value: 2, type: '±' },
         { id: 79, value: 3, type: '±' },
@@ -308,7 +308,7 @@ export const characters = {
     placeOfOrigin: 'Brodo Asogi',
     skillLevel: 7,
     prize: {
-      credits: 2400,
+      credits: 1000,
       cards: [
         { id: 78, value: 4, type: '±' },
       ]
@@ -349,7 +349,7 @@ export const characters = {
     placeOfOrigin: 'Earth',
     skillLevel: 8,
     prize: {
-      credits: 4000,
+      credits: 2500,
       cards: [
         { id: 77, value: 3, type: '±' },
         { id: 76, value: 4, type: '±' },
@@ -391,7 +391,7 @@ export const characters = {
     placeOfOrigin: 'The Labyrinth',
     skillLevel: 9,
     prize: {
-      credits: 12000,
+      credits: 5000,
       cards: [
         { id: 75, value: 1, type: '±' },
         { id: 74, value: 2, type: '±' },
@@ -433,7 +433,7 @@ export const characters = {
     placeOfOrigin: 'Earth',
     skillLevel: 10,
     prize: {
-      credits: 25000,
+      credits: 7500,
       cards: [
         { id: 73, value: 3, type: '±' },
         { id: 72, value: 4, type: '±' },
@@ -475,7 +475,7 @@ export const characters = {
     placeOfOrigin: 'Earth',
     skillLevel: 11,
     prize: {
-      credits: 40000,
+      credits: 1000,
       cards: [
         { id: 71, value: 2, type: '±' },
         { id: 70, value: 3, type: '±' },
@@ -517,7 +517,7 @@ export const characters = {
     placeOfOrigin: 'Mars',
     skillLevel: 12,
     prize: {
-      credits: 100000,
+      credits: 2000,
       cards: [
         { id: 69, value: 4, type: '±' },
         { id: 68, value: 5, type: '±' },
@@ -559,7 +559,7 @@ export const characters = {
     placeOfOrigin: 'Mid-World',
     skillLevel: 13,
     prize: {
-      credits: 500000,
+      credits: 5000,
       cards: [
         { id: 67, value: 3, type: '±' },
         { id: 66, value: 4, type: '±' },
@@ -601,7 +601,7 @@ export const characters = {
     placeOfOrigin: 'Earth',
     skillLevel: 14,
     prize: {
-      credits: 1000000,
+      credits: 10000,
       cards: [
         { id: 65, value: 5, type: '±' },
         { id: 64, value: 6, type: '±' },
@@ -643,7 +643,7 @@ export const characters = {
     placeOfOrigin: 'PaRappa Town',
     skillLevel: 15,
     prize: {
-      credits: 5000000,
+      credits: 50000,
       cards: [
         { id: 63, value: 4, type: '±' },
         { id: 62, value: 5, type: '±' },
@@ -685,7 +685,7 @@ export const characters = {
     placeOfOrigin: 'Unknown',
     skillLevel: 20,
     prize: {
-      credits: 99999999,
+      credits: 999999,
       cards: [
         { id: 61, value: 6, type: '±' },
         { id: 60, value: 6, type: '±' },
@@ -764,7 +764,6 @@ export const characters = {
 };
 
 export const defaultOpponent = {
-  id: '',
   displayName: '',
   strategy: defaultStrategy,
 }

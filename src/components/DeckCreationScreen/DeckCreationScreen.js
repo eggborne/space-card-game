@@ -45,9 +45,7 @@ const StyledDeckCreationScreen = styled.div`
 `;
 
 function deckHasCardWithId(id, deck) {
-  console.log('searching', deck, 'for card with id ' + id);
   const hasCard = deck.filter(card => card.id === id).length > 0;
-  console.log('has?', hasCard)
   return hasCard;
 }
 
@@ -97,7 +95,7 @@ function DeckCreationScreen(props) {
       <div className='available-card-rows'>
         {availableSelection.map(cardObj => 
           selectedCards.indexOf(cardObj) === -1 ? 
-            <Card onClick={() => handleSelectCardClick(cardObj)} key={`available-card-${cardObj.id}`} value={cardObj.value} scale={0.8} />
+            <Card won={cardObj.won} onClick={() => handleSelectCardClick(cardObj)} key={`available-card-${cardObj.id}`} value={cardObj.value} scale={0.8} />
             :
             <Card value={0} key={`available-card-space-${cardObj.id}`} scale={0.8}/>
           )

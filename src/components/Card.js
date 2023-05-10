@@ -98,6 +98,7 @@ function Card(props) {
       style={{ 
         width: `calc(var(--card-width) * ${props.scale || 1})`,
         height: `calc(var(--card-height) * ${props.scale || 1})`,
+        outline: props.won ? '0.25rem solid green' : 'none',
       }}
     >
       <div className='knob-container'>
@@ -117,6 +118,8 @@ function Card(props) {
 Card.propTypes = {
   value: PropTypes.number,
   scale: PropTypes.number,
+  won: PropTypes.bool,
+  type: PropTypes.string,
   onClick: PropTypes.func,
 };
 

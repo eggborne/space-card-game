@@ -52,6 +52,8 @@ function OpponentSelectionScreen(props) {
     props.onSelectOpponent(newOpponent);
   }
 
+  let portraitSize = '12rem';
+
   return (
     <StyledOpponentSelectionScreen style={{ display: props.showing ? 'flex' : 'none' }}>
       <h1 className='opponent-list-header'>Choose Opponent</h1>
@@ -64,7 +66,7 @@ function OpponentSelectionScreen(props) {
             characterObj={characterObj}
             portraitComponent={
               <PlayerPortrait
-                size='calc(var(--main-width) * 0.55)'
+                size={portraitSize}
                 imagePath='images/opponentsheet.jpg'
                 sheetCoords={coordsForIndex(c)}
               />

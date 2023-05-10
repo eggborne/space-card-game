@@ -69,7 +69,7 @@ function PlayerArea(props) {
   const isCPU = !props.playerObject.email;
   return (
     <StyledPlayerArea style={{ flexDirection: isCPU ? 'column-reverse' : 'column'}}>
-      <DealArea>
+      <DealArea style={{ flexDirection: isCPU ? 'column' : 'column-reverse'}}>
         <div className='deal-row'>
           <Card value={0} />
           <Card value={0} />
@@ -82,7 +82,7 @@ function PlayerArea(props) {
           <Card value={0} />
           <Card value={0} />
           <Card value={0} />
-          <Card value={0} />
+          <div style={{visibility: 'hidden'}}><Card value={0} /></div>
         </div>
       </DealArea>
       <HandArea 

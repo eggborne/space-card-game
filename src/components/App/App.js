@@ -92,16 +92,16 @@ function App() {
       credits: 10,
       cpuDefeated: [],
       wonCards: [
-        { value: -7, id: '986'},
-        { value: 8, id: '987'},
-        { value: 7, id: '985'},
+        { value: -7, id: '986', won: true },
+        { value: 8, id: '987', won: true },
+        { value: 7, id: '985', won: true },
       ],
     },
     messages: [],
   };
 
   const defaultOpponentState = {
-    displayName: '',
+    ...defaultOpponent,
     imagePath: 'images/opponentsheet.jpg',
     sheetCoords: { x: randomInt(0, 7), y: randomInt(0, 2) },
   };
