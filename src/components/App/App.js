@@ -16,7 +16,7 @@ import {
   signOut,
   updateProfile
 } from "firebase/auth";
-import { doc, setDoc, getDoc } from "firebase/firestore";
+import { doc, setDoc, updateDoc, getDoc } from "firebase/firestore";
 import { characters, randomOpponents, defaultOpponent } from '../../characters.js';
 import { randomInt, pause } from '../../util.js';
 import NameGenerator from '../../namegenerator.js';
@@ -68,19 +68,18 @@ function App() {
     displayName: '',
     imagePath: 'images/avatarsheetlq.jpg',
     sheetCoords: { x: 0, y: 0 },
+    deck: [],
     startingCards: [
-      { value: 1, id: 999},
-      { value: 1, id: 998},
-      { value: 1, id: 997},
-      { value: 1, id: 996},
-      { value: 2, id: 995},
-      { value: 2, id: 994},
-      { value: 2, id: 993},
-      { value: 3, id: 992},
-      { value: 3, id: 991},
-      { value: 3, id: 990},
-      { value: 4, id: 989},
-      { value: 4, id: 988},
+      { value: 1, id: '999'},
+      { value: 2, id: '998'},
+      { value: 3, id: '997'},
+      { value: 4, id: '996'},
+      { value: 5, id: '995'},
+      { value: -1, id: '993'},
+      { value: -2, id: '992'},
+      { value: -3, id: '991'},
+      { value: -4, id: '990'},
+      { value: -5, id: '989'},
       
     ],
     statistics: {
@@ -93,11 +92,9 @@ function App() {
       credits: 10,
       cpuDefeated: [],
       wonCards: [
-        { value: 6, id: 987},
-        { value: -4, id: 986},
-        { value: -2, id: 985},
-      ],
-      sideDeck: [ // 10 cards chosen by user before game, 4 are randomly chosen for hand
+        { value: -7, id: '986'},
+        { value: 8, id: '987'},
+        { value: 7, id: '985'},
       ],
     },
     messages: [],
@@ -122,13 +119,11 @@ function App() {
 
   const [currentGame, setCurrentGame] = useState({
     user: {
-      deck: [],
       hand: [],
       matchScore: 0,
       setsWon: 0,
     },
     opponent: {
-      deck: [],
       hand: [],
       matchScore: 0,
       setsWon: 0,
@@ -243,8 +238,15 @@ function App() {
     // create a doc in userData with same ID as user
     await setDoc(doc(db, "userData", newUserData.id), newUserData);
     setUser(newUserData);
-    console.log('auth.currentUser', auth.currentUser);
-    console.log('user is now', user);
+  }
+
+  async function handleUpdatingUserDeck(newValue) {
+    const newUserData = {...user};
+    await updateDoc(doc(db, "userData", newUserData.id), {
+      deck: newValue
+    });
+    // await setDoc(doc(db, "userData", newUserData.id), newUserData);
+    setUser(newUserData);
   }
 
   function handleClickPlay() {
@@ -296,26 +298,34 @@ function App() {
   }
 
   function deckHasCardWithId(id) {
-    return currentGame.user.deck.filter(card => card.id === id).length > 0;
+    return user.deck.filter(card => card.id === id).length > 0;
   }
 
   async function handleConfirmDeck() {
-    const chosenDeck = currentGame.user.deck;
+    const chosenDeck = [...user.deck];
     if (chosenDeck.length < 10) {
       const randomNeeded = 10 - chosenDeck.length;
-      let usedCardIds = [];
-      const remainingCards = defaultUserState.startingCards.filter(card => !deckHasCardWithId(card.id) );
+      const remainingCards = [...defaultUserState.startingCards].filter(card => !deckHasCardWithId(card.id) );
       for (let i = 0; i < randomNeeded; i++) {
-        const cardsLeft = remainingCards;
-        const randomCard = cardsLeft[randomInt(0, cardsLeft.length - 1)];
+        const randomIndex = randomInt(0, remainingCards.length - 1);
+        const randomCard = remainingCards[randomIndex];
         console.log(randomCard)
         chosenDeck.push(randomCard);
-        usedCardIds.push(randomCard.id);
+        remainingCards.splice(randomIndex, 1);
       }
     }
-    const newCurrentGame = {...currentGame};
-    newCurrentGame.user.deck = chosenDeck;
-    setCurrentGame(newCurrentGame);
+    // const newCurrentGame = {...currentGame};
+    // newCurrentGame.user.deck = chosenDeck;
+    // setCurrentGame(newCurrentGame);
+
+    const newUser = {...user};
+    newUser.deck = chosenDeck;
+    setUser(newUser);
+
+    if (userLoggedIn) {
+      handleUpdatingUserDeck(chosenDeck);
+    }
+
     setPhase('opponent-selection')
   }
 
@@ -331,6 +341,7 @@ function App() {
         setUserLoggedIn(false);
         setLogOutModalShowing(false);
         setProfileMenuOpen(false);
+        setPhase('title');
       }).catch(function (error) {
         console.log(`There was an error signing out: ${error.message}!`);
       });
@@ -357,14 +368,12 @@ function App() {
   }
 
   function handleAddCardToDeck(cardObj, remove) {
-    if (!remove) {
-      console.warn('adding to deck!');
-      console.table(cardObj);
-    }
-    const newUserDeck = remove ? [...currentGame.user.deck].filter(card => card !== cardObj) : [...currentGame.user.deck, cardObj];
-    const updatedGame = { ...currentGame };
-    updatedGame.user.deck = newUserDeck;
-    setCurrentGame(updatedGame);
+    console.warn(remove ? 'adding to deck!' : 'removeing from deck!');
+    console.table(cardObj);
+    const newUserDeck = remove ? [...user.deck].filter(card => card !== cardObj) : [...user.deck, cardObj];
+    const newUser = {...user};
+    newUser.deck = newUserDeck;
+    setUser(newUser);
   }
 
   function handleClickEndGame() {
@@ -435,12 +444,15 @@ function App() {
             gameMode={gameMode}
             switchGameMode={handleSwitchGameMode}
           />
-          <DeckCreationScreen
-            showing={phase === 'deck-selection'}
-            cardSelection={user.startingCards}
-            currentGame={currentGame}
-            onAddCardToDeck={handleAddCardToDeck}
-          />
+          {phase !== 'title' && 
+            <DeckCreationScreen
+              showing={phase === 'deck-selection'}
+              user={user}
+              cardSelection={[...user.startingCards, ...user.progress.wonCards]}
+              currentGame={currentGame}
+              onAddCardToDeck={handleAddCardToDeck}
+            />
+          }
           <OpponentSelectionScreen
             showing={phase === 'opponent-selection'}
             characters={characters}
@@ -462,7 +474,7 @@ function App() {
           onClickAcceptGameMode={handleAcceptGameMode}
           onClickBackToDeckSelect={() => setPhase('deck-selection')}
           onClickConfirmDeck={handleConfirmDeck}
-          userDeck={currentGame.user.deck}
+          userDeck={user.deck}
           handleToggleHamburger={handleToggleHamburger}
           hamburgerOpen={hamburgerOpen}
         />

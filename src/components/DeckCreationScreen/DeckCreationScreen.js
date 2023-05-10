@@ -46,25 +46,29 @@ const StyledDeckCreationScreen = styled.div`
 `;
 
 function deckHasCardWithId(id, deck) {
-  return deck.filter(card => card.id === id).length > 0;
+  console.log('searching', deck, 'for card with id ' + id);
+  const hasCard = deck.filter(card => card.id === id).length > 0;
+  console.log('has?', hasCard)
+  return hasCard;
 }
 
 function DeckCreationScreen(props) {
-
-  const [ selectedCards, setSelectedCards ] = useState([]);
+  console.log('DeckCreationScreen props', props)
+  const [ selectedCards, setSelectedCards ] = useState(props.user.deck);
 
   useEffect(() => {
-    setSelectedCards(props.currentGame.user.deck);
-  }, [props.currentGame])
+    setSelectedCards(props.user.deck);
+  }, [props.user.deck, selectedCards])
 
-  const availableSelection = props.cardSelection.filter(card => !deckHasCardWithId(card.id, props.currentGame.user.deck));
+  const availableSelection = props.cardSelection.filter(card => !deckHasCardWithId(card.id, props.user.deck));
+  console.log('availableSelection is', availableSelection);
 
   const emptyAvailableCardSpaces = 15 - availableSelection.length;
   const emptySelectedCardSpaces = 10 - selectedCards.length;
 
   function handleSelectCardClick(cardObj) {
     if (selectedCards.length < 10) {
-      // setSelectedCards([...selectedCards, cardObj]);
+      setSelectedCards([...selectedCards, cardObj]);
       props.onAddCardToDeck(cardObj);
     } else {
 
@@ -74,7 +78,7 @@ function DeckCreationScreen(props) {
   function handleReplaceCardClick(cardObj) {
     const newSelectedCards = [...selectedCards];
     newSelectedCards.splice(newSelectedCards.indexOf(cardObj), 1);
-    // setSelectedCards(newSelectedCards);
+    setSelectedCards(newSelectedCards);
     props.onAddCardToDeck(cardObj, true);
   }
 
@@ -116,6 +120,7 @@ function DeckCreationScreen(props) {
 }
 
 DeckCreationScreen.propTypes = {
+  user: PropTypes.object,
   showing: PropTypes.bool,
   cardSelection: PropTypes.arrayOf(PropTypes.object),
   currentGame: PropTypes.object,
