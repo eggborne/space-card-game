@@ -55,7 +55,7 @@ function UserProfileDisplay(props) {
         />
         <div className='stat-list'>
           <h1 className='stat-row'>{props.user.displayName}</h1>
-          {props.userLoggedIn || isGuest &&
+          {(props.userLoggedIn || isGuest) &&
             <>
               {!isGuest && <div className='stat-row'>{props.user.email}</div>}
               <div className='stat-row'>{props.user.progress.credits} credits</div>
