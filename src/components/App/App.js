@@ -63,6 +63,8 @@ const StyledApp = styled.main`
 
 function App() {
   const defaultUITheme = {
+    creatorId: null,
+    name: 'Default',
     '--menu-color': '#8b0000',
     '--secondary-color': '#184738',
     '--inner-shade-color': '#000000',
@@ -159,12 +161,15 @@ function App() {
   });
 
   function applyUserPreferences(preferences=user.preferences) {
+    console.log('applying preferences', preferences);
     const menuColor = preferences.appliedUITheme['--menu-color'];
     const highlightColor = preferences.appliedUITheme['--inner-shade-color'];
+    const secondaryColor = preferences.appliedUITheme['--secondary-color'];
     const roundness = preferences.appliedUITheme['--border-radius'];
 
     ROOT.style.setProperty('--menu-color', menuColor);
     ROOT.style.setProperty('--inner-shade-color', highlightColor + '66');
+    ROOT.style.setProperty('--secondary-color', secondaryColor);
     ROOT.style.setProperty('--border-radius', roundness + 'rem');
   }
 
@@ -174,8 +179,8 @@ function App() {
     if (docSnap.exists()) {
       console.warn('SETTING RETRIEVED DB USERDATA FOR USER!! --------------------', docSnap.data().displayName);
       const retrievedData = docSnap.data();
+      setUser(retrievedData);
       applyUserPreferences(retrievedData.preferences);
-      return setUser(retrievedData);
     } else {
       // docSnap.data() will be undefined in this case
       console.log("No such userData document!");

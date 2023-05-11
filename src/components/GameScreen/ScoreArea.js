@@ -6,14 +6,16 @@ import CardBack from '../CardBack';
 const StyledScoreArea = styled.div`
   width: var(--card-width);
   height: var(--card-height);
+  max-width: calc((var(--main-width) / 5) - (var(--main-padding) * 1.5));
+  max-height: var(--card-max-height);
+  max-width: var(--card-max-width);
   display: flex;
   align-items: center;
   justify-content: center;
-  gap: 10%;
   padding: calc(var(--main-padding) * 2);
-
+  
   & > .set-win-display {
-    width: 100%;
+    max-width: 90%;
     height: calc(var(--card-width) / 2);
     display: flex;
     justify-content: center;
@@ -23,8 +25,17 @@ const StyledScoreArea = styled.div`
     & > div {
       border-radius: 50%;
       border: 1px solid gold;
-      width:  calc(var(--card-width) / 4);
-      height:  calc(var(--card-width) / 4);
+      min-width: calc(var(--card-width) / 4);
+      min-height: calc(var(--card-width) / 4);
+      
+      max-width: 30%;
+      max-height: 30%;
+
+      @media screen and (min-width: 540px) {
+        min-width: calc(var(--card-height) / 6);
+        min-height: calc(var(--card-height) / 6);
+        
+      }
     }
   }
 `;

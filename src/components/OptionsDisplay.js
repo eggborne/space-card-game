@@ -1,16 +1,14 @@
 import PropTypes from 'prop-types';
+import { useEffect } from 'react';
 import styled from 'styled-components';
 
 const StyledOptionsDisplay = styled.div`
-  padding: 1rem;
-  flex-grow: 1;
   color: #eee;
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
   gap: 1rem;
-  
   
   & > .option-row {
     position: relative;
@@ -25,6 +23,7 @@ const StyledOptionsDisplay = styled.div`
       top: 50%;
       left: 50%;
       translate: -50% -50%;
+      pointer-events: none;
       
       &.top-label {
         translate: unset;
@@ -53,6 +52,32 @@ const StyledOptionsDisplay = styled.div`
 
 function OptionsDisplay(props) {
   console.log('OptionsDisplay props: ', props);
+
+  const ui = props.ui;
+
+  useEffect(() => {
+    document.getElementById('menu-color').value = props.ui['--menu-color'];
+    document.getElementById('highlight-color').value = props.ui['--inner-shade-color'];
+    document.getElementById('secondary-color').value = props.ui['--secondary-color'];
+    document.getElementById('border-radius').value = props.ui['--border-radius'];
+  }, [props.ui]);
+
+  useEffect(() => {
+    document.getElementById('menu-color').addEventListener('input', (e) => {
+      document.documentElement.style.setProperty('--menu-color', e.target.value)
+    });
+    document.getElementById('highlight-color').addEventListener('input', (e) => {
+      document.documentElement.style.setProperty('--inner-shade-color', e.target.value + '66')
+    });
+    document.getElementById('secondary-color').addEventListener('input', (e) => {
+      document.documentElement.style.setProperty('--secondary-color', e.target.value)
+    });
+    document.getElementById('border-radius').addEventListener('input', (e) => {
+      document.documentElement.style.setProperty('--border-radius', e.target.value + 'rem')
+    });
+  });
+
+
   return (
     <StyledOptionsDisplay>
       <div className='option-row'>        
@@ -60,7 +85,8 @@ function OptionsDisplay(props) {
         <input 
           type="color" 
           name='menu-color'
-          defaultValue={props.user.preferences.appliedUITheme['--menu-color']}
+          id='menu-color'
+          defaultValue={ui['--menu-color']}
         />
       </div>
       <div className='option-row'>        
@@ -68,7 +94,8 @@ function OptionsDisplay(props) {
         <input 
           type="color" 
           name='highlight-color'
-          defaultValue={props.user.preferences.appliedUITheme['--inner-shade-color']}
+          id='highlight-color'
+          defaultValue={ui['--inner-shade-color']}
         />
       </div>
       <div className='option-row'>        
@@ -76,7 +103,8 @@ function OptionsDisplay(props) {
         <input 
           type="color" 
           name='secondary-color'
-          defaultValue={props.user.preferences.appliedUITheme['--secondary-color']}
+          id='secondary-color'
+          defaultValue={ui['--secondary-color']}
         />
       </div>
       <div className='option-row'>        
@@ -84,10 +112,11 @@ function OptionsDisplay(props) {
         <input 
           type="range"
           min='0'
-          max='2'
+          max='2.5'
           step='0.1'
           name='border-radius'
-          defaultValue={props.user.preferences.appliedUITheme['--border-radius']}
+          id='border-radius'
+          defaultValue={ui['--border-radius']}
         />
       </div>
     </StyledOptionsDisplay>
@@ -95,11 +124,8 @@ function OptionsDisplay(props) {
 }
 
 OptionsDisplay.propTypes = {
-  showing: PropTypes.bool,
   user: PropTypes.object,
-  uiTheme: PropTypes.object,
-  opponent: PropTypes.object,
-  gameMode: PropTypes.string,
+  ui: PropTypes.object,
 };
 
 export default OptionsDisplay;

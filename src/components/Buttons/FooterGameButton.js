@@ -18,7 +18,8 @@ const StyledFooterGameButton = styled.button`
   transition: opacity 200ms ease;
 
   &:hover {
-    border-color: #00ff00aa
+    border-color: #00ff00aa;
+    filter: brightness(150%);
   }
 
   :disabled {

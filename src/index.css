@@ -18,7 +18,7 @@
   --hamburger-open-bg-color: rgb(80, 8, 8);
   --hamburger-bar-color: #878787;
 
-  --button-standard: rgb(145, 145, 145);
+  --button-standard: rgb(121, 145, 153);
   --button-green: rgb(9, 88, 9);
   --button-orange: rgb(157, 126, 33);
   --button-red: rgb(97, 26, 26);
@@ -148,7 +148,7 @@ h1, h2, h3, h4 {
   background-color: var(--inner-shade-color);
   width: calc(100% - var(--menu-padding));
   height: calc(100% - var(--menu-padding));
-  border-radius: calc(var(--border-radius) / 1.5);
+  border-radius: calc(var(--border-radius) / 1);
   z-index: -1;
 }
 
@@ -179,10 +179,6 @@ h1, h2, h3, h4 {
     --main-width: 60vw;
     --card-border-radius: calc(var(--card-height) * 0.1);
     --card-padding: calc(var(--card-height) * 0.075);
-  }
-
-  #starfield {
-    transform: rotate(90);
   }
 
   #root {

@@ -19,6 +19,7 @@ const StyledFooter = styled.footer`
   transition: all 200ms ease;
   z-index: 2;
 
+
   & a {
     color: orange;
     margin: 0 0.325rem;
