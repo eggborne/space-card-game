@@ -70,17 +70,17 @@ function App() {
     sheetCoords: { x: 0, y: 0 },
     deck: [],
     startingCards: [
-      { value: 1, id: '999'},
-      { value: 2, id: '998'},
-      { value: 3, id: '997'},
-      { value: 4, id: '996'},
-      { value: 5, id: '995'},
-      { value: -1, id: '993'},
-      { value: -2, id: '992'},
-      { value: -3, id: '991'},
-      { value: -4, id: '990'},
-      { value: -5, id: '989'},
-      
+      { value: 1, id: '999' },
+      { value: 2, id: '998' },
+      { value: 3, id: '997' },
+      { value: 4, id: '996' },
+      { value: 5, id: '995' },
+      { value: -1, id: '993' },
+      { value: -2, id: '992' },
+      { value: -3, id: '991' },
+      { value: -4, id: '990' },
+      { value: -5, id: '989' },
+
     ],
     statistics: {
       setWins: 0,
@@ -241,7 +241,7 @@ function App() {
   }
 
   async function handleUpdatingUserDeck(newValue) {
-    const newUserData = {...user};
+    const newUserData = { ...user };
     await updateDoc(doc(db, "userData", newUserData.id), {
       deck: newValue
     });
@@ -305,11 +305,11 @@ function App() {
     const chosenDeck = [...user.deck];
     if (chosenDeck.length < 10) {
       const randomNeeded = 10 - chosenDeck.length;
-      const remainingCards = [...defaultUserState.startingCards].filter(card => !deckHasCardWithId(card.id) );
+      const remainingCards = [...defaultUserState.startingCards].filter(card => !deckHasCardWithId(card.id));
       for (let i = 0; i < randomNeeded; i++) {
         const randomIndex = randomInt(0, remainingCards.length - 1);
         const randomCard = remainingCards[randomIndex];
-        console.log(randomCard)
+        console.log(randomCard);
         chosenDeck.push(randomCard);
         remainingCards.splice(randomIndex, 1);
       }
@@ -318,7 +318,7 @@ function App() {
     // newCurrentGame.user.deck = chosenDeck;
     // setCurrentGame(newCurrentGame);
 
-    const newUser = {...user};
+    const newUser = { ...user };
     newUser.deck = chosenDeck;
     setUser(newUser);
 
@@ -326,7 +326,7 @@ function App() {
       handleUpdatingUserDeck(chosenDeck);
     }
 
-    setPhase('opponent-selection')
+    setPhase('opponent-selection');
   }
 
   function handleCloseAvatarModal() {
@@ -371,15 +371,15 @@ function App() {
     console.warn(remove ? 'adding to deck!' : 'removeing from deck!');
     console.table(cardObj);
     const newUserDeck = remove ? [...user.deck].filter(card => card !== cardObj) : [...user.deck, cardObj];
-    const newUser = {...user};
+    const newUser = { ...user };
     newUser.deck = newUserDeck;
     setUser(newUser);
   }
 
   function handleSelectOpponent(newOpponent) {
-    console.log('handlesel got arg')
+    console.log('handlesel got arg');
     console.log(newOpponent);
-    console.log('handlesel maybe merge state.opponent?')
+    console.log('handlesel maybe merge state.opponent?');
     console.log(opponent);
     const mergedOpponent = { ...opponent, ...newOpponent };
     console.log('handlesel mergedOpponent is');
@@ -388,7 +388,12 @@ function App() {
   }
 
   function handleConfirmOpponent() {
-    setPhase('game-board-showing')
+    if (opponent.displayName === '') { // user did not change from Jar Jar
+      const defaultFirstOpponent = { ...opponent, ...characters['jarjarbinks'] };
+      defaultFirstOpponent.sheetCoords = { x: 0, y: 0 };
+      setOpponent(defaultFirstOpponent);
+    }
+    setPhase('game-board-showing');
 
   }
 
@@ -460,7 +465,7 @@ function App() {
             gameMode={gameMode}
             switchGameMode={handleSwitchGameMode}
           />
-          {phase !== 'title' && 
+          {phase !== 'title' &&
             <DeckCreationScreen
               showing={phase === 'deck-selection'}
               user={user}
@@ -480,6 +485,7 @@ function App() {
               hamburgerOpen={hamburgerOpen}
               user={{ ...user }}
               opponent={{ ...opponent }}
+              currentGame={currentGame}
               onClickEndGame={handleClickEndGame}
             />
           }

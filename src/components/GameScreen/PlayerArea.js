@@ -2,6 +2,7 @@ import Card from '../Card';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
 import CardBack from '../CardBack';
+import ScoreArea from './ScoreArea';
 
 const StyledPlayerArea = styled.div`
   
@@ -61,7 +62,14 @@ const DealArea = styled.div`
   & .deal-row {
     display: flex;
     gap: var(--main-padding);
+    
+    & .score-area {
+      align-self: stretch;
+      height: 100%;
+      outline: 1px solid orange;
+    }
   }
+
 
 `;
 
@@ -82,7 +90,8 @@ function PlayerArea(props) {
           <Card value={0} />
           <Card value={0} />
           <Card value={0} />
-          <div style={{visibility: 'hidden'}}><Card value={0} /></div>
+          <div style={{ visibility: 'hidden'}}><Card value={0} /></div>
+          <ScoreArea playerObject={props.playerObject} />
         </div>
       </DealArea>
       <HandArea 

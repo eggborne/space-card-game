@@ -118,6 +118,7 @@ function GameScreen(props) {
 GameScreen.propTypes = {
   user: PropTypes.object,
   opponent: PropTypes.object,
+  currentGame: PropTypes.object,
   showing: PropTypes.bool,
   hamburgerOpen: PropTypes.bool,
   gameMode: PropTypes.string,
