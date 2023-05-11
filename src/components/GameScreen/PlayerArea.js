@@ -90,7 +90,6 @@ function PlayerArea(props) {
           <Card value={0} />
           <Card value={0} />
           <Card value={0} />
-          <div style={{ visibility: 'hidden'}}><Card value={0} /></div>
           <ScoreArea playerObject={props.playerObject} />
         </div>
       </DealArea>

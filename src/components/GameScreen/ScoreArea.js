@@ -4,8 +4,6 @@ import styled from 'styled-components';
 import CardBack from '../CardBack';
 
 const StyledScoreArea = styled.div`
-  position: absolute;
-  right: calc(var(--main-padding) * 2);
   width: var(--card-width);
   height: var(--card-height);
   display: flex;

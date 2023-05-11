@@ -66,7 +66,7 @@ function App() {
   const defaultUserState = {
     email: '',
     displayName: '',
-    imagePath: 'images/avatarsheetlq.jpg',
+    imagePath: 'images/avatarsheet.jpg',
     sheetCoords: { x: 0, y: 0 },
     deck: [],
     startingCards: [
@@ -182,7 +182,7 @@ function App() {
         ...user,
         email: 'guest@guest.guest',
         displayName: user.displayName,
-        imagePath: 'images/avatarsheetlq.jpg',
+        imagePath: 'images/avatarsheet.jpg',
       });
 
       setAvatarChoiceModalShowing(true);
@@ -217,7 +217,7 @@ function App() {
         ...user,
         email: auth.currentUser.email,
         displayName: auth.currentUser.displayName,
-        imagePath: 'images/avatarsheetlq.jpg',
+        imagePath: 'images/avatarsheet.jpg',
         sheetCoords: newSheetCoords,
         id: auth.currentUser.uid,
       };
@@ -406,7 +406,7 @@ function App() {
   return (
     <>
       {loaded && <video id='starfield' loop={true} muted={true}>
-        <source src="https://mikedonovan.dev/pazaak/assets/images/starfieldlq.mp4" type="video/mp4" />
+        <source src="/images/starfield.mp4" type="video/mp4" />
       </video>}
       <StyledApp style={{
         opacity: loaded ? '1' : '0',
