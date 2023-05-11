@@ -2,7 +2,7 @@ import PropTypes from 'prop-types';
 import styled from 'styled-components';
 
 const StyledGameModeSelectItem = styled.div`
-  height: 12rem;
+  height: 9rem;
   width: 20rem;
   padding: 2rem 1rem;
   background-color: rgb(50, 51, 93);

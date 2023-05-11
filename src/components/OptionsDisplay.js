@@ -60,7 +60,7 @@ function OptionsDisplay(props) {
         <input 
           type="color" 
           name='menu-color'
-          defaultValue='#ff0000'
+          defaultValue={props.user.preferences.appliedUITheme['--menu-color']}
         />
       </div>
       <div className='option-row'>        
@@ -68,7 +68,15 @@ function OptionsDisplay(props) {
         <input 
           type="color" 
           name='highlight-color'
-          defaultValue='#ff0000'
+          defaultValue={props.user.preferences.appliedUITheme['--inner-shade-color']}
+        />
+      </div>
+      <div className='option-row'>        
+        <label htmlFor='secondary-color'>Secondary Color</label>
+        <input 
+          type="color" 
+          name='secondary-color'
+          defaultValue={props.user.preferences.appliedUITheme['--secondary-color']}
         />
       </div>
       <div className='option-row'>        
@@ -79,7 +87,7 @@ function OptionsDisplay(props) {
           max='2'
           step='0.1'
           name='border-radius'
-          defaultValue='1'
+          defaultValue={props.user.preferences.appliedUITheme['--border-radius']}
         />
       </div>
     </StyledOptionsDisplay>

@@ -62,6 +62,13 @@ const StyledApp = styled.main`
 `;
 
 function App() {
+  const defaultUITheme = {
+    '--menu-color': '#8b0000',
+    '--secondary-color': '#184738',
+    '--inner-shade-color': '#000000',
+    '--border-radius': '1'
+  };
+
   const defaultUserState = {
     email: '',
     displayName: '',
@@ -95,6 +102,9 @@ function App() {
         { value: 8, id: '987', won: true },
         { value: 7, id: '985', won: true },
       ],
+    },
+    preferences: {
+      appliedUITheme: defaultUITheme,
     },
     messages: [],
   };
@@ -148,12 +158,24 @@ function App() {
     }
   });
 
+  function applyUserPreferences(preferences=user.preferences) {
+    const menuColor = preferences.appliedUITheme['--menu-color'];
+    const highlightColor = preferences.appliedUITheme['--inner-shade-color'];
+    const roundness = preferences.appliedUITheme['--border-radius'];
+
+    ROOT.style.setProperty('--menu-color', menuColor);
+    ROOT.style.setProperty('--inner-shade-color', highlightColor + '66');
+    ROOT.style.setProperty('--border-radius', roundness + 'rem');
+  }
+
   async function setUserDataForId(uid) {
     const docRef = doc(db, "userData", uid);
     const docSnap = await getDoc(docRef);
     if (docSnap.exists()) {
       console.warn('SETTING RETRIEVED DB USERDATA FOR USER!! --------------------', docSnap.data().displayName);
-      return setUser(docSnap.data());
+      const retrievedData = docSnap.data();
+      applyUserPreferences(retrievedData.preferences);
+      return setUser(retrievedData);
     } else {
       // docSnap.data() will be undefined in this case
       console.log("No such userData document!");
@@ -243,6 +265,17 @@ function App() {
     const newUserData = { ...user };
     await updateDoc(doc(db, "userData", newUserData.id), {
       deck: newValue
+    });
+    // await setDoc(doc(db, "userData", newUserData.id), newUserData);
+    setUser(newUserData);
+  }
+
+  async function handleUpdatingUserUITheme(newValue) {
+    console.log('updating user appliedTheme with new value', newValue);
+    const newUserData = { ...user };
+    newUserData.preferences.appliedUITheme = newValue;
+    await updateDoc(doc(db, "uiThemes", newUserData.id), {
+      preferences: newValue,
     });
     // await setDoc(doc(db, "userData", newUserData.id), newUserData);
     setUser(newUserData);
@@ -458,6 +491,7 @@ function App() {
           />
           <OptionsScreen
             showing={phase === 'options'}
+            user={user}
           />
           <GameModeSelectScreen
             showing={phase === 'game-mode-select'}

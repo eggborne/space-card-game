@@ -32,7 +32,7 @@ const GameBoard = styled.div`
   align-items: center;
   justify-items: center;
   font-weight: bold;
-  transition: transform 900ms ease, opacity 700ms ease;
+  transition: transform 1350ms ease, opacity 1000ms ease;
 `;
 
 function GameScreen(props) {

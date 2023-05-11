@@ -8,7 +8,7 @@ const StyledAvatarChoiceModal = styled.div`
   position: absolute;
   top: 50%;
   left: 50%;
-  transform: translate(-50%, -50%);
+  translate: -50% -50%;
   background-color: brown;
   border-radius: var(--border-radius);
   display: flex;
@@ -38,7 +38,8 @@ const StyledAvatarChoiceModal = styled.div`
     display: grid;
     grid-template-columns: repeat(4, 1fr);
     grid-template-rows: repeat(6, 1fr);
-    height: 24rem;
+    height: 16rem;
+    max-height: 80vh;
     overflow-x: hidden;
     overflow-y: scroll;
   }
@@ -98,7 +99,7 @@ function AvatarChoiceModal(props) {
     <StyledAvatarChoiceModal style={{
       opacity: props.showing ? '1' : '0',
       pointerEvents: props.showing ? 'all' : 'none',
-      // scale: props.showing ? '1' : '0.9',
+      scale: props.showing ? '1' : '1.1',
     }}>
       {props.playingAsGuest && 
         <>
