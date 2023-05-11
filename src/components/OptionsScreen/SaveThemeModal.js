@@ -15,7 +15,7 @@ const StyledSaveThemeModal = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
-  padding: 1rem;
+  padding: 2rem 1rem;
   z-index: 2;
 
   opacity: 0;
@@ -32,6 +32,13 @@ const StyledSaveThemeModal = styled.div`
 
   & > h2 {
     margin-bottom: 1rem;
+  }
+
+  & .bottom-button-area {
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+    gap: 1rem;
   }
 
   & form {
@@ -74,27 +81,23 @@ const StyledSaveThemeModal = styled.div`
   }
 `;
 
-const ClickablePortraitContainer = styled.div`
-  padding: 0.25rem;
-  opacity: 0.5;
-  transition: all 200ms;
-  cursor: pointer;
-  
-  &.selected {
-    opacity: 1;
+function SaveThemeModal(props) { 
 
-    & > div {
-      border-color: lightgreen;
+  const [themeNameOK, setThemeNameOK] = useState('');
+
+  function handleThemeNameInputChange(e) {
+    setThemeNameOK(e.target.value.length >= 1);
+  }
+  function handleSubmitSaveThemeForm(e) {
+    e.preventDefault();
+    const enteredName = e.target['theme-name'].value;
+    if (typeof enteredName === 'string') {
+      props.onClickOK(enteredName);
+    } else {
+      console.error('Theme name from form was not string');
     }
   }
 
-  &:hover {
-    scale: 1.05;
-    opacity: 1;
-  }
-`;
-
-function SaveThemeModal(props) { 
   return (
     <StyledSaveThemeModal 
       style={{
@@ -105,18 +108,19 @@ function SaveThemeModal(props) {
       className='menu-style'
     >
       <h2>Save Theme</h2>
-      <form>
+      <form onSubmit={handleSubmitSaveThemeForm}>
         <div className='form-row'>
-          <input type='text' name='theme-title' placeholder='Name your theme'/>
+          <input onInput={handleThemeNameInputChange} type='text' name='theme-name' placeholder='Name your theme'/>
         </div>
         <div className='form-row'>
           <label htmlFor='make-public'>Public</label>
           <input defaultChecked type='checkbox' name='make-public' />
         </div>
         <div className='bottom-button-area'>
-          <Button onClick={props.onClickOK} color='green' label='OK!' />
+          <Button disabled={!themeNameOK} color='green' label='OK!' />
         </div>
       </form>
+      <Button type='button' onClick={props.onClickCancel} label='Cancel' />
     </StyledSaveThemeModal>
   );
 }
@@ -124,6 +128,7 @@ function SaveThemeModal(props) {
 SaveThemeModal.propTypes = {
   showing: PropTypes.bool,
   onClickOK: PropTypes.func,
+  onClickCancel: PropTypes.func,
 };
 
 export default SaveThemeModal;

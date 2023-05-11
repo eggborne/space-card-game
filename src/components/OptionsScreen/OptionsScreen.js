@@ -3,8 +3,9 @@ import styled from 'styled-components';
 import OptionsDisplay from '../OptionsDisplay';
 import Button from '../Buttons/Button';
 import ThemeSelectModal from './ThemeSelectModal';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import SaveThemeModal from './SaveThemeModal';
+import ScreenVeil from '../ScreenVeil';
 
 const StyledOptionsScreen = styled.div`
   position: absolute;
@@ -20,6 +21,7 @@ const StyledOptionsScreen = styled.div`
   justify-content: center;
   gap: 1rem;
   border-radius: var(--border-radius);
+  width: var(--main-width);
 
   opacity: 1;
   scale: 1;
@@ -30,7 +32,6 @@ const StyledOptionsScreen = styled.div`
   transition: all 300ms ease-out;
 
   & > .scroll-container {
-    width: var(--main-width);
     height: calc(var(--actual-height) - var(--expanded-footer-height) - var(--header-height));
     padding: 2rem;
     display: flex;
@@ -81,24 +82,35 @@ const StyledOptionsScreen = styled.div`
 
 function OptionsScreen(props) {
   console.log('OptionsScreen props: ', props);
-  const [browseThemeModalShowing, setBrowseThemeModalShowing] = useState(false);
+  const [themeSelectModalShowing, setThemeSelectModalShowing] = useState(false);
   const [saveThemeModalShowing, setSaveThemeModalShowing] = useState(false);
+
+  function handleSubmitSaveThemeForm(newThemeName) {
+    setSaveThemeModalShowing(false);
+    props.handleSavingTheme(newThemeName);
+  }
+  
+  async function handleClickBrowseThemes() {
+    await props.getUIThemes();
+    setThemeSelectModalShowing(true);
+  }
 
   return (
     <StyledOptionsScreen
       className={props.showing ? '' : ' hidden'}
     >
+      <ScreenVeil showing={themeSelectModalShowing || saveThemeModalShowing} />
       <div className='scroll-container'>
         <h1>Options</h1>
         <h4>using theme <span>{props.user.preferences.appliedUITheme.name}</span></h4>
         <OptionsDisplay ui={props.user.preferences.appliedUITheme} />
         <div className='theme-button-area'>
-          <Button onClick={() => setBrowseThemeModalShowing(true)} color='orange' label='Browse themes' />
+          <Button onClick={handleClickBrowseThemes} color='orange' label='Browse themes' />
           <Button onClick={() => setSaveThemeModalShowing(true)} color='green' label='Save theme...' />
         </div>
       </div>
-      <ThemeSelectModal showing={browseThemeModalShowing} onClickOK={() => setBrowseThemeModalShowing(false)} />
-      <SaveThemeModal showing={saveThemeModalShowing} onClickOK={() => setSaveThemeModalShowing(false)} />
+      <ThemeSelectModal uiThemes={props.uiThemes} showing={themeSelectModalShowing} onClickOK={() => setThemeSelectModalShowing(false)} onClickCancel={() => setThemeSelectModalShowing(false)} />
+      <SaveThemeModal showing={saveThemeModalShowing} onClickOK={handleSubmitSaveThemeForm} onClickCancel={() => setSaveThemeModalShowing(false)} />
     </StyledOptionsScreen>
   );
 }
@@ -108,6 +120,9 @@ OptionsScreen.propTypes = {
   user: PropTypes.object,
   opponent: PropTypes.object,
   gameMode: PropTypes.string,
+  getUIThemes: PropTypes.func,
+  uiThemes: PropTypes.object,
+  handleSavingTheme: PropTypes.func,
 };
 
 export default OptionsScreen;

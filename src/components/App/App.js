@@ -10,13 +10,14 @@ import Modal from '../Modal';
 import ScreenVeil from '../ScreenVeil';
 import styled from 'styled-components';
 import { db, auth } from '../../firebase.js';
+import { v4 } from 'uuid';
 import {
   createUserWithEmailAndPassword,
   signInWithEmailAndPassword,
   signOut,
   updateProfile
 } from "firebase/auth";
-import { doc, setDoc, updateDoc, getDoc } from "firebase/firestore";
+import { collection, query, where, doc, setDoc, updateDoc, getDoc, getDocs } from "firebase/firestore";
 import { characters, randomOpponents, defaultOpponent } from '../../characters.js';
 import { randomInt, pause } from '../../util.js';
 import NameGenerator from '../../namegenerator.js';
@@ -63,12 +64,11 @@ const StyledApp = styled.main`
 
 function App() {
   const defaultUITheme = {
-    creatorId: null,
-    name: 'Default',
+    name: '',
     '--menu-color': '#8b0000',
     '--secondary-color': '#184738',
     '--inner-shade-color': '#000000',
-    '--border-radius': '1'
+    '--border-radius': '1',
   };
 
   const defaultUserState = {
@@ -119,6 +119,7 @@ function App() {
 
   const [loaded, setLoaded] = useState(false);
   const [userLoggedIn, setUserLoggedIn] = useState(false);
+  const [uiThemes, setUIThemes] = useState({ public: [], private: [] });
   const [phase, setPhase] = useState('title');
   const [gameMode, setGameMode] = useState('Campaign');
   const [logOutModalShowing, setLogOutModalShowing] = useState(false);
@@ -160,7 +161,7 @@ function App() {
     }
   });
 
-  function applyUserPreferences(preferences=user.preferences) {
+  function applyUserPreferences(preferences = user.preferences) {
     console.log('applying preferences', preferences);
     const menuColor = preferences.appliedUITheme['--menu-color'];
     const highlightColor = preferences.appliedUITheme['--inner-shade-color'];
@@ -431,7 +432,37 @@ function App() {
       setOpponent(defaultFirstOpponent);
     }
     setPhase('game-board-showing');
+  }
 
+  async function handleSavingTheme(newThemeName) {
+    console.log('saving name', newThemeName);
+    const newThemeDoc = {
+      ...user.preferences.appliedUITheme,
+      creatorId: user.id,
+      name: newThemeName,
+    };
+
+    // const dbRef = doc(db, 'uiThemes', v4());
+    // setDoc(dbRef, { capital: true }, { merge: true });
+
+
+    console.log('saving themeDoc', newThemeDoc);
+    // await setDoc(doc(db, "uiThemes"), newThemeDoc);
+    // console.log('saved themeDoc!');
+  }
+
+  async function getUIThemes() {
+    console.log('document');
+    const q = query(collection(db, "uiThemes"), where("public", "==", true));
+    const querySnapshot = await getDocs(q);
+    const newThemes = [];
+    querySnapshot.forEach((doc) => {
+      // doc.data() is never undefined for query doc snapshots
+      console.log(doc.id, " => ", doc.data());
+      const themeObj = { ...doc.data(), id: doc.id };
+      newThemes.push(themeObj);
+    });
+    setUIThemes(newThemes);
   }
 
   function handleClickEndGame() {
@@ -497,6 +528,9 @@ function App() {
           <OptionsScreen
             showing={phase === 'options'}
             user={user}
+            handleSavingTheme={handleSavingTheme}
+            getUIThemes={getUIThemes}
+            uiThemes={uiThemes}
           />
           <GameModeSelectScreen
             showing={phase === 'game-mode-select'}

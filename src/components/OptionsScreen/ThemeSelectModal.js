@@ -15,12 +15,11 @@ const StyledThemeSelectModal = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
-  padding: 1rem;
+  padding: 2rem 1rem;
   z-index: 2;
 
   opacity: 0;
   pointer-events: none;
-  // scale: 0.9;
   transition: all 200ms ease;
 
   & input {
@@ -35,42 +34,61 @@ const StyledThemeSelectModal = styled.div`
     margin-bottom: 1rem;
   }
 
-  & > .theme-grid {
-    display: grid;
-    grid-template-columns: repeat(4, 1fr);
-    grid-template-rows: repeat(6, 1fr);
-    min-height: 16rem;
-    overflow-x: hidden;
+  & > .theme-list {
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+    width: 100%;
+    gap: 0.5rem;
     overflow-y: scroll;
-  }
 
-  & > .bottom-button-area {
-    margin: 1rem;
-    margin-top: 2rem;
+    & .theme-list-item {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: space-between;
+      gap: 1rem;
+      overflow: hidden;
+    }
   }
-`;
-
-const ClickablePortraitContainer = styled.div`
-  padding: 0.25rem;
-  opacity: 0.5;
+  
+  & .bottom-button-area {
+    margin-top: 1rem;
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+    justify-content: center;
+    padding: 1rem;
+    width: 16rem;
+    gap: 1rem;
+  }
+  `;
+  
+const ClickableThemeContainer = styled.div`
+  padding: 2rem 1rem;
+  border: 0.25rem solid var(--inner-shade-color);
+  border-radius: var(--border-radius);
+  opacity: 0.75;
   transition: all 200ms;
   cursor: pointer;
   
   &.selected {
     opacity: 1;
+    border-color: lightgreen;
 
-    & > div {
-      border-color: lightgreen;
+    & div {
     }
-  }
-
-  &:hover {
-    scale: 1.05;
-    opacity: 1;
   }
 `;
 
 function ThemeSelectModal(props) { 
+  console.log("themeselect props:", props);
+
+  const [selectedTheme, setSelectedTheme] = useState(null);
+
+  function handleClickTheme(themeId) {
+    setSelectedTheme(themeId);
+  }
 
   return (
     <StyledThemeSelectModal 
@@ -82,19 +100,36 @@ function ThemeSelectModal(props) {
       className='menu-style'
     >
       <h2>Choose Theme</h2>
-      <div className='theme-grid'>
-        
+      <div className='theme-list'>
+        {props.uiThemes && props.uiThemes.length && props.uiThemes.map(theme => 
+        <ClickableThemeContainer 
+          className={selectedTheme === theme.id ? 'selected' : ''} 
+          onClick={() => handleClickTheme(theme.id)} 
+          style={{ 
+            backgroundColor: theme['--menu-color'],
+            borderRadius: theme['--border-radius'] + 'rem',
+          }}
+        >
+          <div className='theme-list-item'>
+            <div>{theme.name}</div>
+            {/* <div>{theme.creatorId}</div> */}
+          </div>
+        </ClickableThemeContainer>
+        )}
       </div>
       <div className='bottom-button-area'>
         <Button onClick={props.onClickOK} color='green' label='OK!' />
       </div>
+      <Button onClick={props.onClickCancel} label='Cancel' />
     </StyledThemeSelectModal>
   );
 }
 
 ThemeSelectModal.propTypes = {
   showing: PropTypes.bool,
+  uiThemes: PropTypes.object,
   onClickOK: PropTypes.func,
+  onClickCancel: PropTypes.func,
 };
 
 export default ThemeSelectModal;
