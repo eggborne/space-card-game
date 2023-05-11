@@ -62,7 +62,6 @@ const StyledApp = styled.main`
 `;
 
 function App() {
-
   const defaultUserState = {
     email: '',
     displayName: '',
