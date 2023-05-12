@@ -85,7 +85,7 @@ function CharacterInfoCard(props) {
           <div>Prize: {char.prize.credits} credits</div>
           <div className='prize-card-display'>
             {char.prize.cards.map(cardObj => 
-              <Card scale={0.75} {...cardObj} />
+              <Card key={cardObj.id} scale={0.75} {...cardObj} />
             )}
           </div>
         </div>

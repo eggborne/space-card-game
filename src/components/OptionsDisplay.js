@@ -57,45 +57,53 @@ function OptionsDisplay(props) {
 
   useEffect(() => {
     document.getElementById('menu-color').value = props.ui['--menu-color'];
-    document.getElementById('highlight-color').value = props.ui['--inner-shade-color'];
+    document.getElementById('menu-border-color').value = props.ui['--menu-border-color'];
     document.getElementById('secondary-color').value = props.ui['--secondary-color'];
     document.getElementById('border-radius').value = props.ui['--border-radius'];
-  }, [props.ui]);
+    document.getElementById('menu-border-width').value = props.ui['--menu-border-width'];
+  }, [ui]);
 
   useEffect(() => {
-    document.getElementById('menu-color').addEventListener('input', (e) => {
-      document.documentElement.style.setProperty('--menu-color', e.target.value)
-    });
-    document.getElementById('highlight-color').addEventListener('input', (e) => {
-      document.documentElement.style.setProperty('--inner-shade-color', e.target.value + '66')
-    });
-    document.getElementById('secondary-color').addEventListener('input', (e) => {
-      document.documentElement.style.setProperty('--secondary-color', e.target.value)
-    });
-    document.getElementById('border-radius').addEventListener('input', (e) => {
-      document.documentElement.style.setProperty('--border-radius', e.target.value + 'rem')
-    });
-  });
+    if (props.user) {
+      document.getElementById('menu-color').addEventListener('input', (e) => {
+        document.documentElement.style.setProperty('--menu-color', e.target.value);
+      });
+      document.getElementById('menu-color').addEventListener('change', (e) => {
+        props.handleUpdatingAppliedTheme({...props.user.preferences.appliedUITheme, '--menu-color': e.target.value});
+      });
+      document.getElementById('menu-border-color').addEventListener('input', (e) => {
+        document.documentElement.style.setProperty('--menu-border-color', e.target.value + '66')
+      });
+      document.getElementById('menu-border-color').addEventListener('change', (e) => {
+        props.handleUpdatingAppliedTheme({...props.user.preferences.appliedUITheme, '--menu-border-color': e.target.value})
+      });
+      document.getElementById('secondary-color').addEventListener('input', (e) => {
+        document.documentElement.style.setProperty('--secondary-color', e.target.value)
+      });
+      document.getElementById('secondary-color').addEventListener('change', (e) => {
+        props.handleUpdatingAppliedTheme({...props.user.preferences.appliedUITheme, '--secondary-color': e.target.value})
+      });
+      document.getElementById('border-radius').addEventListener('input', async (e) => {
+        document.documentElement.style.setProperty('--border-radius', e.target.value + 'rem')
+        await props.handleUpdatingAppliedTheme({...props.user.preferences.appliedUITheme, '--border-radius': e.target.value})
+      });
+      document.getElementById('menu-border-width').addEventListener('input', async (e) => {
+        document.documentElement.style.setProperty('--menu-border-width', e.target.value + 'rem')
+        await props.handleUpdatingAppliedTheme({...props.user.preferences.appliedUITheme, '--menu-border-width': e.target.value})
+      });
+    }
+  }, [props.user]);
 
 
   return (
     <StyledOptionsDisplay>
       <div className='option-row'>        
-        <label htmlFor='main-color'>Menu Color</label>
+        <label htmlFor='menu-color'>Menu Color</label>
         <input 
           type="color" 
           name='menu-color'
           id='menu-color'
           defaultValue={ui['--menu-color']}
-        />
-      </div>
-      <div className='option-row'>        
-        <label htmlFor='main-color'>Highlight Color</label>
-        <input 
-          type="color" 
-          name='highlight-color'
-          id='highlight-color'
-          defaultValue={ui['--inner-shade-color']}
         />
       </div>
       <div className='option-row'>        
@@ -108,7 +116,28 @@ function OptionsDisplay(props) {
         />
       </div>
       <div className='option-row'>        
-        <label className='top-label' htmlFor='main-color'>Roundness</label>
+        <label htmlFor='menu-border-color'>Border Color</label>
+        <input 
+          type="color" 
+          name='menu-border-color'
+          id='menu-border-color'
+          defaultValue={ui['--menu-border-color']}
+        />
+      </div>
+      <div className='option-row'>        
+        <label className='top-label' htmlFor='menu-border-width'>Border Width</label>
+        <input 
+          type="range"
+          min='0'
+          max='0.8'
+          step='0.1'
+          name='menu-border-width'
+          id='menu-border-width'
+          defaultValue={ui['--menu-border-width']}
+        />
+      </div>
+      <div className='option-row'>        
+        <label className='top-label' htmlFor='border-radius'>Roundness</label>
         <input 
           type="range"
           min='0'
@@ -126,6 +155,7 @@ function OptionsDisplay(props) {
 OptionsDisplay.propTypes = {
   user: PropTypes.object,
   ui: PropTypes.object,
+  handleUpdatingAppliedTheme: PropTypes.func,
 };
 
 export default OptionsDisplay;

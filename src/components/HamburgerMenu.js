@@ -5,7 +5,7 @@ import Button from './Buttons/Button';
 const StyledHamburgerMenu = styled.div`
   --hamburger-menu-width: calc(var(--main-width) * 0.7);
   position: absolute;
-  bottom: calc(var(--expanded-footer-height) - (var(--border-radius) / 2));
+  bottom: calc(var(--expanded-footer-height) + (var(--main-padding) / 2));
   right: 0;
   min-height: 60vh;
   width: var(--hamburger-menu-width);
@@ -17,24 +17,19 @@ const StyledHamburgerMenu = styled.div`
   padding: var(--menu-padding);
   padding-bottom: 1.5rem;
  
-  border-right: none;
-  border-radius: unset;
+  border-right: none !important;
+  border-top-right-radius: unset;
+  border-bottom-right-radius: unset;
   border-top-left-radius: var(--border-radius);
   border-width: var(--button-border-width);
   transform: translateX(100%);
   transition: transform 300ms ease-in;
   will-change: transform;
+
   z-index: 2;
 
   & button {
     padding: 1rem;
-  }
-
-  &::before {
-    right: 0;
-    bottom: 0;
-    border-radius: unset;
-    border-top-left-radius: calc(var(--border-radius) / 1.5);
   }
 
   &.open {

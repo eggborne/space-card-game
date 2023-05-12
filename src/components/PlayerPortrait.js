@@ -7,16 +7,20 @@ const PortraitContainer = styled.div`
 
 const StyledPlayerPortrait = styled.div`
   box-sizing: content-box;
-  border-radius: 10%;
+  // border-radius: 10%;
+  border-radius: 50%;
   border: 0.1rem solid darksalmon;
   background-repeat: no-repeat;
 `;
 
 const PortraitNameLabel = styled.div`
   position: absolute;
-  bottom: var(--main-padding);
-  left: var(--main-padding);
-  text-shadow: 0 0 0.25rem #000000;
+  bottom: 0%;
+  width: 100%;
+  text-align: center;
+  left: 50%;
+  transform: translate(-50%);
+  text-shadow: 0 0 0.5rem #000000;
   z-index: 3;
 `;
 

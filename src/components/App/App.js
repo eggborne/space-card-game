@@ -67,7 +67,7 @@ function App() {
     name: '',
     '--menu-color': '#8b0000',
     '--secondary-color': '#184738',
-    '--inner-shade-color': '#000000',
+    '--menu-border-color': '#000000',
     '--border-radius': '1',
   };
 
@@ -161,17 +161,25 @@ function App() {
     }
   });
 
-  function applyUserPreferences(preferences = user.preferences) {
-    console.log('applying preferences', preferences);
-    const menuColor = preferences.appliedUITheme['--menu-color'];
-    const highlightColor = preferences.appliedUITheme['--inner-shade-color'];
-    const secondaryColor = preferences.appliedUITheme['--secondary-color'];
-    const roundness = preferences.appliedUITheme['--border-radius'];
+  function applyUserPreferences(newPreferences = user.preferences, retrievedData = user) {
+    console.log('applying preferences', newPreferences);
+    const menuColor = newPreferences.appliedUITheme['--menu-color'];
+    const menuBorderColor = newPreferences.appliedUITheme['--menu-border-color'];
+    const secondaryColor = newPreferences.appliedUITheme['--secondary-color'];
+    const roundness = newPreferences.appliedUITheme['--border-radius'];
+    const menuBorderWidth = newPreferences.appliedUITheme['--menu-border-width'];
 
     ROOT.style.setProperty('--menu-color', menuColor);
-    ROOT.style.setProperty('--inner-shade-color', highlightColor + '66');
+    ROOT.style.setProperty('--menu-border-color', menuBorderColor + '66');
     ROOT.style.setProperty('--secondary-color', secondaryColor);
     ROOT.style.setProperty('--border-radius', roundness + 'rem');
+    ROOT.style.setProperty('--menu-border-width', menuBorderWidth + 'rem');
+
+    setUser(retrievedData);
+
+    // const newUserData = { ...user };
+    // newUserData.preferences.appliedUITheme = preferences.appliedUITheme;
+    // setUser(newUserData);
   }
 
   async function setUserDataForId(uid) {
@@ -180,8 +188,8 @@ function App() {
     if (docSnap.exists()) {
       console.warn('SETTING RETRIEVED DB USERDATA FOR USER!! --------------------', docSnap.data().displayName);
       const retrievedData = docSnap.data();
-      setUser(retrievedData);
-      applyUserPreferences(retrievedData.preferences);
+      applyUserPreferences(retrievedData.preferences, retrievedData);
+      // setUser(retrievedData);
     } else {
       // docSnap.data() will be undefined in this case
       console.log("No such userData document!");
@@ -276,14 +284,10 @@ function App() {
     setUser(newUserData);
   }
 
-  async function handleUpdatingUserUITheme(newValue) {
-    console.log('updating user appliedTheme with new value', newValue);
+  async function handleUpdatingAppliedTheme(newValue) {
     const newUserData = { ...user };
     newUserData.preferences.appliedUITheme = newValue;
-    await updateDoc(doc(db, "uiThemes", newUserData.id), {
-      preferences: newValue,
-    });
-    // await setDoc(doc(db, "userData", newUserData.id), newUserData);
+    await updateDoc(doc(db, "userData", newUserData.id), newUserData);
     setUser(newUserData);
   }
 
@@ -435,19 +439,22 @@ function App() {
   }
 
   async function handleSavingTheme(newThemeName) {
-    console.log('saving name', newThemeName);
-    const newThemeDoc = {
-      ...user.preferences.appliedUITheme,
-      creatorId: user.id,
-      name: newThemeName,
-    };
+    console.warn('---------------------------')
+    console.log('saving theme with name', newThemeName);
+    console.log('user ui is', user.preferences.appliedUITheme)
+    // const newThemeDoc = {
+    //   ...user.preferences.appliedUITheme,
+    //   creatorId: user.id,
+    //   name: newThemeName,
+    //   public: true,
+    // };
+    // console.log(newThemeDoc);
+    // console.warn('---------------------------')
 
     // const dbRef = doc(db, 'uiThemes', v4());
-    // setDoc(dbRef, { capital: true }, { merge: true });
+    // await setDoc(dbRef, newThemeDoc);
+    // console.warn('set doc??')
 
-    console.log('saving themeDoc', newThemeDoc);
-    // await setDoc(doc(db, "uiThemes"), newThemeDoc);
-    // console.log('saved themeDoc!');
   }
 
   async function getUIThemes() {
@@ -545,6 +552,7 @@ function App() {
             showing={phase === 'options'}
             user={user}
             uiThemes={uiThemes}
+            handleUpdatingAppliedTheme={handleUpdatingAppliedTheme}
             handleSavingTheme={handleSavingTheme}
             getUIThemes={getUIThemes}
             applyUserPreferences={applyUserPreferences}

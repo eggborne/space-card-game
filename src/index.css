@@ -10,7 +10,8 @@
   --main-font: 'Nova Flat';
   
   --menu-color: #8b0000;
-  --inner-shade-color: #00000066;
+  --menu-border-color: #00000066;
+  --menu-border-width: 0.25rem;
   --secondary-color: #184738;
   --border-radius: 1rem;
 
@@ -52,7 +53,7 @@
 }
 
 html {
-  background-color: black;
+  background-color: white;
 }
 body {
   margin: 0;
@@ -66,6 +67,11 @@ body {
   background-size: cover;
   background-position: center;
   background-color: black;
+  background-image: url(../public/images/starfieldframe.png);
+}
+
+video {
+  /* display: none; */
 }
 
 input, select {
@@ -135,23 +141,24 @@ h1, h2, h3, h4 {
 .menu-style {
   box-sizing: border-box;
   background-color: var(--menu-color);
-  border: solid #00000044;
+  /* border: solid #00000044; */
+  border: var(--menu-border-width) solid var(--menu-border-color) !important;
   border-radius: var(--border-radius);
   box-shadow: var(--main-box-shadow);
 }
 
-.menu-style::before {
+/* .menu-style::before {
   content: '';
   position: absolute;
   top: calc(var(--menu-padding) / 2);
   left: calc(var(--menu-padding) / 2);
-  background-color: var(--inner-shade-color);
+  background-color: var(--menu-border-color);
   width: calc(100% - var(--menu-padding));
   height: calc(100% - var(--menu-padding));
   border-radius: calc(var(--border-radius) / 1);
   z-index: -1;
   transition: inherit;
-}
+} */
 
 @media screen and (max-width: 540px) {
   #starfield {

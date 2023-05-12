@@ -11,7 +11,6 @@ const StyledOptionsScreen = styled.div`
   position: absolute;
   top: calc(var(--header-height) + (var(--main-padding) / 2));
   left: 0;
-  // margin-top: var(--header-height);
   
   background-color: var(--secondary-color);
   color: #eee;
@@ -58,13 +57,14 @@ const StyledOptionsScreen = styled.div`
     gap: 1rem;
     height: calc(var(--actual-height) - var(--expanded-footer-height) - var(--header-height) - (var(--main-padding)));
 
-    & > h1, > h4 {
+    & > h1, h4 {
       text-align: center;
       padding-bottom: 1rem;
     }
     
-    & > h4 {
-      color: #aaa;
+    & h4 {
+      color: #ddd;
+      font-weight: normal;
       & > span {
         color: lightgreen;
       }
@@ -87,7 +87,7 @@ const StyledOptionsScreen = styled.div`
 
   & input {
     cursor: pointer;
-    border-color: var(--inner-shade-color);
+    border-color: var(--menu-border-color);
   }
 
  
@@ -123,9 +123,9 @@ function OptionsScreen(props) {
       <div className='scroll-container'>
         <h1>Options</h1>
         <section className='option-section'>
-          <h4 className='section-label'>User Interface</h4>
+          <h3 className='section-label'>User Interface</h3>
           {props.user.preferences.appliedUITheme.name && <h4>using theme <span>{props.user.preferences.appliedUITheme.name}</span></h4>}
-          <OptionsDisplay ui={props.user.preferences.appliedUITheme} />
+          <OptionsDisplay user={props.user} ui={props.user.preferences.appliedUITheme} handleUpdatingAppliedTheme={props.handleUpdatingAppliedTheme} />
           <div className='theme-button-area'>
             <Button onClick={handleClickBrowseThemes} color='orange' label='Browse themes' />
             <Button onClick={() => setSaveThemeModalShowing(true)} color='green' label='Save theme...' />
@@ -136,6 +136,7 @@ function OptionsScreen(props) {
         uiThemes={props.uiThemes} 
         showing={themeSelectModalShowing}
         applyUserPreferences={props.applyUserPreferences}
+        handleUpdatingAppliedTheme={props.handleUpdatingAppliedTheme}
         onClickOK={() => setThemeSelectModalShowing(false)} 
         onClickCancel={() => setThemeSelectModalShowing(false)} 
       />
@@ -152,6 +153,7 @@ OptionsScreen.propTypes = {
   getUIThemes: PropTypes.func,
   applyUserPreferences: PropTypes.func,
   uiThemes: PropTypes.object,
+  handleUpdatingAppliedTheme: PropTypes.func,
   handleSavingTheme: PropTypes.func,
 };
 

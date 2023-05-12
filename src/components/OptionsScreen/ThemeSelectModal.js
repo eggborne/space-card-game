@@ -47,12 +47,24 @@ const StyledThemeSelectModal = styled.div`
     gap: 0.5rem;
 
     & .theme-list-item {
+      position: relative;
       display: flex;
       flex-direction: column;
       align-items: center;
       justify-content: space-between;
       gap: 1rem;
+
       overflow: hidden;
+
+      & > .secondary-panel {
+        border: 0.25rem solid #00000066;
+        width: 70%;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 0.5rem;
+        padding: 1rem;
+      }
     }
   }
   
@@ -69,19 +81,14 @@ const StyledThemeSelectModal = styled.div`
   `;
   
 const ClickableThemeContainer = styled.div`
-  padding: 1rem 1rem;
-  border: 0.25rem solid var(--inner-shade-color);
+  padding: 1rem;
+  border: 0.25rem solid var(--menu-border-color);
   border-radius: var(--border-radius);
-  opacity: 0.75;
   transition: all 200ms;
   cursor: pointer;
   
   &.selected {
-    opacity: 1;
     border-color: lightgreen;
-
-    & div {
-    }
   }
 `;
 
@@ -90,8 +97,9 @@ function ThemeSelectModal(props) {
 
   const [selectedTheme, setSelectedTheme] = useState(null);
 
-  function handleClickTheme(themeId) {
-    setSelectedTheme(themeId);
+  async function handleClickTheme(theme) {
+    await props.applyUserPreferences({ appliedUITheme: theme });
+    setSelectedTheme(theme.id);
   }
 
   return (
@@ -109,7 +117,7 @@ function ThemeSelectModal(props) {
         <ClickableThemeContainer 
           key={theme.id}
           className={selectedTheme === theme.id ? 'selected' : ''} 
-          onClick={() => handleClickTheme(theme.id)} 
+          onClick={() => handleClickTheme(theme)} 
           style={{ 
             backgroundColor: theme['--menu-color'],
             borderRadius: theme['--border-radius'] + 'rem',
@@ -117,12 +125,14 @@ function ThemeSelectModal(props) {
         >
           <div className='theme-list-item'>
             <h2>{theme.name}</h2>
-            <div>by {theme.creatorData.displayName}</div>
-            <PlayerPortrait
-              size='calc(var(--header-height))'
-              imagePath={theme.creatorData.imagePath}
-              sheetCoords={{ ...theme.creatorData.sheetCoords }}
-            />
+            <div className='secondary-panel' style={{ borderColor: theme['--menu-border-color'], borderRadius: theme['--border-radius'] + 'rem', backgroundColor: theme['--secondary-color'] }} >
+              <div>by {theme.creatorData.displayName}</div>
+              <PlayerPortrait
+                size='calc(var(--header-height))'
+                imagePath={theme.creatorData.imagePath}
+                sheetCoords={{ ...theme.creatorData.sheetCoords }}
+              />
+            </div>
             <div>{theme.public ? 'Public' : 'Private'}</div>
             <div style={{fontSize: '60%'}}>{theme.id}</div>
           </div>
@@ -141,6 +151,7 @@ ThemeSelectModal.propTypes = {
   showing: PropTypes.bool,
   uiThemes: PropTypes.array,
   applyUserPreferences: PropTypes.func,
+  handleUpdatingAppliedTheme: PropTypes.func,
   onClickOK: PropTypes.func,
   onClickCancel: PropTypes.func,
 };

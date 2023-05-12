@@ -94,7 +94,7 @@ function SaveThemeModal(props) {
     if (typeof enteredName === 'string') {
       props.onClickOK(enteredName);
     } else {
-      console.error('Theme name from form was not string');
+      console.error('Theme name from the form was not a string');
     }
   }
 

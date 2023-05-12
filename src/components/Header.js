@@ -14,7 +14,7 @@ const StyledHeader = styled.header`
   align-items: center;
   justify-content: space-between;
   padding: 0 1rem;
-  padding-right: 0.5rem;
+  padding: 0 calc(0.75rem + (var(--border-radius) / 6));
   transform-origin: top;
   transition: all 200ms ease;
   border-top-left-radius: 0;
