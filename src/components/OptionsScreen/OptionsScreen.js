@@ -132,7 +132,13 @@ function OptionsScreen(props) {
           </div>
         </section>
       </div>
-      <ThemeSelectModal uiThemes={props.uiThemes} showing={themeSelectModalShowing} onClickOK={() => setThemeSelectModalShowing(false)} onClickCancel={() => setThemeSelectModalShowing(false)} />
+      <ThemeSelectModal 
+        uiThemes={props.uiThemes} 
+        showing={themeSelectModalShowing}
+        applyUserPreferences={props.applyUserPreferences}
+        onClickOK={() => setThemeSelectModalShowing(false)} 
+        onClickCancel={() => setThemeSelectModalShowing(false)} 
+      />
       <SaveThemeModal showing={saveThemeModalShowing} onClickOK={handleSubmitSaveThemeForm} onClickCancel={() => setSaveThemeModalShowing(false)} />
     </StyledOptionsScreen>
   );
@@ -144,6 +150,7 @@ OptionsScreen.propTypes = {
   opponent: PropTypes.object,
   gameMode: PropTypes.string,
   getUIThemes: PropTypes.func,
+  applyUserPreferences: PropTypes.func,
   uiThemes: PropTypes.object,
   handleSavingTheme: PropTypes.func,
 };

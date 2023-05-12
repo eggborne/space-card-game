@@ -445,7 +445,6 @@ function App() {
     // const dbRef = doc(db, 'uiThemes', v4());
     // setDoc(dbRef, { capital: true }, { merge: true });
 
-
     console.log('saving themeDoc', newThemeDoc);
     // await setDoc(doc(db, "uiThemes"), newThemeDoc);
     // console.log('saved themeDoc!');
@@ -453,16 +452,33 @@ function App() {
 
   async function getUIThemes() {
     console.log('document');
-    const q = query(collection(db, "uiThemes"), where("public", "==", true));
+    const q = query(collection(db, "uiThemes"));
     const querySnapshot = await getDocs(q);
     const newThemes = [];
     querySnapshot.forEach((doc) => {
       // doc.data() is never undefined for query doc snapshots
-      console.log(doc.id, " => ", doc.data());
+      console.log(doc.id, "GOT UITHEME => ", doc.data());
       const themeObj = { ...doc.data(), id: doc.id };
       newThemes.push(themeObj);
     });
+    for (let i = 0; i < newThemes.length; i++) {
+      newThemes[i].creatorData = await getUserById(newThemes[i].creatorId);
+    }
     setUIThemes(newThemes);
+  }
+
+  async function getUserById(id) {
+    console.log('getUserById', id);
+    const q = query(collection(db, "userData"), where("id", "==", id));
+    const querySnapshot = await getDocs(q);
+    let foundUserData;
+    querySnapshot.forEach((doc) => {
+      // doc.data() is never undefined for query doc snapshots
+      console.log(doc.id, "GOT USER BY ID => ", doc.data());
+      foundUserData = doc.data();
+    });
+    console.log('FOUNDUSERDATA ------------------->', foundUserData);
+    return foundUserData;
   }
 
   function handleClickEndGame() {
@@ -528,9 +544,10 @@ function App() {
           <OptionsScreen
             showing={phase === 'options'}
             user={user}
+            uiThemes={uiThemes}
             handleSavingTheme={handleSavingTheme}
             getUIThemes={getUIThemes}
-            uiThemes={uiThemes}
+            applyUserPreferences={applyUserPreferences}
           />
           <GameModeSelectScreen
             showing={phase === 'game-mode-select'}

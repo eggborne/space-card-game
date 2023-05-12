@@ -2,6 +2,7 @@ import { useState } from 'react';
 import Button from '../Buttons/Button';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
+import PlayerPortrait from '../PlayerPortrait';
 
 const StyledThemeSelectModal = styled.div`
   position: absolute;
@@ -10,17 +11,19 @@ const StyledThemeSelectModal = styled.div`
   translate: -50% -50%;
   width: calc(var(--main-width) - 5rem);
   height: unset;
+  max-height: calc(var(--actual-height) * 0.75);
   min-height: unset;
   border-radius: var(--border-radius);
   display: flex;
   flex-direction: column;
   align-items: center;
-  padding: 2rem 1rem;
+  padding: 1rem 1rem;
   z-index: 2;
 
   opacity: 0;
   pointer-events: none;
   transition: all 200ms ease;
+  
 
   & input {
     padding: 0.5rem;
@@ -30,17 +33,18 @@ const StyledThemeSelectModal = styled.div`
     margin-bottom: 1rem;
   }
 
-  & > h2 {
+  & h2 {
     margin-bottom: 1rem;
+    text-align: center;
   }
 
   & > .theme-list {
+    overflow-y: scroll;
     display: flex;
     flex-direction: column;
     align-items: stretch;
     width: 100%;
     gap: 0.5rem;
-    overflow-y: scroll;
 
     & .theme-list-item {
       display: flex;
@@ -65,7 +69,7 @@ const StyledThemeSelectModal = styled.div`
   `;
   
 const ClickableThemeContainer = styled.div`
-  padding: 2rem 1rem;
+  padding: 1rem 1rem;
   border: 0.25rem solid var(--inner-shade-color);
   border-radius: var(--border-radius);
   opacity: 0.75;
@@ -112,8 +116,15 @@ function ThemeSelectModal(props) {
           }}
         >
           <div className='theme-list-item'>
-            <div>{theme.name}</div>
-            {/* <div>{theme.creatorId}</div> */}
+            <h2>{theme.name}</h2>
+            <div>by {theme.creatorData.displayName}</div>
+            <PlayerPortrait
+              size='calc(var(--header-height))'
+              imagePath={theme.creatorData.imagePath}
+              sheetCoords={{ ...theme.creatorData.sheetCoords }}
+            />
+            <div>{theme.public ? 'Public' : 'Private'}</div>
+            <div style={{fontSize: '60%'}}>{theme.id}</div>
           </div>
         </ClickableThemeContainer>
         )}
@@ -129,6 +140,7 @@ function ThemeSelectModal(props) {
 ThemeSelectModal.propTypes = {
   showing: PropTypes.bool,
   uiThemes: PropTypes.array,
+  applyUserPreferences: PropTypes.func,
   onClickOK: PropTypes.func,
   onClickCancel: PropTypes.func,
 };
