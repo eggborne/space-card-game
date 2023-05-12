@@ -15,7 +15,7 @@ const StyledFooter = styled.footer`
   align-items: center;
   justify-content: space-between;
   font-size: 90%;
-  padding: 0 0.75rem;
+  padding: 0 calc(0.75rem + (var(--border-radius) / 6));
   transition: all 200ms ease;
   z-index: 2;
 

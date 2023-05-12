@@ -35,6 +35,7 @@ const StyledUserProfileDisplay = styled.div`
 
   & > .stat-list {
     grid-row-start: 1;
+    grid-row-end: 3;
     grid-column-start: 2;
     display: flex;
     flex-direction: column;
@@ -69,12 +70,12 @@ function UserProfileDisplay(props) {
         {props.userLoggedIn &&
         <>
           <Button onClick={props.onClickLogOut} label='Log out'/>
-          <div className='footer-area'>
-            {/* <div className='stat-row'>{props.currentUser.metadata.createdAt}</div> */}
+          {/* <div className='footer-area'>
+            <div className='stat-row'>{props.currentUser.metadata.createdAt}</div>
             <div className='stat-row'>Account created: {props.currentUser.metadata.creationTime}</div>
-            {/* <div className='stat-row'>Last login: {getTimeSinceFromSeconds((Date.now()) - props.currentUser.metadata.lastLoginAt)}</div> */}
+            <div className='stat-row'>Last login: {getTimeSinceFromSeconds((Date.now()) - props.currentUser.metadata.lastLoginAt)}</div>
             <div className='stat-row'>Last login: {props.currentUser.metadata.lastSignInTime}</div>
-          </div>
+          </div> */}
         </>
         }
     </StyledUserProfileDisplay>

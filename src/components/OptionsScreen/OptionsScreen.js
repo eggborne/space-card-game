@@ -9,9 +9,9 @@ import ScreenVeil from '../ScreenVeil';
 
 const StyledOptionsScreen = styled.div`
   position: absolute;
-  top: 0;
+  top: calc(var(--header-height) + (var(--main-padding) / 2));
   left: 0;
-  margin-top: var(--header-height);
+  // margin-top: var(--header-height);
   
   background-color: var(--secondary-color);
   color: #eee;
@@ -27,16 +27,36 @@ const StyledOptionsScreen = styled.div`
   scale: 1;
   pointer-events: all;
 
-  overflow-y: auto;
-
   transition: all 300ms ease-out;
 
+  & .option-section {
+    position: relative;
+    padding: 2.5rem 0;
+    border: 0.1rem solid #ffffff44;
+    border-radius: var(--border-radius);
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+
+    .section-label {
+      font-weight: normal;
+      background-color: var(--secondary-color);
+      border-radius: var(--border-radius);
+      position: absolute;
+      top: 0;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      padding: 0 0.75rem;
+    }
+  }
+  
   & > .scroll-container {
-    height: calc(var(--actual-height) - var(--expanded-footer-height) - var(--header-height));
+    overflow-y: auto;
     padding: 2rem;
     display: flex;
     flex-direction: column;
     gap: 1rem;
+    height: calc(var(--actual-height) - var(--expanded-footer-height) - var(--header-height) - (var(--main-padding)));
 
     & > h1, > h4 {
       text-align: center;
@@ -50,7 +70,7 @@ const StyledOptionsScreen = styled.div`
       }
     }
   
-    & > .theme-button-area {
+    & .theme-button-area {
       flex-grow: 1;
       display: flex;
       flex-direction: column;
@@ -102,12 +122,15 @@ function OptionsScreen(props) {
       <ScreenVeil showing={themeSelectModalShowing || saveThemeModalShowing} />
       <div className='scroll-container'>
         <h1>Options</h1>
-        <h4>using theme <span>{props.user.preferences.appliedUITheme.name}</span></h4>
-        <OptionsDisplay ui={props.user.preferences.appliedUITheme} />
-        <div className='theme-button-area'>
-          <Button onClick={handleClickBrowseThemes} color='orange' label='Browse themes' />
-          <Button onClick={() => setSaveThemeModalShowing(true)} color='green' label='Save theme...' />
-        </div>
+        <section className='option-section'>
+          <h4 className='section-label'>User Interface</h4>
+          {props.user.preferences.appliedUITheme.name && <h4>using theme <span>{props.user.preferences.appliedUITheme.name}</span></h4>}
+          <OptionsDisplay ui={props.user.preferences.appliedUITheme} />
+          <div className='theme-button-area'>
+            <Button onClick={handleClickBrowseThemes} color='orange' label='Browse themes' />
+            <Button onClick={() => setSaveThemeModalShowing(true)} color='green' label='Save theme...' />
+          </div>
+        </section>
       </div>
       <ThemeSelectModal uiThemes={props.uiThemes} showing={themeSelectModalShowing} onClickOK={() => setThemeSelectModalShowing(false)} onClickCancel={() => setThemeSelectModalShowing(false)} />
       <SaveThemeModal showing={saveThemeModalShowing} onClickOK={handleSubmitSaveThemeForm} onClickCancel={() => setSaveThemeModalShowing(false)} />

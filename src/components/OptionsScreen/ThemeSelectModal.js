@@ -103,6 +103,7 @@ function ThemeSelectModal(props) {
       <div className='theme-list'>
         {props.uiThemes && props.uiThemes.length && props.uiThemes.map(theme => 
         <ClickableThemeContainer 
+          key={theme.id}
           className={selectedTheme === theme.id ? 'selected' : ''} 
           onClick={() => handleClickTheme(theme.id)} 
           style={{ 
@@ -127,7 +128,7 @@ function ThemeSelectModal(props) {
 
 ThemeSelectModal.propTypes = {
   showing: PropTypes.bool,
-  uiThemes: PropTypes.object,
+  uiThemes: PropTypes.array,
   onClickOK: PropTypes.func,
   onClickCancel: PropTypes.func,
 };

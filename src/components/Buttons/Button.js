@@ -2,7 +2,7 @@ import PropTypes from 'prop-types';
 import styled from 'styled-components';
 
 const StyledButton = styled.button`
-  border-radius: calc(var(--border-radius) / 2);
+  border-radius: calc(var(--border-radius) / 1.5);
   border-style: solid;
   border-color: #00000077;
   border-width: 0.2rem;
