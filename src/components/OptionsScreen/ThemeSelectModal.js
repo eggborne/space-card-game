@@ -9,7 +9,7 @@ const StyledThemeSelectModal = styled.div`
   top: 50%;
   left: 50%;
   translate: -50% -50%;
-  width: calc(var(--main-width) - 5rem);
+  width: calc(var(--main-width) - 4rem);
   height: unset;
   max-height: calc(var(--actual-height) * 0.75);
   min-height: unset;
@@ -44,7 +44,7 @@ const StyledThemeSelectModal = styled.div`
     flex-direction: column;
     align-items: stretch;
     width: 100%;
-    gap: 0.5rem;
+    gap: 1rem;
 
     & .theme-list-item {
       position: relative;
@@ -55,6 +55,10 @@ const StyledThemeSelectModal = styled.div`
       gap: 1rem;
 
       overflow: hidden;
+
+      > h2 {
+        margin: 0;
+      }
 
       & > .secondary-panel {
         border: 0.25rem solid #00000066;
@@ -69,7 +73,6 @@ const StyledThemeSelectModal = styled.div`
   }
   
   & .bottom-button-area {
-    margin-top: 1rem;
     display: flex;
     flex-direction: column;
     align-items: stretch;
@@ -88,7 +91,7 @@ const ClickableThemeContainer = styled.div`
   cursor: pointer;
   
   &.selected {
-    border-color: lightgreen;
+    outline: 0.5rem solid lightgreen;
   }
 `;
 

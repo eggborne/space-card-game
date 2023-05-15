@@ -7,9 +7,9 @@ const StyledUserProfileDisplay = styled.div`
   display: grid;
   grid-template-columns: min-content 1fr;
   grid-auto-rows: min-content;
-  border: 0.1rem solid #00000044;
-  border-radius: 0.5rem;
-  background-color: #00000022;
+  // border: 0.1rem solid #00000044;
+  // border-radius: 0.5rem;
+  // background-color: #00000022;
   gap: 1rem;
   padding: 1rem;
 

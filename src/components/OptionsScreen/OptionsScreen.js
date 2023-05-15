@@ -117,6 +117,8 @@ function OptionsScreen(props) {
     setThemeSelectModalShowing(true);
   }
 
+  const ownTheme = props.user.preferences.appliedUITheme.creatorId === props.user.id;
+
   return (
     <StyledOptionsScreen
       className={props.showing ? '' : ' hidden'}
@@ -126,7 +128,11 @@ function OptionsScreen(props) {
         <h1>Options</h1>
         <section className='option-section'>
           <h3 className='section-label'>User Interface</h3>
-          {props.user.preferences.appliedUITheme.name && <h4>using theme <div>{props.user.preferences.appliedUITheme.name}</div></h4>}
+          {props.user.preferences.appliedUITheme.name && 
+          <h4>using theme 
+            <div>{props.user.preferences.appliedUITheme.name}</div>
+             by {props.user.preferences.appliedUITheme.creatorData.displayName} {ownTheme && '(you!)'}
+            </h4>}
           <OptionsDisplay user={props.user} ui={props.user.preferences.appliedUITheme} handleUpdatingAppliedTheme={props.handleUpdatingAppliedTheme} />
           <div className='theme-button-area'>
             <Button onClick={handleClickBrowseThemes} color='orange' label='Browse themes' />

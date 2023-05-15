@@ -37,6 +37,7 @@ const StyledHeader = styled.header`
   & > .user-info-area {
     display: flex;
     gap: 0.5rem;
+    text-shadow: 0 0 1px #000000ff;
 
     & > div:first-child {
       display: flex;
@@ -49,7 +50,7 @@ const StyledHeader = styled.header`
 
 function Header(props) {
   console.log('Header props is', props);
-  const showUserInfo = props.phase === 'game-mode-select' || props.phase === 'game-board-showing' || props.phase === 'deck-selection' || props.phase === 'opponent-selection';
+  const showUserInfo = props.phase === 'game-mode-select' || props.phase === 'options' || props.phase === 'game-board-showing' || props.phase === 'deck-selection' || props.phase === 'opponent-selection';
   return (
     <StyledHeader className='menu-style' style={{
       transform: props.phase === 'game-board-showing' ? 'translateY(-100%)' : 'translateY(0)',

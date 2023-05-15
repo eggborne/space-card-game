@@ -54,6 +54,9 @@ const StyledApp = styled.main`
   justify-content: space-between;
   transition: all 500ms ease;
   overflow: hidden;
+  background-size: cover;
+  background-position: center;
+  background-image: url(../public/images/starfieldframe.png);
 
   & .scroll-container {
     width: 100%;
@@ -148,6 +151,7 @@ function App() {
       setLoaded(true);
     } else {
       document.getElementById('starfield').play();
+      document.getElementById('starfield').classList.add('showing');
     }
   }, [loaded]);
 
@@ -284,11 +288,11 @@ function App() {
     setUser(newUserData);
   }
 
-  async function handleUpdatingAppliedTheme(newValue) {
+  async function handleUpdatingAppliedTheme(newValue, guest) {
     console.warn('applying ui theme!', newValue);
     const newUserData = { ...user };
     newUserData.preferences.appliedUITheme = newValue;
-    await updateDoc(doc(db, "userData", newUserData.id), newUserData);
+    !guest && await updateDoc(doc(db, "userData", newUserData.id), newUserData);
     setUser(newUserData);
   }
 
@@ -391,6 +395,7 @@ function App() {
   }
 
   function handleClickLogOut() {
+    handleUpdatingAppliedTheme(defaultUITheme, true);
     setLogOutModalShowing(true);
   }
 
