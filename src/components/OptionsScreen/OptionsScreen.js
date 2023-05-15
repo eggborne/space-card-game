@@ -103,7 +103,6 @@ const StyledOptionsScreen = styled.div`
 `;
 
 function OptionsScreen(props) {
-  console.log('OptionsScreen props: ', props);
   const [themeSelectModalShowing, setThemeSelectModalShowing] = useState(false);
   const [saveThemeModalShowing, setSaveThemeModalShowing] = useState(false);
 

@@ -50,7 +50,6 @@ function deckHasCardWithId(id, deck) {
 }
 
 function DeckCreationScreen(props) {
-  console.log('DeckCreationScreen props', props)
   const [ selectedCards, setSelectedCards ] = useState(props.user.deck);
 
   useEffect(() => {
@@ -58,8 +57,6 @@ function DeckCreationScreen(props) {
   }, [props.user.deck, selectedCards])
 
   const availableSelection = props.cardSelection.filter(card => !deckHasCardWithId(card.id, props.user.deck));
-  console.log('availableSelection is', availableSelection);
-
   const emptyAvailableCardSpaces = 15 - availableSelection.length;
   const emptySelectedCardSpaces = 10 - selectedCards.length;
 

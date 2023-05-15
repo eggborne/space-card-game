@@ -29,13 +29,10 @@ const StyledOpponentSelectionScreen = styled.div`
 `;
 
 function OpponentSelectionScreen(props) {
+
   const [selectedOpponent, setSelectedOpponent] = useState(Object.keys(props.characters)[0]);
-
+  
   const characterList = Object.values(props.characters);
-
-  console.log('char list');
-  console.log(characterList)
-
   const sheetWidth = 8;
 
   function coordsForIndex(index) {

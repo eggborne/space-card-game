@@ -71,7 +71,6 @@ const StyledHeaderMenu = styled.div`
 `;
 
 function HeaderMenu(props) {
-  console.log('HeaderMenu props is', props);
   return (
     <StyledHeaderMenu className={props.open ? 'menu-style open' : 'menu-style'}>
     <UserProfileDisplay 

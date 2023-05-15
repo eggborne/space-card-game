@@ -23,7 +23,6 @@ const WideButton = styled(Button)`
 `;
 
 function TitleScreen(props) {
-  console.log('TitleScreen props: ', props);
   return (
     <>
       <ScreenVeil showing={props.avatarChoiceModalShowing} onClickClose={props.handleCloseAvatarModal} />

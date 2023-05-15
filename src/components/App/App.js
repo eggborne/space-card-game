@@ -37,9 +37,6 @@ const RULES = {
   }
 };
 
-console.table(characters);
-console.table(randomOpponents);
-
 const nameGenerator = new NameGenerator();
 nameGenerator.getRules();
 

@@ -96,8 +96,7 @@ const ClickableThemeContainer = styled.div`
 `;
 
 function ThemeSelectModal(props) { 
-  console.log("themeselect props:", props);
-
+  
   const [selectedTheme, setSelectedTheme] = useState(null);
 
   async function handleClickTheme(theme) {

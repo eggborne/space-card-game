@@ -51,8 +51,7 @@ const StyledOptionsDisplay = styled.div`
 `;
 
 function OptionsDisplay(props) {
-  console.log('OptionsDisplay props: ', props);
-
+  
   const ui = props.ui;
 
   useEffect(() => {

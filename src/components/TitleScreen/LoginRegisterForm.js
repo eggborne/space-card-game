@@ -117,7 +117,6 @@ function LoginRegisterForm(props) {
       user.password = e.target.password.value;
       user.email = e.target.email.value
     }
-    console.log('form logging in user', user);
     props.handleClickLogIn(user);
   }
 

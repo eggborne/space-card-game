@@ -49,7 +49,6 @@ const StyledHeader = styled.header`
 `;
 
 function Header(props) {
-  console.log('Header props is', props);
   const showUserInfo = props.phase === 'game-mode-select' || props.phase === 'options' || props.phase === 'game-board-showing' || props.phase === 'deck-selection' || props.phase === 'opponent-selection';
   return (
     <StyledHeader className='menu-style' style={{

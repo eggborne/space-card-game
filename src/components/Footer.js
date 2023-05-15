@@ -45,7 +45,6 @@ const FooterBackButton = styled(Button)`
 `;
 
 function Footer(props) {
-  console.log('Footer props: ', props);
   return (
     <StyledFooter 
       className='menu-style' 

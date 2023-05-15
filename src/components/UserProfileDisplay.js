@@ -45,7 +45,6 @@ const StyledUserProfileDisplay = styled.div`
 `;
 
 function UserProfileDisplay(props) {
-  console.log('UserProfileDisplay props is', props);
   const isGuest = props.user.email === 'guest@guest.guest';
   return (
     <StyledUserProfileDisplay style={{ padding: props.phase === 'title' ? '1rem' : '1rem'}}>

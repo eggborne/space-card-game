@@ -83,7 +83,6 @@ const StyledLoginArea = styled.div`
 
 function LoginArea(props) {
   const [loginShowing, setLoginShowing] = useState('login');
-  console.log('LoginArea props', props);
   return (
     <StyledLoginArea className='menu-style'>
       {!props.userLoggedIn ? 
