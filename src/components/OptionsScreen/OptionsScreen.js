@@ -11,7 +11,6 @@ const StyledOptionsScreen = styled.div`
   position: absolute;
   top: calc(var(--header-height) + (var(--main-padding) / 2));
   left: 0;
-  
   background-color: var(--secondary-color);
   color: #eee;
   display: flex;
@@ -21,10 +20,11 @@ const StyledOptionsScreen = styled.div`
   gap: 1rem;
   border-radius: var(--border-radius);
   width: var(--main-width);
-
+  height: calc(var(--actual-height) - var(--expanded-footer-height) - var(--header-height) - var(--main-padding));
   opacity: 1;
   scale: 1;
   pointer-events: all;
+  text-shadow: -1px 0px 0 #00000066, 0px -1px 0 #00000066, -0px 1px 0 #00000066, 0px 1px 0 #00000066;
 
   transition: all 300ms ease-out;
 
@@ -63,7 +63,6 @@ const StyledOptionsScreen = styled.div`
     }
     
     & h4 {
-      color: #ddd;
       font-weight: normal;
       & > div {
         margin: 0.25rem;
@@ -120,12 +119,12 @@ function OptionsScreen(props) {
 
   return (
     <StyledOptionsScreen
-      className={props.showing ? '' : ' hidden'}
+      className={props.showing ? 'menu-style' : 'menu-style hidden'}
     >
       <ScreenVeil showing={themeSelectModalShowing || saveThemeModalShowing} />
       <div className='scroll-container'>
         <h1>Options</h1>
-        <section className='option-section'>
+        <section style={{ borderColor: props.user.preferences.appliedUITheme['--menu-border-color'] + '44' }} className='option-section'>
           <h3 className='section-label'>User Interface</h3>
           {props.user.preferences.appliedUITheme.name && 
           <h4>using theme 
@@ -135,11 +134,12 @@ function OptionsScreen(props) {
           <OptionsDisplay user={props.user} ui={props.user.preferences.appliedUITheme} handleUpdatingAppliedTheme={props.handleUpdatingAppliedTheme} />
           <div className='theme-button-area'>
             <Button onClick={handleClickBrowseThemes} color='orange' label='Browse themes' />
-            <Button onClick={() => setSaveThemeModalShowing(true)} color='green' label='Save theme...' />
+            <Button onClick={() => setSaveThemeModalShowing(true)} color='green' label='Save theme' />
           </div>
         </section>
       </div>
       <ThemeSelectModal 
+        uid={props.user.id}
         uiThemes={props.uiThemes} 
         showing={themeSelectModalShowing}
         applyUserPreferences={props.applyUserPreferences}

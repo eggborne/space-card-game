@@ -96,7 +96,7 @@ const ClickableThemeContainer = styled.div`
 `;
 
 function ThemeSelectModal(props) { 
-  
+
   const [selectedTheme, setSelectedTheme] = useState(null);
 
   async function handleClickTheme(theme) {
@@ -132,8 +132,8 @@ function ThemeSelectModal(props) {
         >
           <div className='theme-list-item'>
             <h2>{theme.name}</h2>
-            <div className='secondary-panel' style={{ borderColor: theme['--menu-border-color'], borderRadius: theme['--border-radius'] + 'rem', backgroundColor: theme['--secondary-color'] }} >
-              <div>by {theme.creatorData.displayName}</div>
+            <div className='secondary-panel' style={{ borderColor: theme['--menu-border-color'] + '44', borderRadius: theme['--border-radius'] + 'rem', backgroundColor: theme['--secondary-color'] }} >
+              <div>by {theme.creatorData.displayName} {theme.creatorId === props.uid && '(you!)'}</div>
               <PlayerPortrait
                 size='calc(var(--header-height))'
                 imagePath={theme.creatorData.imagePath}
@@ -156,6 +156,7 @@ function ThemeSelectModal(props) {
 
 ThemeSelectModal.propTypes = {
   showing: PropTypes.bool,
+  uid: PropTypes.number,
   uiThemes: PropTypes.object,
   applyUserPreferences: PropTypes.func,
   handleUpdatingAppliedTheme: PropTypes.func,

@@ -69,6 +69,7 @@ function App() {
     '--secondary-color': '#184738',
     '--menu-border-color': '#000000',
     '--border-radius': '1',
+    '--menu-border-width': '0.5',
   };
 
   const defaultUserState = {
@@ -153,13 +154,23 @@ function App() {
   }, [loaded]);
 
   auth.onAuthStateChanged(async (alreadyLoggedIn) => {
-    if (!!alreadyLoggedIn !== userLoggedIn) {
-      setUserLoggedIn(!!alreadyLoggedIn);
-      if (user.email === '') {
-        console.warn('setting userData on auth state change');
-        await setUserDataForId(alreadyLoggedIn.uid);
+    if (!!alreadyLoggedIn !== userLoggedIn) { //
+      if (user.email === '' && !userLoggedIn) {
+        console.warn('setting userData on auth state change ---------------------------------------------------------------');
+        console.log('userloggedin being set', !!alreadyLoggedIn)
+        setUserLoggedIn(!!alreadyLoggedIn);
+        if (alreadyLoggedIn) {
+          await setUserDataForId(alreadyLoggedIn.uid);
+        }
+      } else {
+        console.log('user just logged out! --------------------------------------------------')
+        setUserLoggedIn(false);
+        const guestTheme = {appliedUITheme: defaultUITheme};
+        console.log('guestTheme', guestTheme)
+        applyUserPreferences(guestTheme)
       }
     }
+    
   });
 
   function applyUserPreferences(newPreferences = user.preferences, retrievedData = user) {
@@ -184,6 +195,7 @@ function App() {
   }
 
   async function setUserDataForId(uid) {
+    console.log('Setting user data for id', uid);
     const docRef = doc(db, "userData", uid);
     const docSnap = await getDoc(docRef);
     if (docSnap.exists()) {
@@ -192,17 +204,12 @@ function App() {
       applyUserPreferences(retrievedData.preferences, retrievedData);
       // setUser(retrievedData);
     } else {
-      // docSnap.data() will be undefined in this case
-      console.log("No such userData document!");
+      console.error("No such userData document!");
     }
   }
 
   function handleClickLogIn(incomingUser) {
-    console.warn('handleClickLogin got user');
-    console.table(incomingUser);
-    console.log(user);
     if (incomingUser.password) {
-      console.log('--- user used password');
       signInWithEmailAndPassword(auth, incomingUser.email, incomingUser.password)
         .then(async (userCredential) => {
           console.log(`You've successfully signed in as ${userCredential.user.email}!`);
@@ -213,7 +220,7 @@ function App() {
           console.log(`There was an error signing in: ${error.message}!`);
         });
     } else {
-      console.log('--- user is GUEST');
+      console.warn('----------------- user is GUEST');
       setUser({
         ...user,
         email: 'guest@guest.guest',
@@ -226,9 +233,6 @@ function App() {
   }
 
   async function handleClickRegister(newUser) {
-    console.warn('handleClickRegister got newUser');
-    console.table(newUser);
-
     createUserWithEmailAndPassword(auth, newUser.email, newUser.password)
       .then(async (userCredential) => {
         // User successfully signed up 
@@ -377,22 +381,22 @@ function App() {
     setAvatarChoiceModalShowing(false);
   }
 
-  function handleConfirmLogOut() {
+  async function handleConfirmLogOut() {
     signOut(auth)
-      .then(function () {
+      .then(async function () {
         console.log("You have successfully signed out!");
         setUser(defaultUserState);
         setUserLoggedIn(false);
         setLogOutModalShowing(false);
         setProfileMenuOpen(false);
-        setPhase('title');
+        applyUserPreferences();
+        setPhase('title');        
       }).catch(function (error) {
         console.log(`There was an error signing out: ${error.message}!`);
       });
   }
 
   function handleClickLogOut() {
-    handleUpdatingAppliedTheme(defaultUITheme, true);
     setLogOutModalShowing(true);
   }
 

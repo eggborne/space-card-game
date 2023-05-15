@@ -16,6 +16,7 @@ const StyledLoginArea = styled.div`
   flex-direction: column;
   align-items: center;
   padding-top: 1rem;
+  overflow: hidden;
 
   & .logged-in.bottom-button-area {
     display: flex;
@@ -24,8 +25,7 @@ const StyledLoginArea = styled.div`
     justify-content: center;
     gap: 1rem;
     width: 100%;
-    border-bottom-left-radius: var(--border-radius);
-    border-bottom-right-radius: var(--border-radius);
+    
     padding-bottom: 1rem;
 
     & button:first-of-type {
@@ -60,11 +60,11 @@ const StyledLoginArea = styled.div`
       transition: all 100ms ease;
 
       &:first-of-type {
-        border-bottom-left-radius: var(--border-radius);
+        // border-bottom-left-radius: var(--border-radius);
         border-right: 0 !important;
       }
       &:last-of-type {
-        border-bottom-right-radius: var(--border-radius);
+        // border-bottom-right-radius: var(--border-radius);
         border-left: 0 !important;
       }
 
