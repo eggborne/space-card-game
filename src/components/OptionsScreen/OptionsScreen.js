@@ -65,8 +65,10 @@ const StyledOptionsScreen = styled.div`
     & h4 {
       color: #ddd;
       font-weight: normal;
-      & > span {
+      & > div {
+        margin: 0.25rem;
         color: lightgreen;
+        font-size: 1.25rem;
       }
     }
   
@@ -124,7 +126,7 @@ function OptionsScreen(props) {
         <h1>Options</h1>
         <section className='option-section'>
           <h3 className='section-label'>User Interface</h3>
-          {props.user.preferences.appliedUITheme.name && <h4>using theme <span>{props.user.preferences.appliedUITheme.name}</span></h4>}
+          {props.user.preferences.appliedUITheme.name && <h4>using theme <div>{props.user.preferences.appliedUITheme.name}</div></h4>}
           <OptionsDisplay user={props.user} ui={props.user.preferences.appliedUITheme} handleUpdatingAppliedTheme={props.handleUpdatingAppliedTheme} />
           <div className='theme-button-area'>
             <Button onClick={handleClickBrowseThemes} color='orange' label='Browse themes' />

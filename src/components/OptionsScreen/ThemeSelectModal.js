@@ -99,9 +99,14 @@ function ThemeSelectModal(props) {
 
   async function handleClickTheme(theme) {
     await props.applyUserPreferences({ appliedUITheme: theme });
-    setSelectedTheme(theme.id);
+    setSelectedTheme(theme);
   }
 
+  async function handleApplyTheme(theme) {
+    await props.handleUpdatingAppliedTheme(selectedTheme);
+    props.onClickOK();
+  }
+  
   return (
     <StyledThemeSelectModal 
       style={{
@@ -140,7 +145,7 @@ function ThemeSelectModal(props) {
         )}
       </div>
       <div className='bottom-button-area'>
-        <Button onClick={props.onClickOK} color='green' label='OK!' />
+        <Button onClick={() => handleApplyTheme(selectedTheme)} color='green' label='OK!' />
       </div>
       <Button onClick={props.onClickCancel} label='Cancel' />
     </StyledThemeSelectModal>

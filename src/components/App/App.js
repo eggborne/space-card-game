@@ -285,6 +285,7 @@ function App() {
   }
 
   async function handleUpdatingAppliedTheme(newValue) {
+    console.warn('applying ui theme!', newValue);
     const newUserData = { ...user };
     newUserData.preferences.appliedUITheme = newValue;
     await updateDoc(doc(db, "userData", newUserData.id), newUserData);
@@ -469,7 +470,9 @@ function App() {
       newThemes.push(themeObj);
     });
     for (let i = 0; i < newThemes.length; i++) {
-      newThemes[i].creatorData = await getUserById(newThemes[i].creatorId);
+      const fullCreatorData = await getUserById(newThemes[i].creatorId);
+      delete fullCreatorData.preferences;
+      newThemes[i].creatorData = fullCreatorData;
     }
     setUIThemes(newThemes);
   }
