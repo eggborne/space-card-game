@@ -26,8 +26,7 @@ const HandArea = styled.div`
   justify-content: space-between;
   height: calc(var(--section-height));
   
-
-  background-color: #00550044;
+  // background-color: #00550044;
 
   & > .portrait-area, .turn-indicator-area {
     flex-grow: 1;

@@ -19,6 +19,7 @@ const StyledHeader = styled.header`
   transition: all 200ms ease;
   border-top-left-radius: 0;
   border-top-right-radius: 0;
+  border-top: none !important;
   z-index: 2;
 
   ::before {

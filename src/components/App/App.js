@@ -484,7 +484,6 @@ function App() {
       console.log(doc.id, "GOT USER BY ID => ", doc.data());
       foundUserData = doc.data();
     });
-    console.log('FOUNDUSERDATA ------------------->', foundUserData);
     return foundUserData;
   }
 

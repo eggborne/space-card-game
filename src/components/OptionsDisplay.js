@@ -83,13 +83,17 @@ function OptionsDisplay(props) {
       document.getElementById('secondary-color').addEventListener('change', (e) => {
         props.handleUpdatingAppliedTheme({...props.user.preferences.appliedUITheme, '--secondary-color': e.target.value})
       });
-      document.getElementById('border-radius').addEventListener('input', async (e) => {
-        document.documentElement.style.setProperty('--border-radius', e.target.value + 'rem')
-        await props.handleUpdatingAppliedTheme({...props.user.preferences.appliedUITheme, '--border-radius': e.target.value})
-      });
       document.getElementById('menu-border-width').addEventListener('input', async (e) => {
         document.documentElement.style.setProperty('--menu-border-width', e.target.value + 'rem')
+      });
+      document.getElementById('menu-border-width').addEventListener('pointerup', async (e) => {
         await props.handleUpdatingAppliedTheme({...props.user.preferences.appliedUITheme, '--menu-border-width': e.target.value})
+      });
+      document.getElementById('border-radius').addEventListener('input', async (e) => {
+        document.documentElement.style.setProperty('--border-radius', e.target.value + 'rem')
+      });
+      document.getElementById('border-radius').addEventListener('pointerup', async (e) => {
+        await props.handleUpdatingAppliedTheme({...props.user.preferences.appliedUITheme, '--border-radius': e.target.value})
       });
     }
   }, [props.user]);
@@ -141,8 +145,8 @@ function OptionsDisplay(props) {
         <input 
           type="range"
           min='0'
-          max='2.5'
-          step='0.1'
+          max='5'
+          step='0.25'
           name='border-radius'
           id='border-radius'
           defaultValue={ui['--border-radius']}

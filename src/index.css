@@ -15,6 +15,8 @@
   --secondary-color: #184738;
   --border-radius: 1rem;
 
+  --df: rgb(139, 71, 48);
+
   --hamburger-bg-color: #222;
   --hamburger-open-bg-color: rgb(80, 8, 8);
   --hamburger-bar-color: #878787;
@@ -55,6 +57,7 @@
 html {
   background-color: white;
 }
+
 body {
   margin: 0;
   font-family: var(--main-font);
@@ -68,10 +71,6 @@ body {
   background-position: center;
   background-color: black;
   background-image: url(../public/images/starfieldframe.png);
-}
-
-video {
-  /* display: none; */
 }
 
 input, select {

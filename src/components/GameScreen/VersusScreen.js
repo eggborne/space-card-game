@@ -69,7 +69,7 @@ function VersusScreen(props) {
       <VersusScreenPlayerArea id='player-area-1'>
         <div>{props.opponent.displayName}</div>
         <PlayerPortrait
-          size='7.25rem'
+          size='calc(var(--main-width) / 3.5)'
           imagePath={props.opponent.imagePath}
           sheetCoords={props.opponent.sheetCoords}
         />
@@ -77,7 +77,7 @@ function VersusScreen(props) {
       <h2>VS.</h2>
       <VersusScreenPlayerArea id='player-area-2'>
         <PlayerPortrait
-          size='7.25rem'
+          size='calc(var(--main-width) / 3.5)'
           imagePath={props.user.imagePath}
           sheetCoords={props.user.sheetCoords}
         />

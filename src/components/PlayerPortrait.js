@@ -9,7 +9,7 @@ const StyledPlayerPortrait = styled.div`
   box-sizing: content-box;
   // border-radius: 10%;
   border-radius: 50%;
-  border: 0.1rem solid darksalmon;
+  border: 1px solid rgb(139, 71, 48);
   background-repeat: no-repeat;
 `;
 
@@ -41,6 +41,7 @@ function PlayerPortrait(props) {
     }
     labelFontSize = labelFontSize + 'rem';
   }
+
   return (
     <PortraitContainer>
       <StyledPlayerPortrait 
@@ -52,6 +53,7 @@ function PlayerPortrait(props) {
           backgroundSize: props.imagePath.includes('opponent') ? '800% 400%' : '800% 300%',
           backgroundPositionX: `calc(${props.sheetCoords.x * -1} * ${props.size}`,
           backgroundPositionY: `calc(${props.sheetCoords.y * -1} * ${props.size}`,
+          borderWidth: `calc(${props.size} / 24)`,
         }} 
         />
         {props.displayName &&
