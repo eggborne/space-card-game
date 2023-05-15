@@ -170,7 +170,7 @@ function App() {
     const menuBorderWidth = newPreferences.appliedUITheme['--menu-border-width'];
 
     ROOT.style.setProperty('--menu-color', menuColor);
-    ROOT.style.setProperty('--menu-border-color', menuBorderColor + '66');
+    ROOT.style.setProperty('--menu-border-color', menuBorderColor + '44');
     ROOT.style.setProperty('--secondary-color', secondaryColor);
     ROOT.style.setProperty('--border-radius', roundness + 'rem');
     ROOT.style.setProperty('--menu-border-width', menuBorderWidth + 'rem');
@@ -443,18 +443,18 @@ function App() {
     console.warn('---------------------------')
     console.log('saving theme with name', newThemeName);
     console.log('user ui is', user.preferences.appliedUITheme)
-    // const newThemeDoc = {
-    //   ...user.preferences.appliedUITheme,
-    //   creatorId: user.id,
-    //   name: newThemeName,
-    //   public: true,
-    // };
-    // console.log(newThemeDoc);
-    // console.warn('---------------------------')
+    const newThemeDoc = {
+      ...user.preferences.appliedUITheme,
+      creatorId: user.id,
+      name: newThemeName,
+      public: true,
+    };
+    console.log(newThemeDoc);
+    console.warn('---------------------------')
 
-    // const dbRef = doc(db, 'uiThemes', v4());
-    // await setDoc(dbRef, newThemeDoc);
-    // console.warn('set doc??')
+    const dbRef = doc(db, 'uiThemes', v4());
+    await setDoc(dbRef, newThemeDoc);
+    console.warn('set doc??')
 
   }
 
@@ -471,8 +471,12 @@ function App() {
     });
     for (let i = 0; i < newThemes.length; i++) {
       const fullCreatorData = await getUserById(newThemes[i].creatorId);
-      delete fullCreatorData.preferences;
-      newThemes[i].creatorData = fullCreatorData;
+      newThemes[i].creatorData = {
+        id: fullCreatorData.id,
+        displayName: fullCreatorData.displayName,
+        imagePath: fullCreatorData.imagePath,
+        sheetCoords: fullCreatorData.sheetCoords,
+      };
     }
     setUIThemes(newThemes);
   }
@@ -483,7 +487,6 @@ function App() {
     const querySnapshot = await getDocs(q);
     let foundUserData;
     querySnapshot.forEach((doc) => {
-      // doc.data() is never undefined for query doc snapshots
       console.log(doc.id, "GOT USER BY ID => ", doc.data());
       foundUserData = doc.data();
     });

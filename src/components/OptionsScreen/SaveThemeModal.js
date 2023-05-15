@@ -112,7 +112,7 @@ function SaveThemeModal(props) {
         <div className='form-row'>
           <input onInput={handleThemeNameInputChange} type='text' name='theme-name' placeholder='Name your theme'/>
         </div>
-        <div className='form-row'>
+        <div style={{ display: 'none' }} className='form-row'>
           <label htmlFor='make-public'>Public</label>
           <input defaultChecked type='checkbox' name='make-public' />
         </div>

@@ -9,6 +9,7 @@ const StyledLoginArea = styled.div`
   position: relative;
   background-color: #22ff2222;
   border-radius: var(--border-radius);
+  border: 0.5rem solid var(--menu-border-color);
   grid-column-start: 1;
   grid-column-end: 3;
   display: flex;

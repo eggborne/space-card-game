@@ -106,7 +106,7 @@ function ThemeSelectModal(props) {
     await props.handleUpdatingAppliedTheme(selectedTheme);
     props.onClickOK();
   }
-  
+
   return (
     <StyledThemeSelectModal 
       style={{
@@ -138,8 +138,8 @@ function ThemeSelectModal(props) {
                 sheetCoords={{ ...theme.creatorData.sheetCoords }}
               />
             </div>
-            <div>{theme.public ? 'Public' : 'Private'}</div>
-            <div style={{fontSize: '60%'}}>{theme.id}</div>
+            {/* <div>{theme.public ? 'Public' : 'Private'}</div> */}
+            {/* <div style={{fontSize: '60%'}}>{theme.id}</div> */}
           </div>
         </ClickableThemeContainer>
         )}
@@ -154,7 +154,7 @@ function ThemeSelectModal(props) {
 
 ThemeSelectModal.propTypes = {
   showing: PropTypes.bool,
-  uiThemes: PropTypes.array,
+  uiThemes: PropTypes.object,
   applyUserPreferences: PropTypes.func,
   handleUpdatingAppliedTheme: PropTypes.func,
   onClickOK: PropTypes.func,
