@@ -63,6 +63,8 @@ function GameScreen(props) {
     <>
       <HamburgerMenu
         open={props.hamburgerOpen}
+        user={props.user}
+        handleUpdatingAppliedTheme={props.handleUpdatingAppliedTheme}
         onClickEndGame={() => setEndGameModalShowing(true)}
       />
 
@@ -120,6 +122,7 @@ GameScreen.propTypes = {
   showing: PropTypes.bool,
   hamburgerOpen: PropTypes.bool,
   gameMode: PropTypes.string,
+  handleUpdatingAppliedTheme: PropTypes.func,
   onClickEndGame: PropTypes.func,
 };
 

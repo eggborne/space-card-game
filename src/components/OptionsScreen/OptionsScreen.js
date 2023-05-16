@@ -131,7 +131,7 @@ function OptionsScreen(props) {
             <div>{props.user.preferences.appliedUITheme.name}</div>
              by {props.user.preferences.appliedUITheme.creatorData.displayName} {ownTheme && '(you!)'}
             </h4>}
-          <OptionsDisplay user={props.user} ui={props.user.preferences.appliedUITheme} handleUpdatingAppliedTheme={props.handleUpdatingAppliedTheme} />
+          <OptionsDisplay location='options-screen' user={props.user} ui={props.user.preferences.appliedUITheme} handleUpdatingAppliedTheme={props.handleUpdatingAppliedTheme} />
           <div className='theme-button-area'>
             <Button onClick={handleClickBrowseThemes} color='orange' label='Browse themes' />
             <Button onClick={() => setSaveThemeModalShowing(true)} color='green' label='Save theme' />

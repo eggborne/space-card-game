@@ -156,7 +156,7 @@ function ThemeSelectModal(props) {
 
 ThemeSelectModal.propTypes = {
   showing: PropTypes.bool,
-  uid: PropTypes.number,
+  uid: PropTypes.string,
   uiThemes: PropTypes.object,
   applyUserPreferences: PropTypes.func,
   handleUpdatingAppliedTheme: PropTypes.func,

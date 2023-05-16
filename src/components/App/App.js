@@ -592,6 +592,7 @@ function App() {
               showing={phase === 'game-board-showing'}
               hamburgerOpen={hamburgerOpen}
               user={{ ...user }}
+              handleUpdatingAppliedTheme={handleUpdatingAppliedTheme}
               opponent={{ ...opponent }}
               currentGame={currentGame}
               onClickEndGame={handleClickEndGame}
