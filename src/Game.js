@@ -4,7 +4,7 @@ export default class Game {
   constructor(userStatus, opponentStatus) {
     this.userStatus = userStatus;
     this.opponentStatus = opponentStatus;
-    this.currentTurn = 'user';
+    this.currentTurn = 'opponent';
     this.turnPhase = 'waiting';
 
     this.deck = [
@@ -64,5 +64,17 @@ export default class Game {
     console.log('dealt a', randomCard.value, randomCard.id);
 
     currentPlayer.matchScore += randomCard.value;
+  }
+
+  playCard(card) {
+    const currentPlayer = this.userStatus;
+    console.log("this.currentTurn", this)
+    console.log("currentPlayer", currentPlayer)
+    currentPlayer.cardsInPlay.push(card);
+    currentPlayer.hand.splice(currentPlayer.hand.indexOf(card), 1);
+    currentPlayer.matchScore += card.value;
+    console.log('played a', card)
+    console.log('now cardsinplay is', currentPlayer.cardsInPlay)
+    console.log('now currentPlayer.hand is', currentPlayer.hand)
   }
 }

@@ -78,32 +78,23 @@ function GameScreen(props) {
             opacity: gameBoardShowing ? '1' : '0',
           }}
         >
-          <PlayerArea
-            playerObject={props.opponent}
-            playerStatus={props.currentGame.opponentStatus}
-            isTurn={props.currentGame.currentTurn === 'opponent'}
-            portrait={
-              <PlayerPortrait
-                size='5rem'
-                displayName={props.opponent.displayName}
-                imagePath={props.opponent.imagePath}
-                sheetCoords={props.opponent.sheetCoords}
-              />
-            }
-          />
-          <PlayerArea
-            playerObject={props.user}
-            playerStatus={props.currentGame.userStatus}
-            isTurn={props.currentGame.currentTurn === 'user'}
-            portrait={
-              <PlayerPortrait
-                size='5rem'
-                displayName={props.user.displayName}
-                imagePath={props.user.imagePath}
-                sheetCoords={props.user.sheetCoords}
-              />
-            }
-          />
+          {['opponent', 'user'].map((player, p) => 
+            <PlayerArea
+              key={p}
+              playerObject={props[player]}
+              playerStatus={props.currentGame[player + 'Status']}
+              isTurn={props.currentGame.currentTurn === player}
+              playCard={props.playCard}
+              portrait={
+                <PlayerPortrait
+                  size='5rem'
+                  displayName={props[player].displayName}
+                  imagePath={props[player].imagePath}
+                  sheetCoords={props[player].sheetCoords}
+                />
+              }
+            />
+          )}
         </GameBoard>
       </StyledGameScreen>
       <Modal
@@ -128,6 +119,7 @@ GameScreen.propTypes = {
   gameMode: PropTypes.string,
   handleUpdatingAppliedTheme: PropTypes.func,
   onClickEndGame: PropTypes.func,
+  playCard: PropTypes.func,
 };
 
 export default GameScreen;

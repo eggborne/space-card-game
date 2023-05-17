@@ -88,16 +88,30 @@ function PlayerArea(props) {
 
   const isCPU = !props.playerObject.email;
 
-  const firstDealRow = [...props.playerStatus.cardsInPlay];
+  const playerHand = [...props.playerStatus.hand];
+
+  const handRow = playerHand;
+  const emptyHandSpaces = 4 - playerHand.length;
+  for (let i = 0; i < emptyHandSpaces; i++) {
+    handRow.push({ id: v4(), value: 0 });
+  }
+
+  const cardsInPlay = [...props.playerStatus.cardsInPlay];
+  const firstDealRow = cardsInPlay.slice(0, 5);
   const emptyFirstRowSpaces = 4 - firstDealRow.length;
   for (let i = 0; i < emptyFirstRowSpaces; i++) {
-    firstDealRow.push({ id: v4(), value: 0, type: 'main' });
+    firstDealRow.push({ id: v4(), value: 0, type: 'main', usableSpace: (selectedCard && !isCPU && i === 0) });
   }
-  const secondDealRow = [];
+  const secondDealRow = cardsInPlay.slice(5, 10);
   const emptySecondRowSpaces = 5 - secondDealRow.length;
+  for (let i = 0; i < emptySecondRowSpaces; i++) {
+    secondDealRow.push({ id: v4(), value: 0, type: 'main', usableSpace: (selectedCard && !isCPU && (i + 4) === (cardsInPlay.length - 1)) });
+  }
 
-
-  console.log(firstDealRow);
+  function handleClickPlaySpace() {
+    props.playCard(selectedCard); 
+    setSelectedCard(null);
+  }
 
   return (
     <StyledPlayerArea
@@ -106,19 +120,20 @@ function PlayerArea(props) {
       }}
     >
       <DealArea style={{ flexDirection: isCPU ? 'column' : 'column-reverse' }}>
-        <div className='deal-row'>
-          <Card value={0} />
-          <Card value={0} />
-          <Card value={0} />
-          <Card value={0} />
-          <Card value={0} />
-        </div>
-        <div className='deal-row'>
-          {firstDealRow.map(cardData =>
-            <Card key={cardData.id} value={cardData.value} type='main' />
-          )}
-          <ScoreArea playerObject={props.playerObject} playerStatus={props.playerStatus} />
-        </div>
+        {[secondDealRow, firstDealRow].map((row, r) => 
+          <div key={r} className='deal-row'>
+            {row.map(cardData =>
+              <Card 
+                key={cardData.id} 
+                value={cardData.value} 
+                type={cardData.type} 
+                usableSpace={cardData.usableSpace}
+                onClick={cardData.usableSpace ? () => handleClickPlaySpace() : null}
+              />
+            )}
+            {r === 1 && <ScoreArea playerObject={props.playerObject} playerStatus={props.playerStatus} />}
+          </div> 
+        )}
       </DealArea>
       <HandArea
         className={props.isTurn ? 'current-turn' : ''} style={isCPU ? { flexDirection: 'row-reverse', paddingRight: `calc(var(--main-padding) * 2)` } : { flexDirection: 'row', paddingLeft: `calc(var(--main-padding) * 2)` }}
@@ -137,7 +152,7 @@ function PlayerArea(props) {
             </>
             :
             <>
-              {Object.values(props.playerStatus.hand).map(card =>
+              {handRow.map(card =>
                 <Card
                   key={card.id}
                   value={card.value}
@@ -157,6 +172,7 @@ PlayerArea.propTypes = {
   playerObject: PropTypes.object,
   playerStatus: PropTypes.object,
   isTurn: PropTypes.bool,
+  playCard: PropTypes.func,
 };
 
 export default PlayerArea;

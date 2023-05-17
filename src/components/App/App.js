@@ -509,6 +509,12 @@ function App() {
     setPhase('title');
   }
 
+  function handlePlayingCard(card) {
+    // currentGame[currentGame.currentTurn + 'Status'].cardsInPlay.push(card);
+    currentGame.playCard(card);
+    setCurrentGame(currentGame);
+  }
+
   return (
     <>
       {loaded && <video id='starfield' loop={true} muted={true}>
@@ -601,6 +607,7 @@ function App() {
               opponent={opponent}
               handleUpdatingAppliedTheme={handleUpdatingAppliedTheme}
               onClickEndGame={handleClickEndGame}
+              playCard={handlePlayingCard}
             />
           }
         </div>
