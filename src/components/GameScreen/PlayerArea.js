@@ -21,6 +21,18 @@ const StyledPlayerArea = styled.div`
 
   & .current-turn {
     animation: pulse infinite alternate 600ms ease;
+    border-radius: calc(var(--border-radius) / 2);
+    
+    &.top {
+      border-top-left-radius: 0;
+      border-top-right-radius: 0;
+    }
+    
+    &.bottom {
+      border-bottom-left-radius: 0;
+      border-bottom-right-radius: 0;
+    }
+
   }
 
   @keyframes pulse {
@@ -97,15 +109,15 @@ function PlayerArea(props) {
   }
 
   const cardsInPlay = [...props.playerStatus.cardsInPlay];
-  const firstDealRow = cardsInPlay.slice(0, 5);
+  const firstDealRow = cardsInPlay.slice(0, 4);
   const emptyFirstRowSpaces = 4 - firstDealRow.length;
   for (let i = 0; i < emptyFirstRowSpaces; i++) {
     firstDealRow.push({ id: v4(), value: 0, type: 'main', usableSpace: (selectedCard && !isCPU && i === 0) });
   }
-  const secondDealRow = cardsInPlay.slice(5, 10);
+  const secondDealRow = cardsInPlay.slice(4, 9);
   const emptySecondRowSpaces = 5 - secondDealRow.length;
   for (let i = 0; i < emptySecondRowSpaces; i++) {
-    secondDealRow.push({ id: v4(), value: 0, type: 'main', usableSpace: (selectedCard && !isCPU && (i + 4) === (cardsInPlay.length - 1)) });
+    secondDealRow.push({ id: v4(), value: 0, type: 'main', usableSpace: (selectedCard && !isCPU && (i + 5) === (cardsInPlay.length - 1)) });
   }
 
   function handleClickPlaySpace() {
@@ -137,7 +149,20 @@ function PlayerArea(props) {
         )}
       </DealArea>
       <HandArea
-        className={props.isTurn ? 'current-turn' : ''} style={isCPU ? { flexDirection: 'row-reverse', paddingRight: `calc(var(--main-padding) * 2)` } : { flexDirection: 'row', paddingLeft: `calc(var(--main-padding) * 2)` }}
+        className={props.isTurn ? 'current-turn' : ''} 
+        style={
+          isCPU ? { 
+            flexDirection: 'row-reverse', 
+            paddingRight: `calc(var(--main-padding) * 2)`,
+            borderTopLeftRadius: '0',
+            borderTopRightRadius: '0',
+          } : { 
+            flexDirection: 'row', 
+            paddingLeft: `calc(var(--main-padding) * 2)`,
+            borderBottomLeftRadius: '0',
+            borderBottomRightRadius: '0',
+          }
+        }
       >
         <div className='portrait-area'>{props.portrait}</div>
         <HandCards>
