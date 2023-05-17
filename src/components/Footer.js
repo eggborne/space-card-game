@@ -64,8 +64,8 @@ function Footer(props) {
           : props.phase === 'game-board-showing' ?
             <>
               <div className='game-button-area' style={{ opacity: props.hamburgerOpen ? '0.4' : '1', pointerEvents: props.hamburgerOpen ? 'none' : 'all'}}>
-                <FooterGameButton color='green' label='End Turn' />
-                <FooterGameButton color='orange' label='Stand' />
+                <FooterGameButton onClick={props.onClickEndTurn} color='green' label='End Turn' />
+                <FooterGameButton onClick={props.onClickStand}  color='orange' label='Stand' />
               </div>
               <Hamburger onClickToggle={props.handleToggleHamburger} />
             </>
@@ -103,6 +103,8 @@ Footer.propTypes = {
   userDeck: PropTypes.arrayOf(PropTypes.object),
   handleToggleHamburger: PropTypes.func,
   hamburgerOpen: PropTypes.bool,
+  onClickEndTurn: PropTypes.func,
+  onClickStand: PropTypes.func,
 };
 
 export default Footer;

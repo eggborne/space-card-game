@@ -144,7 +144,8 @@ function App() {
       cardsInPlay: [],
       matchScore: 0,
       setsWon: 0,
-    }
+    },
+    'user',
   ));
 
   useEffect(() => {
@@ -440,6 +441,7 @@ function App() {
         
     currentGame.userStatus.hand = userRandomCards;
     currentGame.opponentStatus.hand = opponentRandomCards;
+    currentGame.gameStarted = true;
     setCurrentGame(currentGame);
 
     setPhase('game-board-showing');
@@ -510,9 +512,24 @@ function App() {
   }
 
   function handlePlayingCard(card) {
-    // currentGame[currentGame.currentTurn + 'Status'].cardsInPlay.push(card);
     currentGame.playCard(card);
-    setCurrentGame(currentGame);
+    setCurrentGame({...new Game(), ...currentGame});
+  }
+
+  async function handleClickEndTurn() {
+    console.warn('clicked END TURN!');
+    currentGame.currentTurn = currentGame.currentTurn === 'user' ? 'opponent' : 'user';
+    currentGame.turnPhase = 'waiting';
+    // setCurrentGame({...currentGame});
+    await pause(1000);
+    currentGame.dealCard();
+    setCurrentGame({...currentGame});
+    console.log('currgame', currentGame)
+  }
+
+  function handleClickStand() {
+    console.warn('clicked STAND!');
+
   }
 
   return (
@@ -622,6 +639,8 @@ function App() {
           userDeck={user.deck}
           handleToggleHamburger={handleToggleHamburger}
           hamburgerOpen={hamburgerOpen}
+          onClickEndTurn={handleClickEndTurn}
+          onClickStand={handleClickStand}
         />
       </StyledApp>
     </>

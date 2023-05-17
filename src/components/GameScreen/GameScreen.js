@@ -84,6 +84,7 @@ function GameScreen(props) {
               playerObject={props[player]}
               playerStatus={props.currentGame[player + 'Status']}
               isTurn={props.currentGame.currentTurn === player}
+              turnPhase={props.currentGame.turnPhase}
               playCard={props.playCard}
               portrait={
                 <PlayerPortrait

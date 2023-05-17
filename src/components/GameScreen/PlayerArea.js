@@ -119,6 +119,7 @@ function PlayerArea(props) {
         flexDirection: isCPU ? 'column-reverse' : 'column',
       }}
     >
+      {!isCPU && <div style={{ position: 'fixed', zIndex: '3', backgroundColor: 'black', top: '7.5rem', left: '8.5rem' }}>{props.turnPhase}</div>}
       <DealArea style={{ flexDirection: isCPU ? 'column' : 'column-reverse' }}>
         {[secondDealRow, firstDealRow].map((row, r) => 
           <div key={r} className='deal-row'>
@@ -157,7 +158,7 @@ function PlayerArea(props) {
                   key={card.id}
                   value={card.value}
                   selected={card === selectedCard}
-                  onClick={() => setSelectedCard(selectedCard === card ? undefined : card)}
+                  onClick={props.turnPhase === 'waiting' ? () => setSelectedCard(selectedCard === card ? undefined : card) : null}
                 />
               )}
             </>
@@ -172,6 +173,7 @@ PlayerArea.propTypes = {
   playerObject: PropTypes.object,
   playerStatus: PropTypes.object,
   isTurn: PropTypes.bool,
+  turnPhase: PropTypes.string,
   playCard: PropTypes.func,
 };
 

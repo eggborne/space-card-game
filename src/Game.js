@@ -1,10 +1,10 @@
 import { randomInt } from "./util";
 
 export default class Game {
-  constructor(userStatus, opponentStatus) {
+  constructor(userStatus, opponentStatus, firstTurn) {
     this.userStatus = userStatus;
     this.opponentStatus = opponentStatus;
-    this.currentTurn = 'opponent';
+    this.currentTurn = firstTurn;
     this.turnPhase = 'waiting';
 
     this.deck = [
@@ -55,26 +55,19 @@ export default class Game {
   }
 
   dealCard() {
-    console.warn('dealing a random card');
     const currentPlayer = this[this.currentTurn + 'Status'];
     const randomCardIndex = randomInt(0, this.deck.length -1);
     const randomCard = this.deck[randomCardIndex];
     currentPlayer.cardsInPlay.push(randomCard);
     this.deck.splice(randomCardIndex, 1);
-    console.log('dealt a', randomCard.value, randomCard.id);
-
     currentPlayer.matchScore += randomCard.value;
   }
 
   playCard(card) {
-    const currentPlayer = this.userStatus;
-    console.log("this.currentTurn", this)
-    console.log("currentPlayer", currentPlayer)
+    this.turnPhase = 'played-card';
+    const currentPlayer = this[this.currentTurn + 'Status'];
     currentPlayer.cardsInPlay.push(card);
     currentPlayer.hand.splice(currentPlayer.hand.indexOf(card), 1);
     currentPlayer.matchScore += card.value;
-    console.log('played a', card)
-    console.log('now cardsinplay is', currentPlayer.cardsInPlay)
-    console.log('now currentPlayer.hand is', currentPlayer.hand)
   }
 }
