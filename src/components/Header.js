@@ -49,7 +49,8 @@ const StyledHeader = styled.header`
 `;
 
 function Header(props) {
-  const showUserInfo = props.phase === 'game-mode-select' || props.phase === 'options' || props.phase === 'game-board-showing' || props.phase === 'deck-selection' || props.phase === 'opponent-selection';
+  console.log('header props', props)
+  const showUserInfo = props.phase !== 'game-board-showing';
   return (
     <StyledHeader className='menu-style' style={{
       transform: props.phase === 'game-board-showing' ? 'translateY(-100%)' : 'translateY(0)',
@@ -59,11 +60,11 @@ function Header(props) {
         <div className='user-info-area'>
           <div>
             <div style={{ fontSize: '100%', fontWeight: 'bold' }}>{props.authUser.displayName}</div>
-            <div style={{ fontSize: '80%' }}>{props.authUser.email}</div>
+            <div style={{ fontSize: '100%', color: 'lightgreen' }}>${props.user.progress.credits}<span style={{ color: 'white', fontSize: '90%' }}> {props.user.statistics.setWins}/{props.user.statistics.totalSets}</span></div>
           </div>
           <div style={{ cursor: 'pointer' }} onClick={props.phase !== 'title' ? props.onClickProfileMenu : null}>
             <PlayerPortrait
-              size='calc(var(--header-height) - 1.5rem)'
+              size='calc(var(--header-height) - 1.25rem)'
               imagePath={props.user.imagePath}
               sheetCoords={{ ...props.user.sheetCoords }}
             />

@@ -8,6 +8,7 @@ const StyledHamburger = styled.div`
   flex-direction: column;
   align-items: center;
   justify-content: space-evenly;
+  padding: calc((var(--hamburger-bar-height) / 4) + (var(--border-radius) / 16)) 0;
   width: var(--hamburger-height);
   height: var(--hamburger-height);
   max-height: 100%;
@@ -20,8 +21,8 @@ const StyledHamburger = styled.div`
 
   & > .hamburger-bar {
     box-sizing: border-box;
-    width: calc(var(--hamburger-height) * 0.8);
-    height: var(--hamburger-bar-height);
+    width: calc(var(--hamburger-height) * 0.8 - (var(--border-radius) / 8));
+    height: calc(var(--hamburger-bar-height) - (var(--border-radius) / 64));
     background-color: var(--hamburger-bar-color);
     transition: transform 150ms ease;
     border-radius: calc(var(--border-radius) / 8);

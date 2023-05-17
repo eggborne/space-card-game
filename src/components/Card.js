@@ -20,6 +20,8 @@ const StyledCard = styled.div`
   justify-content: center;
   color: black;
   z-index: 0;
+  transform-origin: 50% 30%;
+  transition: all 200ms ease;
   
   border-radius: var(--card-border-radius);
   
@@ -40,6 +42,15 @@ const StyledCard = styled.div`
     
     & > .knob-container {
       display: none;
+    }
+  }
+
+  @keyframes pulse-border {
+    from {
+      border: 0.25rem solid #00ff0022;
+    }
+    to {
+      border: 0.25rem solid #00ff0077;
     }
   }
 
@@ -99,6 +110,10 @@ function Card(props) {
         width: `calc(var(--card-width) * ${props.scale || 1})`,
         height: `calc(var(--card-height) * ${props.scale || 1})`,
         outline: props.won ? '0.25rem solid green' : 'none',
+        scale: props.selected ? '1.1' : '1',
+        boxShadow: props.selected ? '0 0 1rem 0.5rem #00000077' : 'none',
+        zIndex: props.selected ? '2' : '1',
+        animation: props.usableSpace ? 'pulse-border infinite alternate 750ms ease' : 'none'
       }}
     >
       <div className='knob-container'>
@@ -117,6 +132,8 @@ function Card(props) {
 
 Card.propTypes = {
   value: PropTypes.number,
+  selected: PropTypes.bool,
+  usableSpace: PropTypes.bool,
   scale: PropTypes.number,
   won: PropTypes.bool,
   type: PropTypes.string,

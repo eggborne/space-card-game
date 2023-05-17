@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import styled from 'styled-components';
 import CardBack from '../CardBack';
 import ScoreArea from './ScoreArea';
+import { useState } from 'react';
 
 const StyledPlayerArea = styled.div`
   
@@ -13,10 +14,21 @@ const StyledPlayerArea = styled.div`
   align-items: stretch;
   justify-content: space-between;
 
-  // background-color: #00550066;
-
   &:first-of-type {
     border-bottom: 0.25rem groove #00000044;
+  }
+
+  & .current-turn {
+    animation: pulse infinite alternate 750ms ease;
+  }
+
+  @keyframes pulse {
+    from {
+      background-color: #00ff0022;
+    }
+    to {
+      background-color: #00ff0055;
+    }
   }
 `;
 
@@ -45,7 +57,7 @@ const HandCards = styled.div`
   justify-content: center;
   
   & > div {
-    transform: scale(0.85);
+    transform: scale(0.9);
   }
 `;
 
@@ -68,15 +80,23 @@ const DealArea = styled.div`
       outline: 1px solid orange;
     }
   }
-
-
 `;
 
 function PlayerArea(props) {
+  console.warn('PlayerArea props', props);
+
+  const [ selectedCard, setSelectedCard ] = useState(undefined);
+
   const isCPU = !props.playerObject.email;
+
   return (
-    <StyledPlayerArea style={{ flexDirection: isCPU ? 'column-reverse' : 'column'}}>
-      <DealArea style={{ flexDirection: isCPU ? 'column' : 'column-reverse'}}>
+    <StyledPlayerArea
+      style={{
+        flexDirection: isCPU ? 'column-reverse' : 'column',
+      }}
+      // className={props.isTurn ? 'current-turn' : ''}
+    >
+      <DealArea style={{ flexDirection: isCPU ? 'column' : 'column-reverse' }}>
         <div className='deal-row'>
           <Card value={0} />
           <Card value={0} />
@@ -85,31 +105,38 @@ function PlayerArea(props) {
           <Card value={0} />
         </div>
         <div className='deal-row'>
-          <Card value={0} />
+          <Card usableSpace={!isCPU && selectedCard} value={0} />
           <Card value={0} />
           <Card value={0} />
           <Card value={0} />
           <ScoreArea playerObject={props.playerObject} />
         </div>
       </DealArea>
-      <HandArea 
-        style={ isCPU ? {flexDirection: 'row-reverse', paddingRight: `calc(var(--main-padding) * 2)`} : {flexDirection: 'row', paddingLeft: `calc(var(--main-padding) * 2)`} }
+      <HandArea
+        className={props.isTurn ? 'current-turn' : ''} style={isCPU ? { flexDirection: 'row-reverse', paddingRight: `calc(var(--main-padding) * 2)` } : { flexDirection: 'row', paddingLeft: `calc(var(--main-padding) * 2)` }}
       >
         <div className='portrait-area'>{props.portrait}</div>
         <HandCards>
-          {isCPU ? 
+          {isCPU ?
             <>
+              {/* <CardBack />
               <CardBack />
               <CardBack />
-              <CardBack />
-              <CardBack />
+              <CardBack /> */}
+              {Object.values(props.playerStatus.hand).map(card => // for testing
+                <Card key={card.id} value={card.value} />
+              )}
             </>
             :
             <>
-              <Card value={1} />
-              <Card value={3} />
-              <Card value={-5} />
-              <Card value={6} />
+              {Object.values(props.playerStatus.hand).map(card =>
+                <Card
+                  key={card.id}
+                  value={card.value}
+                  selected={card === selectedCard}
+                  onClick={() => setSelectedCard(selectedCard === card ? undefined : card)}
+                />
+              )}
             </>
           }
         </HandCards>
@@ -120,6 +147,8 @@ function PlayerArea(props) {
 
 PlayerArea.propTypes = {
   playerObject: PropTypes.object,
+  playerStatus: PropTypes.object,
+  isTurn: PropTypes.bool,
 };
 
 export default PlayerArea;

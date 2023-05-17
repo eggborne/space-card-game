@@ -5,6 +5,7 @@
   --footer-height: 2.5rem;
   --hamburger-height: 3.75rem;
   --hamburger-bar-height: 0.5rem;
+  --hamburger-menu-width: calc(var(--main-width) * 0.7);
   --expanded-footer-height: 6rem;
   --main-box-shadow: 0 0 0.5rem 0.1rem rgba(0, 0, 0, 0.583);
   --main-font: 'Nova Flat';
@@ -56,6 +57,7 @@
 
 html {
   background-color: white;
+  margin: 0;
 }
 
 body {
@@ -81,6 +83,7 @@ body {
 video {
   opacity: 0;
   transition: opacity 1000ms ease;
+
 }
 
 video.showing {
@@ -210,6 +213,7 @@ button {
     --main-width: 60vw;
     --card-border-radius: calc(var(--card-height) * 0.1);
     --card-padding: calc(var(--card-height) * 0.075);
+    --hamburger-menu-width: calc(var(--main-width) * 0.5);
   }
 
   #root {

@@ -5,11 +5,10 @@ import VersusScreen from './VersusScreen';
 import PlayerArea from './PlayerArea';
 import PlayerPortrait from '../PlayerPortrait';
 import HamburgerMenu from '../HamburgerMenu';
-import { pause } from '../../util.js';
 import Modal from '../Modal';
+import { pause } from '../../util.js';
 
 const StyledGameScreen = styled.div`
-  
   height: var(--game-board-height);
   padding: 1rem;
   align-self: stretch;
@@ -36,6 +35,7 @@ const GameBoard = styled.div`
 `;
 
 function GameScreen(props) {
+  console.warn('GameScreen PROPS ---->', props)
   const [versusScreenShowing, setVersusScreenShowing] = useState(true);
   const [gameBoardShowing, setGameBoardShowing] = useState(false);
   const [endGameModalShowing, setEndGameModalShowing] = useState(false);
@@ -80,6 +80,8 @@ function GameScreen(props) {
         >
           <PlayerArea
             playerObject={props.opponent}
+            playerStatus={props.currentGame.opponentStatus}
+            isTurn={props.currentGame.currentTurn === 'opponent'}
             portrait={
               <PlayerPortrait
                 size='5rem'
@@ -91,6 +93,8 @@ function GameScreen(props) {
           />
           <PlayerArea
             playerObject={props.user}
+            playerStatus={props.currentGame.userStatus}
+            isTurn={props.currentGame.currentTurn === 'user'}
             portrait={
               <PlayerPortrait
                 size='5rem'
@@ -107,7 +111,7 @@ function GameScreen(props) {
         headline={'End game?'}
         color='maroon'
         buttonLabel='Do it'
-        bodyComponent={<>You will forfeit your wager.</>}
+        bodyComponent={<></>}
         onClickOK={handleConfirmEndGame}
         onClickCancel={() => setEndGameModalShowing(false)}
       />

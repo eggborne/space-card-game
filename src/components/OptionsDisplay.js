@@ -35,7 +35,6 @@ const StyledOptionsDisplay = styled.div`
       }
     }
 
-    
     & > input  {
       width: unset;
       margin: 0;
@@ -51,50 +50,28 @@ const StyledOptionsDisplay = styled.div`
 `;
 
 function OptionsDisplay(props) {
-  console.warn('OptionsDisplay props', props);
   const ui = props.ui;
 
   useEffect(() => {
     document.getElementById(`menu-color-${props.location}`).value = props.ui['--menu-color'];
     document.getElementById(`menu-border-color-${props.location}`).value = props.ui['--menu-border-color'];
     document.getElementById(`secondary-color-${props.location}`).value = props.ui['--secondary-color'];
-    document.getElementById(`border-radius-${props.location}`).value = props.ui['--border-radius'];
     document.getElementById(`menu-border-width-${props.location}`).value = props.ui['--menu-border-width'];
-  }, [props.ui]);
+    document.getElementById(`border-radius-${props.location}`).value = props.ui['--border-radius'];
+  }, [props.ui, props.location]);
 
   useEffect(() => {
-    console.warn('OptionsDisplay setting handlers')
     if (props.user) {
-      document.getElementById(`menu-color-${props.location}`).addEventListener('input', (e) => {
-        document.documentElement.style.setProperty('--menu-color', e.target.value);
-      });
-      document.getElementById(`menu-color-${props.location}`).addEventListener('change', (e) => {
-        props.handleUpdatingAppliedTheme({...props.user.preferences.appliedUITheme, '--menu-color': e.target.value});
-      });
-      document.getElementById(`menu-border-color-${props.location}`).addEventListener('input', (e) => {
-        document.documentElement.style.setProperty('--menu-border-color', e.target.value + '66')
-      });
-      document.getElementById(`menu-border-color-${props.location}`).addEventListener('change', (e) => {
-        props.handleUpdatingAppliedTheme({...props.user.preferences.appliedUITheme, '--menu-border-color': e.target.value})
-      });
-      document.getElementById(`secondary-color-${props.location}`).addEventListener('input', (e) => {
-        document.documentElement.style.setProperty('--secondary-color', e.target.value)
-      });
-      document.getElementById(`secondary-color-${props.location}`).addEventListener('change', (e) => {
-        props.handleUpdatingAppliedTheme({...props.user.preferences.appliedUITheme, '--secondary-color': e.target.value})
-      });
-      document.getElementById(`menu-border-width-${props.location}`).addEventListener('input', async (e) => {
-        document.documentElement.style.setProperty('--menu-border-width', e.target.value + 'rem')
-      });
-      document.getElementById(`menu-border-width-${props.location}`).addEventListener('pointerup', async (e) => {
-        await props.handleUpdatingAppliedTheme({...props.user.preferences.appliedUITheme, '--menu-border-width': e.target.value})
-      });
-      document.getElementById(`border-radius-${props.location}`).addEventListener('input', async (e) => {
-        document.documentElement.style.setProperty('--border-radius', e.target.value + 'rem')
-      });
-      document.getElementById(`border-radius-${props.location}`).addEventListener('pointerup', async (e) => {
-        await props.handleUpdatingAppliedTheme({...props.user.preferences.appliedUITheme, '--border-radius': e.target.value})
-      });
+      document.getElementById(`menu-color-${props.location}`).addEventListener('input', (e) => { document.documentElement.style.setProperty('--menu-color', e.target.value); });
+      document.getElementById(`menu-color-${props.location}`).addEventListener('change', (e) => { props.handleUpdatingAppliedTheme({...props.user.preferences.appliedUITheme, '--menu-color': e.target.value}); });
+      document.getElementById(`menu-border-color-${props.location}`).addEventListener('input', (e) => { document.documentElement.style.setProperty('--menu-border-color', e.target.value + '66') });
+      document.getElementById(`menu-border-color-${props.location}`).addEventListener('change', (e) => { props.handleUpdatingAppliedTheme({...props.user.preferences.appliedUITheme, '--menu-border-color': e.target.value}) });
+      document.getElementById(`secondary-color-${props.location}`).addEventListener('input', (e) => { document.documentElement.style.setProperty('--secondary-color', e.target.value) });
+      document.getElementById(`secondary-color-${props.location}`).addEventListener('change', (e) => { props.handleUpdatingAppliedTheme({...props.user.preferences.appliedUITheme, '--secondary-color': e.target.value}) });
+      document.getElementById(`menu-border-width-${props.location}`).addEventListener('input', async (e) => { document.documentElement.style.setProperty('--menu-border-width', e.target.value + 'rem') });
+      document.getElementById(`menu-border-width-${props.location}`).addEventListener('pointerup', async (e) => { await props.handleUpdatingAppliedTheme({...props.user.preferences.appliedUITheme, '--menu-border-width': e.target.value}) });
+      document.getElementById(`border-radius-${props.location}`).addEventListener('input', async (e) => { document.documentElement.style.setProperty('--border-radius', e.target.value + 'rem') });
+      document.getElementById(`border-radius-${props.location}`).addEventListener('pointerup', async (e) => { await props.handleUpdatingAppliedTheme({...props.user.preferences.appliedUITheme, '--border-radius': e.target.value}) });
     }
   }, [props.user]);
 
@@ -134,7 +111,7 @@ function OptionsDisplay(props) {
           type="range"
           min='0'
           max='0.8'
-          step='0.1'
+          step='0.05'
           name='menu-border-width'
           id={`menu-border-width-${props.location}`}
           defaultValue={ui['--menu-border-width']}

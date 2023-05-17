@@ -4,7 +4,6 @@ import Button from './Buttons/Button';
 import OptionsDisplay from './OptionsDisplay';
 
 const StyledHamburgerMenu = styled.div`
-  --hamburger-menu-width: calc(var(--main-width) * 0.7);
   position: absolute;
   bottom: calc(var(--expanded-footer-height) + (var(--main-padding) / 2));
   right: 0;
@@ -14,9 +13,9 @@ const StyledHamburgerMenu = styled.div`
   flex-direction: column;
   align-items: stretch;
   justify-content: flex-end;
+  // gap: 2rem;
   max-height: 100%;
-  padding: var(--menu-padding);
-  padding-bottom: 1.5rem;
+  padding: 1.5rem var(--menu-padding);
  
   border-right: none !important;
   border-top-right-radius: unset;
@@ -31,11 +30,12 @@ const StyledHamburgerMenu = styled.div`
 
   & > h1, h4 {
     text-align: center;
-    padding-bottom: 1rem;
+    padding-bottom: 1.5rem;
   }
   
   & h4 {
     font-weight: normal;
+
     & > div {
       margin: 0.25rem;
       color: lightgreen;
@@ -44,7 +44,10 @@ const StyledHamburgerMenu = styled.div`
   }
 
   & button {
-    padding: 1rem;
+    padding: 1rem 0;
+    width: 65%;
+    align-self: center;
+    margin-top: 1.5rem;
   }
 
   &.open {
@@ -75,7 +78,7 @@ function HamburgerMenu(props) {
         by {props.user.preferences.appliedUITheme.creatorData.displayName} {ownTheme && '(you!)'}
       </h4>}
       <StyledOptionsDisplay location='hamburger-menu' user={props.user} ui={props.user.preferences.appliedUITheme} handleUpdatingAppliedTheme={props.handleUpdatingAppliedTheme} />
-      <Button onClick={handleClickEndGame} label="End Game" />
+      <Button color='red' onClick={handleClickEndGame} label="End Game" />
     </StyledHamburgerMenu>
   );
 }

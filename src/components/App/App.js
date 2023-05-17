@@ -23,6 +23,7 @@ import { randomInt, pause } from '../../util.js';
 import NameGenerator from '../../namegenerator.js';
 import DeckCreationScreen from '../DeckCreationScreen/DeckCreationScreen';
 import OpponentSelectionScreen from '../OpponentSelectionScreen/OpponentSelectionScreen';
+import Game from '../../Game'
 
 let clickFunction = window.PointerEvent ? 'onPointerDown' : window.TouchEvent ? 'onTouchStart' : 'onClick';
 
@@ -129,35 +130,35 @@ function App() {
   const [avatarChoiceModalShowing, setAvatarChoiceModalShowing] = useState(false);
   const [profileMenuOpen, setProfileMenuOpen] = useState(false);
   const [hamburgerOpen, setHamburgerOpen] = useState(false);
+  const [gameStarted, setGameStarted] = useState(false);
 
-  const [currentGame, setCurrentGame] = useState({
-    user: {
+  const [currentGame, setCurrentGame] = useState(new Game(
+    {
       hand: [],
       matchScore: 0,
       setsWon: 0,
     },
-    opponent: {
+    {
       hand: [],
       matchScore: 0,
       setsWon: 0,
-    },
-    turnPhase: 'waiting',
-  });
+    }
+  ));
 
   useEffect(() => {
     if (!loaded) {
       setLoaded(true);
     } else {
-      document.getElementById('starfield').play();
-      document.getElementById('starfield').classList.add('showing');
+      if (!document.getElementById('starfield').classList.contains('showing')) {
+        document.getElementById('starfield').play();
+        document.getElementById('starfield').classList.add('showing');
+      }
     }
   }, [loaded]);
 
   auth.onAuthStateChanged(async (alreadyLoggedIn) => {
     if (!!alreadyLoggedIn !== userLoggedIn) { //
       if (user.email === '' && !userLoggedIn) {
-        console.warn('setting userData on auth state change ---------------------------------------------------------------');
-        console.log('userloggedin being set', !!alreadyLoggedIn)
         setUserLoggedIn(!!alreadyLoggedIn);
         if (alreadyLoggedIn) {
           await setUserDataForId(alreadyLoggedIn.uid);
@@ -166,7 +167,6 @@ function App() {
         console.log('user just logged out! --------------------------------------------------')
         setUserLoggedIn(false);
         const guestTheme = {appliedUITheme: defaultUITheme};
-        console.log('guestTheme', guestTheme)
         applyUserPreferences(guestTheme)
       }
     }
@@ -188,10 +188,6 @@ function App() {
     ROOT.style.setProperty('--menu-border-width', menuBorderWidth + 'rem');
 
     setUser(retrievedData);
-
-    // const newUserData = { ...user };
-    // newUserData.preferences.appliedUITheme = preferences.appliedUITheme;
-    // setUser(newUserData);
   }
 
   async function setUserDataForId(uid) {
@@ -338,10 +334,8 @@ function App() {
       setPhase('deck-selection');
     } else if (gameMode === 'Quick Match') {
       const randomOpponent = randomInt(0, 5) ? getRandomNamedOpponent() : getRandomCharacterOpponent();
-      console.log('GOT RANDOM OPPONENT ////////////////');
-      console.table(randomOpponent);
       setOpponent(randomOpponent);
-      setPhase('game-board-showing');
+      startGame();
     }
   }
 
@@ -362,9 +356,6 @@ function App() {
         remainingCards.splice(randomIndex, 1);
       }
     }
-    // const newCurrentGame = {...currentGame};
-    // newCurrentGame.user.deck = chosenDeck;
-    // setCurrentGame(newCurrentGame);
 
     const newUser = { ...user };
     newUser.deck = chosenDeck;
@@ -426,13 +417,7 @@ function App() {
   }
 
   function handleSelectOpponent(newOpponent) {
-    console.log('handlesel got arg');
-    console.log(newOpponent);
-    console.log('handlesel maybe merge state.opponent?');
-    console.log(opponent);
     const mergedOpponent = { ...opponent, ...newOpponent };
-    console.log('handlesel mergedOpponent is');
-    console.log(mergedOpponent);
     setOpponent(mergedOpponent);
   }
 
@@ -442,7 +427,23 @@ function App() {
       defaultFirstOpponent.sheetCoords = { x: 0, y: 0 };
       setOpponent(defaultFirstOpponent);
     }
+    startGame();
+  }
+
+  async function startGame() {
+    console.warn('---------------- GAME STARTED ----------------');
+    const newUser = { ...user };
+    const userRandomCards = newUser.startingCards.sort(() => 0.5 - Math.random()).slice(0, 4);
+    const opponentRandomCards = newUser.startingCards.sort(() => 0.5 - Math.random()).slice(0, 4);
+        
+    currentGame.userStatus.hand = userRandomCards;
+    currentGame.opponentStatus.hand = opponentRandomCards;
+    setCurrentGame(currentGame);
+
     setPhase('game-board-showing');
+    await pause(4500); // total time for versus screen to show and game board to zoom in? should be 2750??
+    console.warn('>>>>>>>>> READY TO DEAL');
+    setGameStarted(true)
   }
 
   async function handleSavingTheme(newThemeName) {
@@ -590,11 +591,12 @@ function App() {
           {phase === 'game-board-showing' &&
             <GameScreen
               showing={phase === 'game-board-showing'}
+              gameStarted={gameStarted}
               hamburgerOpen={hamburgerOpen}
-              user={{ ...user }}
-              handleUpdatingAppliedTheme={handleUpdatingAppliedTheme}
-              opponent={{ ...opponent }}
               currentGame={currentGame}
+              user={user}
+              opponent={opponent}
+              handleUpdatingAppliedTheme={handleUpdatingAppliedTheme}
               onClickEndGame={handleClickEndGame}
             />
           }
