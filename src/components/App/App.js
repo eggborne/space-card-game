@@ -135,11 +135,13 @@ function App() {
   const [currentGame, setCurrentGame] = useState(new Game(
     {
       hand: [],
+      cardsInPlay: [],
       matchScore: 0,
       setsWon: 0,
     },
     {
       hand: [],
+      cardsInPlay: [],
       matchScore: 0,
       setsWon: 0,
     }
@@ -443,7 +445,8 @@ function App() {
     setPhase('game-board-showing');
     await pause(4500); // total time for versus screen to show and game board to zoom in? should be 2750??
     console.warn('>>>>>>>>> READY TO DEAL');
-    setGameStarted(true)
+    setGameStarted(true);
+    currentGame.dealCard();
   }
 
   async function handleSavingTheme(newThemeName) {

@@ -55,7 +55,7 @@ function ScoreArea(props) {
   return (
     <StyledScoreArea style={{ flexDirection: props.playerObject.email ? 'column' : 'column-reverse'}}>
       <ScoreDisplay>
-        0
+        {props.playerStatus.matchScore}
       </ScoreDisplay>
       <div className='set-win-display'>
         <div style={{ backgroundColor: 'transparent' }}></div>

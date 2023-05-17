@@ -1,9 +1,10 @@
+import { useState } from 'react';
 import Card from '../Card';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
 import CardBack from '../CardBack';
 import ScoreArea from './ScoreArea';
-import { useState } from 'react';
+import { v4 } from 'uuid'
 
 const StyledPlayerArea = styled.div`
   
@@ -19,7 +20,7 @@ const StyledPlayerArea = styled.div`
   }
 
   & .current-turn {
-    animation: pulse infinite alternate 750ms ease;
+    animation: pulse infinite alternate 600ms ease;
   }
 
   @keyframes pulse {
@@ -38,8 +39,6 @@ const HandArea = styled.div`
   justify-content: space-between;
   height: calc(var(--section-height));
   
-  // background-color: #00550044;
-
   & > .portrait-area, .turn-indicator-area {
     flex-grow: 1;
     display: flex;
@@ -85,16 +84,26 @@ const DealArea = styled.div`
 function PlayerArea(props) {
   console.warn('PlayerArea props', props);
 
-  const [ selectedCard, setSelectedCard ] = useState(undefined);
+  const [selectedCard, setSelectedCard] = useState(undefined);
 
   const isCPU = !props.playerObject.email;
+
+  const firstDealRow = [...props.playerStatus.cardsInPlay];
+  const emptyFirstRowSpaces = 4 - firstDealRow.length;
+  for (let i = 0; i < emptyFirstRowSpaces; i++) {
+    firstDealRow.push({ id: v4(), value: 0, type: 'main' });
+  }
+  const secondDealRow = [];
+  const emptySecondRowSpaces = 5 - secondDealRow.length;
+
+
+  console.log(firstDealRow);
 
   return (
     <StyledPlayerArea
       style={{
         flexDirection: isCPU ? 'column-reverse' : 'column',
       }}
-      // className={props.isTurn ? 'current-turn' : ''}
     >
       <DealArea style={{ flexDirection: isCPU ? 'column' : 'column-reverse' }}>
         <div className='deal-row'>
@@ -105,11 +114,10 @@ function PlayerArea(props) {
           <Card value={0} />
         </div>
         <div className='deal-row'>
-          <Card usableSpace={!isCPU && selectedCard} value={0} />
-          <Card value={0} />
-          <Card value={0} />
-          <Card value={0} />
-          <ScoreArea playerObject={props.playerObject} />
+          {firstDealRow.map(cardData =>
+            <Card key={cardData.id} value={cardData.value} type='main' />
+          )}
+          <ScoreArea playerObject={props.playerObject} playerStatus={props.playerStatus} />
         </div>
       </DealArea>
       <HandArea
