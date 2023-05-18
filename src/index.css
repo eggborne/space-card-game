@@ -50,18 +50,17 @@
   --card-height: calc(var(--section-height) - (var(--main-padding) * 1.5));
   --card-max-height: calc(var(--section-height) - (var(--main-padding) * 0.5));
   --card-max-width: calc(var(--card-max-height) * (10/16));
-  /* --card-border-radius: calc(var(--card-width) * 0.15); */
   --card-border-radius: calc(var(--card-height) * 0.07);
-  /* --card-padding: calc(var(--card-width) * 0.1); */
   --card-padding: calc(var(--card-height) * 0.05);
 }
 
 *, * *, * * * {
   box-sizing: border-box;
+  -webkit-tap-highlight-color: transparent;
 }
 
 html {
-  background-color: white;
+  background-color: black;
   margin: 0;
 }
 
