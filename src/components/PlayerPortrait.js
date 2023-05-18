@@ -33,7 +33,7 @@ function PlayerPortrait(props) {
     if ((wordsInName <= 2 && totalLength > 10) || (wordsInName > 2 && totalLength > 12)) {
       labelFontSize = portraitSize / 5;
       if (totalLength > 18) {
-        labelFontSize = portraitSize / 9;
+        labelFontSize = portraitSize / 6;
       }
     }
     if (wordsInName === 1 && totalLength > 7) {
