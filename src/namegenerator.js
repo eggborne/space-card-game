@@ -487,8 +487,10 @@ export default class NameGenerator {
         nameData.style = mode;
         // console.log('NAMEDATA AT END?', nameData)
         if (violationData.violation) {
-          // console.error('violationData', nameData.fullName, violationData);        
-          // console.error('returning', nameData);        
+          console.error('violationData', nameData.fullName, violationData);        
+          // console.error('returning', nameData);
+          console.error('calling again!');
+          return this.getName(style, special);
         }
         return nameData;
       } else {
