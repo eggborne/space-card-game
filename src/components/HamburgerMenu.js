@@ -60,8 +60,6 @@ const StyledOptionsDisplay = styled(OptionsDisplay)`
 `;
 
 function HamburgerMenu(props) {
-  console.log('HamburgerMenu', props);
-
   function handleClickEndGame() {
     props.onClickEndGame();
   }

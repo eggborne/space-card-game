@@ -195,7 +195,6 @@ function App() {
     },
     playBestCPUCard: function() {
       const bestCard = this.opponentStatus.hand[this.opponentStatus.hand.length - 1];
-      console.log('playing best CPU card', bestCard)
       this.playCard(bestCard);
     }
   };
@@ -244,7 +243,6 @@ function App() {
   });
 
   function applyUserPreferences(newPreferences = user.preferences, retrievedData = user) {
-    console.log('applying preferences', newPreferences);
     const menuColor = newPreferences.appliedUITheme['--menu-color'];
     const menuBorderColor = newPreferences.appliedUITheme['--menu-border-color'];
     const secondaryColor = newPreferences.appliedUITheme['--secondary-color'];
@@ -318,7 +316,6 @@ function App() {
 
   async function handleChooseAvatar(newSheetCoords, guestName) {
     if (auth.currentUser) {
-      console.warn('running handleChooseAvatar with auth.currentUser');
       const newUserData = {
         ...user,
         email: auth.currentUser.email,
@@ -327,11 +324,8 @@ function App() {
         sheetCoords: newSheetCoords,
         id: auth.currentUser.uid,
       };
-      console.log('newUserData');
-      console.table(newUserData);
       await handleCreatingNewUser(newUserData);
     } else {
-      console.warn('running handleChooseAvatar AS GUEST');
       const guestUser = { ...user, sheetCoords: newSheetCoords, displayName: guestName };
       setUser(guestUser);
     }
@@ -421,7 +415,6 @@ function App() {
       for (let i = 0; i < randomNeeded; i++) {
         const randomIndex = randomInt(0, remainingCards.length - 1);
         const randomCard = remainingCards[randomIndex];
-        console.log(randomCard);
         chosenDeck.push(randomCard);
         remainingCards.splice(randomIndex, 1);
       }
@@ -446,7 +439,7 @@ function App() {
     signOut(auth)
       .then(async function () {
         console.log("You have successfully signed out!");
-        window.location.reload()
+        window.location.reload(); // Guest user overrwrote prevously-logged-in user's displayName and email ??
         // setUser(defaultUserState);
         // setUserLoggedIn(false);
         // setLogOutModalShowing(false);
@@ -479,8 +472,6 @@ function App() {
   }
 
   function handleAddCardToDeck(cardObj, remove) {
-    console.warn(remove ? 'adding to deck!' : 'removeing from deck!');
-    console.table(cardObj);
     const newUserDeck = remove ? [...user.deck].filter(card => card !== cardObj) : [...user.deck, cardObj];
     const newUser = { ...user };
     newUser.deck = newUserDeck;
@@ -520,32 +511,23 @@ function App() {
   }
 
   async function handleSavingTheme(newThemeName) {
-    console.warn('---------------------------')
-    console.log('saving theme with name', newThemeName);
-    console.log('user ui is', user.preferences.appliedUITheme)
     const newThemeDoc = {
       ...user.preferences.appliedUITheme,
       creatorId: user.id,
       name: newThemeName,
       public: true,
     };
-    console.log(newThemeDoc);
-    console.warn('---------------------------')
 
     const dbRef = doc(db, 'uiThemes', v4());
     await setDoc(dbRef, newThemeDoc);
-    console.warn('set doc??')
-
   }
 
   async function getUIThemes() {
-    console.log('document');
     const q = query(collection(db, "uiThemes"));
     const querySnapshot = await getDocs(q);
     const newThemes = [];
     querySnapshot.forEach((doc) => {
       // doc.data() is never undefined for query doc snapshots
-      console.log(doc.id, "GOT UITHEME => ", doc.data());
       const themeObj = { ...doc.data(), id: doc.id };
       newThemes.push(themeObj);
     });
@@ -562,12 +544,10 @@ function App() {
   }
 
   async function getUserById(id) {
-    console.log('getUserById', id);
     const q = query(collection(db, "userData"), where("id", "==", id));
     const querySnapshot = await getDocs(q);
     let foundUserData;
     querySnapshot.forEach((doc) => {
-      console.log(doc.id, "GOT USER BY ID => ", doc.data());
       foundUserData = doc.data();
     });
     return foundUserData;
@@ -587,7 +567,6 @@ function App() {
   }
 
   async function handleClickEndTurn() {
-    console.warn('called handleClickEndTurn!');
     const endingPlayer = currentGame.currentTurn;
     currentGame.currentTurn = endingPlayer === 'user' ? 'opponent' : 'user';
     currentGame.turnPhase = 'waiting';

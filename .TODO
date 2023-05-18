@@ -11,8 +11,8 @@ Production build needs line in package.json:
 
 NameGenerator let a triple 'S' through despite using the current 'Star Wars 3' ruleset (should not!)
 
-> FooterGameButtons should be passed as props to Footer? 
-> Game class imported from its own file?
+> FooterGameButtons should be passed as props to Footer? --> NO
+> Game class imported from its own file? --> NO
 
 --------------------------------------------
 

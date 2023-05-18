@@ -35,7 +35,6 @@ const GameBoard = styled.div`
 `;
 
 function GameScreen(props) {
-  console.warn('GameScreen PROPS ---->', props)
   const [versusScreenShowing, setVersusScreenShowing] = useState(true);
   const [gameBoardShowing, setGameBoardShowing] = useState(false);
   const [endGameModalShowing, setEndGameModalShowing] = useState(false);

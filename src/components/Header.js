@@ -50,13 +50,10 @@ const StyledHeader = styled.header`
 `;
 
 function Header(props) {
-  console.log('header props', props)
   const showUserInfo = props.phase !== 'game-board-showing';
   const portraitSize = `calc(var(--header-height) - 0.5rem - (var(--menu-border-width)))`;
   const displayNameFontSize = props.user.displayName.length < 12 ? '100%' : '85%';
-
-  console.log('displayNameFontSize', displayNameFontSize)
-
+  
   return (
     <StyledHeader className='menu-style' style={{
       transform: props.phase === 'game-board-showing' ? 'translateY(-105%)' : 'translateY(0)', // 105% to hide bottom shadow

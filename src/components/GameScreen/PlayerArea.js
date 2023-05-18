@@ -90,7 +90,6 @@ const StyledCardBack = styled(CardBack)`
 `;
 
 function PlayerArea(props) {
-  console.warn('PlayerArea props', props);
 
   const [selectedCard, setSelectedCard] = useState(undefined);
 
