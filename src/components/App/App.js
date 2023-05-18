@@ -71,6 +71,7 @@ function App() {
     '--menu-border-color': '#000000',
     '--border-radius': '1',
     '--menu-border-width': '0.5',
+    '--portrait-border-radius': '50',
   };
 
   const defaultUserState = {
@@ -241,21 +242,22 @@ function App() {
         applyUserPreferences(guestTheme)
       }
     }
-    
   });
 
   function applyUserPreferences(newPreferences = user.preferences, retrievedData = user) {
     const menuColor = newPreferences.appliedUITheme['--menu-color'];
     const menuBorderColor = newPreferences.appliedUITheme['--menu-border-color'];
     const secondaryColor = newPreferences.appliedUITheme['--secondary-color'];
-    const roundness = newPreferences.appliedUITheme['--border-radius'];
     const menuBorderWidth = newPreferences.appliedUITheme['--menu-border-width'];
+    const roundness = newPreferences.appliedUITheme['--border-radius'];
+    const portraitRoundness = newPreferences.appliedUITheme['--portrait-border-radius'];
 
     ROOT.style.setProperty('--menu-color', menuColor);
     ROOT.style.setProperty('--menu-border-color', menuBorderColor + '44');
     ROOT.style.setProperty('--secondary-color', secondaryColor);
-    ROOT.style.setProperty('--border-radius', roundness + 'rem');
     ROOT.style.setProperty('--menu-border-width', menuBorderWidth + 'rem');
+    ROOT.style.setProperty('--border-radius', roundness + 'rem');
+    ROOT.style.setProperty('--portrait-border-radius', portraitRoundness + '%');
 
     setUser(retrievedData);
   }

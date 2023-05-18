@@ -143,6 +143,7 @@ function ThemeSelectModal(props) {
                 size='calc(var(--header-height))'
                 imagePath={theme.creatorData.imagePath}
                 sheetCoords={{ ...theme.creatorData.sheetCoords }}
+                borderRadius={theme['--portrait-border-radius'] + '%'}
               />
             </div>
             {/* <div>{theme.public ? 'Public' : 'Private'}</div> */}

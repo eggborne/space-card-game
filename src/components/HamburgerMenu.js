@@ -7,14 +7,12 @@ const StyledHamburgerMenu = styled.div`
   position: absolute;
   bottom: calc(var(--expanded-footer-height) + (var(--main-padding) / 2));
   right: 0;
-  min-height: 60vh;
   width: var(--hamburger-menu-width);
   display: flex;
   flex-direction: column;
   align-items: stretch;
   justify-content: flex-end;
-  // gap: 2rem;
-  max-height: 100%;
+  max-height: calc(var(--actual-height) - var(--expanded-footer-height));
   padding: 1.5rem var(--menu-padding);
  
   border-right: none !important;
@@ -47,7 +45,6 @@ const StyledHamburgerMenu = styled.div`
     padding: 1rem 0;
     width: 65%;
     align-self: center;
-    margin-top: 1.5rem;
   }
 
   &.open {
@@ -70,11 +67,6 @@ function HamburgerMenu(props) {
     <StyledHamburgerMenu 
       className={props.open ? 'menu-style open' : 'menu-style'}
     >
-      {props.user.preferences.appliedUITheme.name && 
-      <h4>using theme 
-      <div>{props.user.preferences.appliedUITheme.name}</div>
-        by {props.user.preferences.appliedUITheme.creatorData.displayName} {ownTheme && '(you!)'}
-      </h4>}
       <StyledOptionsDisplay location='hamburger-menu' user={props.user} ui={props.user.preferences.appliedUITheme} handleUpdatingAppliedTheme={props.handleUpdatingAppliedTheme} />
       <Button color='red' onClick={handleClickEndGame} label="End Game" />
     </StyledHamburgerMenu>

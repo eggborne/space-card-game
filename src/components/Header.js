@@ -53,7 +53,7 @@ const StyledHeader = styled.header`
 
 function Header(props) {
   const showUserInfo = props.phase !== 'game-board-showing';
-  const portraitSize = `calc(var(--header-height) - 0.5rem - (var(--menu-border-width)))`;
+  const portraitSize = `calc(var(--header-height) - 0.75rem - var(--menu-border-width))`;
   const displayNameFontSize = props.user.displayName.length < 12 ? '100%' : '85%';
   
   return (

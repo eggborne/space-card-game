@@ -19,6 +19,7 @@
   --menu-border-width: 0.25rem;
   --secondary-color: #184738;
   --border-radius: 1rem;
+  --portrait-border-radius: 50%;
 
   --df: rgb(139, 71, 48);
 
@@ -111,6 +112,7 @@ h1, h2, h3, h4 {
 
 h1 {
   font-family: var(--block-font);
+  text-shadow: -0.1rem 0px 0 #000, 0px -0.1rem 0 #000, -0px 0.1rem 0 #000, 0px 0.1rem 0 #000;
 }
 
 .arrow-up {
@@ -183,11 +185,12 @@ h1 {
 
 button {
   text-shadow: -1px -1px 0 #00000099, 1px -1px 0 #00000099, -1px 1px 0 #00000099, 1px 1px 0 #00000099;
-  font-family: 'Bungee' !important;
-  padding: 0.5rem 1rem !important;
+  font-family: 'Nova Flat' !important;
+  padding: 1rem !important;
   display: flex;
   align-items: center;
   justify-content: center;
+  min-width: max-content;
 }
 
 /* .menu-style::before {

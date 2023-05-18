@@ -58,7 +58,7 @@ function GameScreen(props) {
     props.onClickEndGame();
   }
 
-  const debug = true;
+  const debug = false;
 
   return (
     <>
