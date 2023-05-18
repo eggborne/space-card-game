@@ -9,6 +9,7 @@ const StyledOptionsDisplay = styled.div`
   align-items: center;
   justify-content: center;
   gap: 1rem;
+  margin-bottom: 2rem;
   
   & > .option-row {
     position: relative;
@@ -96,7 +97,7 @@ function OptionsDisplay(props) {
           defaultValue={ui['--secondary-color']}
         />
       </div>
-      <div className='option-row'>        
+      <div className='option-row' style={{ marginBottom: '0.5rem' }} >        
         <label htmlFor='menu-border-color'>Border Color</label>
         <input 
           type="color" 

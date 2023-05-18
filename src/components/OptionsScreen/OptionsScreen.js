@@ -92,8 +92,6 @@ const StyledOptionsScreen = styled.div`
     border-color: var(--menu-border-color);
   }
 
- 
-  
   &.hidden {
     pointer-events: none;
     opacity: 0;
