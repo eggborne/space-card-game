@@ -6,6 +6,7 @@ import PlayerArea from './PlayerArea';
 import PlayerPortrait from '../PlayerPortrait';
 import HamburgerMenu from '../HamburgerMenu';
 import Modal from '../Modal';
+import MoveIndicator from './MoveIndicator';
 import { pause } from '../../util.js';
 
 const StyledGameScreen = styled.div`
@@ -58,13 +59,13 @@ function GameScreen(props) {
     props.onClickEndGame();
   }
 
-  const debug = false;
+  const debug = true;
 
   return (
     <>
       {debug && 
         <div style={{ position: 'fixed', zIndex: '3', backgroundColor: '#000000aa', top: '0', left: '0', padding: '0.5rem 1.5rem' }}>
-          {props.currentGame.turnPhase} - {props[props.currentGame.currentTurn].displayName}
+          {props.currentGame.currentTurn}'s turn: {props.currentGame.turnPhase}
         </div>
       }
       <HamburgerMenu
@@ -85,22 +86,23 @@ function GameScreen(props) {
           }}
         >
           {['opponent', 'user'].map((player, p) => 
-            <PlayerArea
-              key={p}
-              playerObject={props[player]}
-              playerStatus={props.currentGame[player + 'Status']}
-              isTurn={props.currentGame.currentTurn === player}
-              turnPhase={props.currentGame.turnPhase}
-              playCard={props.playCard}
-              portrait={
-                <PlayerPortrait
-                  size='5rem'
-                  displayName={props[player].displayName}
-                  imagePath={props[player].imagePath}
-                  sheetCoords={props[player].sheetCoords}
-                />
-              }
-            />
+            <div key={p}>
+              <PlayerArea
+                playerObject={props[player]}
+                playerStatus={props.currentGame[player + 'Status']}
+                isTurn={props.currentGame.currentTurn === player}
+                turnPhase={props.currentGame.turnPhase}
+                playCard={props.playCard}
+                portrait={
+                  <PlayerPortrait
+                    size='5rem'
+                    displayName={props[player].displayName}
+                    imagePath={props[player].imagePath}
+                    sheetCoords={props[player].sheetCoords}
+                  />
+                }
+              />
+            </div>
           )}
         </GameBoard>
         <Modal

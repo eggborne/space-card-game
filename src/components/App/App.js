@@ -24,6 +24,7 @@ import NameGenerator from '../../namegenerator.js';
 import DeckCreationScreen from '../DeckCreationScreen/DeckCreationScreen';
 import OpponentSelectionScreen from '../OpponentSelectionScreen/OpponentSelectionScreen';
 import HallOfFameScreen from '../HallOfFameScreen/HallOfFameScreen';
+import MoveIndicator from '../GameScreen/MoveIndicator';
 
 let clickFunction = window.PointerEvent ? 'onPointerDown' : window.TouchEvent ? 'onTouchStart' : 'onClick';
 
@@ -214,8 +215,11 @@ function App() {
   const [profileMenuOpen, setProfileMenuOpen] = useState(false);
   const [hamburgerOpen, setHamburgerOpen] = useState(false);
   const [gameStarted, setGameStarted] = useState(false);
-
   const [currentGame, setCurrentGame] = useState(initialGameState);
+  const [moveIndicatorShowing, setMoveIndicatorShowing] = useState({
+    player: undefined,
+    message: undefined,
+  });
 
   useEffect(() => {
     if (!loaded) {
@@ -392,7 +396,6 @@ function App() {
     const randomX = randomInt(0, 7);
     const characterData = { ...defaultOpponent };
     const randomName = nameGenerator.getName().fullName;
-    console.log('RANDOM NAME!', randomName);
     return {
       ...characterData,
       displayName: randomName,
@@ -406,7 +409,7 @@ function App() {
     if (gameMode === 'Campaign') {
       setPhase('deck-selection');
     } else if (gameMode === 'Quick Match') {
-      const randomOpponent = randomInt(0, 0) ? getRandomNamedOpponent() : getRandomCharacterOpponent();
+      const randomOpponent = randomInt(0, 10) ? getRandomNamedOpponent() : getRandomCharacterOpponent();
       setOpponent(randomOpponent);
       startGame();
     }
@@ -575,6 +578,10 @@ function App() {
   function handleClickEndGame() {
     setHamburgerOpen(false);
     document.getElementById('starfield').play();
+    setMoveIndicatorShowing({
+      player: undefined,
+      message: undefined,
+    })
     setCurrentGame(initialGameState);
     setGameStarted(false);
     setPhase('title');
@@ -587,9 +594,10 @@ function App() {
 
   async function handleClickEndTurn() {
     const endingPlayer = currentGame.currentTurn;
+    flashMoveIndicator(endingPlayer, 'END TURN');
+    await pause(1000);
     currentGame.currentTurn = endingPlayer === 'user' ? 'opponent' : 'user';
     currentGame.turnPhase = 'waiting';
-    await pause(1000);
     setCurrentGame({...currentGame});
     currentGame.dealCard();
     await pause(500);
@@ -597,14 +605,15 @@ function App() {
       if (currentGame.opponentStatus.hand.length) {
         const standAt = opponent.strategy.stand.standAt;
         if (currentGame.opponentStatus.matchScore > 20) {
-          console.warn('//////////////////////////////// BUSTED /////////////////////////////////////////////')
+          console.warn('//////////////////////////////// BUSTED /////////////////////////////////////////////');
+          flashMoveIndicator('opponent', 'BUST :(', true)
         } else if (currentGame.opponentStatus.matchScore < standAt) {
           console.warn('*********** CPU IS PLAYING BEST CARD due to score', currentGame.opponentStatus.matchScore, 'being < standAt', standAt)
           currentGame.playBestCPUCard();
           await pause(1000);
         } else {
           console.warn('*********** CPU IS STANDING due to score', currentGame.opponentStatus.matchScore, 'being >= standAt', standAt)
-          handleClickStand();
+          return handleClickStand();
         }
       }
       setCurrentGame({...currentGame});
@@ -620,8 +629,27 @@ function App() {
 
   function handleClickStand() {
     console.warn('clicked STAND!');
-    currentGame.turnPhase = 'player-stood';
+    const standingPlayer = currentGame.currentTurn;
+    flashMoveIndicator(standingPlayer, 'STAND', true);
+    currentGame.turnPhase = 'other-player-stood';
     currentGame.currentTurn = currentGame.currentTurn === 'user' ? 'opponent' : 'user';
+    setCurrentGame({...currentGame});
+  }
+
+  async function flashMoveIndicator(player, message, persist) {
+    setMoveIndicatorShowing({ player, message });
+    if (!persist) {
+      await pause(1000);
+      setMoveIndicatorShowing({
+        player: undefined,
+        message,
+      });
+      // await pause(200);
+      // setMoveIndicatorShowing({
+      //   player: undefined,
+      //   message: undefined,
+      // });
+    }
   }
 
   return (
@@ -713,6 +741,17 @@ function App() {
             userList={userList}
           />
           {phase === 'game-board-showing' &&
+          <>
+            <MoveIndicator 
+              player={'opponent'} 
+              showing={moveIndicatorShowing.player === 'opponent'} 
+              message={moveIndicatorShowing.message}
+            />
+            <MoveIndicator 
+              player={'user'} 
+              showing={moveIndicatorShowing.player === 'user'} 
+              message={moveIndicatorShowing.message}
+            />
             <GameScreen
               showing={phase === 'game-board-showing'}
               gameStarted={gameStarted}
@@ -723,7 +762,8 @@ function App() {
               handleUpdatingAppliedTheme={handleUpdatingAppliedTheme}
               onClickEndGame={handleClickEndGame}
               playCard={handlePlayingCard}
-            />
+              />
+            </>
           }
         </div>
         <Footer
@@ -735,10 +775,12 @@ function App() {
           onClickConfirmDeck={handleConfirmDeck}
           onClickConfirmOpponent={handleConfirmOpponent}
           userDeck={user.deck}
+          currentTurn={currentGame.currentTurn}
           handleToggleHamburger={handleToggleHamburger}
           hamburgerOpen={hamburgerOpen}
           onClickEndTurn={handleClickEndTurn}
           onClickStand={handleClickStand}
+          flashMoveIndicator={flashMoveIndicator}
         />
       </StyledApp>
     </>

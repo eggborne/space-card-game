@@ -4,9 +4,12 @@ import PropTypes from 'prop-types';
 import styled from 'styled-components';
 import CardBack from '../CardBack';
 import ScoreArea from './ScoreArea';
+import MoveIndicator from './MoveIndicator';
+import { pause } from '../../util.js';
 import { v4 } from 'uuid';
 
 const StyledPlayerArea = styled.div`
+  position: relative;
   width: 100%;
   height: 100%;
   display: flex;
@@ -123,9 +126,9 @@ function PlayerArea(props) {
 
   return (
     <StyledPlayerArea
-      style={{
-        flexDirection: isCPU ? 'column-reverse' : 'column',
-      }}
+    style={{
+      flexDirection: isCPU ? 'column-reverse' : 'column',
+    }}
     >
       <DealArea style={{ flexDirection: isCPU ? 'column' : 'column-reverse' }}>
         {[secondDealRow, firstDealRow].map((row, r) =>

@@ -41,6 +41,10 @@
   --card-blue: rgb(0, 0, 192);
   --card-yellow: rgb(204, 204, 0);
 
+  --move-green: #00ff0066;
+  --move-yellow: #9d7e2166;
+  --move-red: #d3000066;
+
   --game-board-height: calc(var(--actual-height) - var(--expanded-footer-height));
   --main-padding: 0.25rem;
   --menu-padding: 0.325rem;

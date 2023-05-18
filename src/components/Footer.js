@@ -68,8 +68,8 @@ function Footer(props) {
           : props.phase === 'game-board-showing' ?
             <>
               <div className='game-button-area' style={{ opacity: props.hamburgerOpen ? '0.4' : '1', pointerEvents: props.hamburgerOpen ? 'none' : 'all'}}>
-                <FooterGameButton onClick={props.onClickEndTurn} color='green' label='End Turn' />
-                <FooterGameButton onClick={props.onClickStand}  color='orange' label='Stand' />
+                <FooterGameButton disabled={props.currentTurn === 'opponent'} onClick={props.onClickEndTurn} color='green' label='End Turn' />
+                <FooterGameButton disabled={props.currentTurn === 'opponent'} onClick={props.onClickStand}  color='orange' label='Stand' />
               </div>
               <Hamburger onClickToggle={props.handleToggleHamburger} />
             </>
@@ -105,6 +105,7 @@ Footer.propTypes = {
   onClickConfirmDeck: PropTypes.func,
   onClickConfirmOpponent: PropTypes.func,
   userDeck: PropTypes.arrayOf(PropTypes.object),
+  currentTurn: PropTypes.string,
   handleToggleHamburger: PropTypes.func,
   hamburgerOpen: PropTypes.bool,
   onClickEndTurn: PropTypes.func,
