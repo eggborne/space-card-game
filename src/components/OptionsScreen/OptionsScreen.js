@@ -52,7 +52,7 @@ const StyledOptionsScreen = styled.div`
   
   & > .scroll-container {
     overflow-y: auto;
-    padding: 2rem;
+    padding: 1rem;
     display: flex;
     flex-direction: column;
     gap: 1rem;

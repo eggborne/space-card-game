@@ -43,7 +43,8 @@ function TitleScreen(props) {
       </StyledTitleScreen>
       <AvatarChoiceModal 
         playingAsGuest={!props.userLoggedIn}
-        showing={props.avatarChoiceModalShowing} 
+        showing={props.avatarChoiceModalShowing}
+        getName={props.getName} 
         onClickOK={props.handleChooseAvatar} 
       />
     </>
@@ -65,6 +66,7 @@ TitleScreen.propTypes = {
   handleCloseAvatarModal: PropTypes.func,
   setAvatarChoiceModalShowing: PropTypes.func,
   avatarChoiceModalShowing: PropTypes.bool,
+  getName: PropTypes.func,
 }
 
 export default TitleScreen;

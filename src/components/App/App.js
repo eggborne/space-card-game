@@ -241,9 +241,9 @@ function App() {
         }
       } else {
         console.log('user just logged out! --------------------------------------------------')
-        setUserLoggedIn(false);
-        const guestTheme = {appliedUITheme: defaultUITheme};
-        applyUserPreferences(guestTheme)
+        // setUserLoggedIn(false);
+        // const guestTheme = {appliedUITheme: defaultUITheme};
+        // applyUserPreferences(guestTheme)
       }
     }
   });
@@ -706,6 +706,7 @@ function App() {
             avatarChoiceModalShowing={avatarChoiceModalShowing}
             setAvatarChoiceModalShowing={() => setAvatarChoiceModalShowing(true)}
             handleCloseAvatarModal={handleCloseAvatarModal}
+            getName={nameGenerator.getName}
           />
           <OptionsScreen
             showing={phase === 'options'}

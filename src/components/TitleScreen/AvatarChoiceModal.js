@@ -3,9 +3,11 @@ import PlayerPortrait from '../PlayerPortrait';
 import Button from '../Buttons/Button';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
+import { randomInt } from '../../util';
 
 const StyledAvatarChoiceModal = styled.div`
   position: absolute;
+  height: 90%;
   top: 50%;
   left: 50%;
   translate: -50% -50%;
@@ -19,7 +21,6 @@ const StyledAvatarChoiceModal = styled.div`
 
   opacity: 0;
   pointer-events: none;
-  // scale: 0.9;
   transition: all 200ms ease;
 
   & input {
@@ -32,13 +33,14 @@ const StyledAvatarChoiceModal = styled.div`
 
   & > h2 {
     margin-bottom: 1rem;
+    font-family: var(--block-font);
   }
 
   & > .avatar-grid {
     display: grid;
     grid-template-columns: repeat(4, 1fr);
     grid-template-rows: repeat(6, 1fr);
-    height: 16rem;
+    // height: 16rem;
     max-height: 80vh;
     overflow-x: hidden;
     overflow-y: scroll;
@@ -47,6 +49,9 @@ const StyledAvatarChoiceModal = styled.div`
   & > .bottom-button-area {
     margin: 1rem;
     margin-top: 2rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
   }
 `;
 
@@ -95,6 +100,18 @@ function AvatarChoiceModal(props) {
     props.onClickOK(userAvatarChoice, guestName);
   }
 
+  function getRandomNameAndAvatar() {
+    const randomName = props.getName().fullName;
+    document.getElementById('guest-name-input').value = randomName;
+    const randomSheetCoords = {
+      x: randomInt(0, 7),
+      y: randomInt(0, 2),
+    }
+    setUserAvatarChoice(randomSheetCoords)
+  }
+
+  console.warn('av choice props', props)
+
   return (
     <StyledAvatarChoiceModal style={{
       opacity: props.showing ? '1' : '0',
@@ -122,6 +139,7 @@ function AvatarChoiceModal(props) {
         )}
       </div>
       <div className='bottom-button-area'>
+        <Button onClick={getRandomNameAndAvatar} label='Randomize' />
         <Button color='green' onClick={() => handleSubmitAvatarChoice()} label='OK!' />
       </div>
     </StyledAvatarChoiceModal>
@@ -131,6 +149,7 @@ function AvatarChoiceModal(props) {
 AvatarChoiceModal.propTypes = {
   playingAsGuest: PropTypes.bool,
   showing: PropTypes.bool,
+  getName: PropTypes.func,
   onClickOK: PropTypes.func,
 };
 

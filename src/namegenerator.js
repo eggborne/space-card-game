@@ -492,6 +492,7 @@ export default class NameGenerator {
           console.error('calling again!');
           return this.getName(style, special);
         }
+        console.warn('got acceptable name', nameData.fullName);
         return nameData;
       } else {
         return { fullName: nameData.fullName, redundant: true }
