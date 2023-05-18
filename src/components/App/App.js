@@ -446,12 +446,13 @@ function App() {
     signOut(auth)
       .then(async function () {
         console.log("You have successfully signed out!");
-        setUser(defaultUserState);
-        setUserLoggedIn(false);
-        setLogOutModalShowing(false);
-        setProfileMenuOpen(false);
-        applyUserPreferences();
-        setPhase('title');        
+        window.location.reload()
+        // setUser(defaultUserState);
+        // setUserLoggedIn(false);
+        // setLogOutModalShowing(false);
+        // setProfileMenuOpen(false);
+        // applyUserPreferences();
+        // setPhase('title'); 
       }).catch(function (error) {
         console.log(`There was an error signing out: ${error.message}!`);
       });
