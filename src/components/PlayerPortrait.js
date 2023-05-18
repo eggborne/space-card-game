@@ -21,7 +21,7 @@ const PortraitNameLabel = styled.div`
   transform: translate(-50%);
   text-shadow: 0 0 0.5rem #000000;
   z-index: 3;
-  line-height: 1.1rem;
+  line-height: 110%;
 `;
 
 function PlayerPortrait(props) {

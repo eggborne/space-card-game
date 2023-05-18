@@ -406,7 +406,7 @@ function App() {
     if (gameMode === 'Campaign') {
       setPhase('deck-selection');
     } else if (gameMode === 'Quick Match') {
-      const randomOpponent = randomInt(0, 5) ? getRandomNamedOpponent() : getRandomCharacterOpponent();
+      const randomOpponent = randomInt(0, 0) ? getRandomNamedOpponent() : getRandomCharacterOpponent();
       setOpponent(randomOpponent);
       startGame();
     }
