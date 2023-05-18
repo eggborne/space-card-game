@@ -13,8 +13,9 @@ const StyledHeader = styled.header`
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: 0 1rem;
   padding: 0 calc(0.75rem + (var(--border-radius) / 4.5));
+  padding-right: calc(0.5rem + (var(--border-radius) / 4.5));
+  padding-bottom: calc(var(--border-radius) / 24);
   transform-origin: top;
   transition: all 200ms ease;
   border-top-left-radius: 0;
@@ -51,20 +52,25 @@ const StyledHeader = styled.header`
 function Header(props) {
   console.log('header props', props)
   const showUserInfo = props.phase !== 'game-board-showing';
+  const portraitSize = `calc(var(--header-height) - 0.5rem - (var(--menu-border-width)))`;
+  const displayNameFontSize = props.user.displayName.length < 12 ? '100%' : '85%';
+
+  console.log('displayNameFontSize', displayNameFontSize)
+
   return (
     <StyledHeader className='menu-style' style={{
-      transform: props.phase === 'game-board-showing' ? 'translateY(-100%)' : 'translateY(0)',
+      transform: props.phase === 'game-board-showing' ? 'translateY(-105%)' : 'translateY(0)', // 105% to hide bottom shadow
     }}>
       <h1>pazaak.live</h1>
       {props.authUser && (showUserInfo || props.phase === 'title') ?
         <div className='user-info-area'>
           <div>
-            <div style={{ fontSize: '100%', fontWeight: 'bold' }}>{props.authUser.displayName}</div>
+            <div style={{ fontSize: displayNameFontSize, fontWeight: 'bold' }}>{props.authUser.displayName}</div>
             <div style={{ fontSize: '100%', color: 'lightgreen' }}>${props.user.progress.credits}<span style={{ color: 'white', fontSize: '90%' }}> {props.user.statistics.setWins}/{props.user.statistics.totalSets}</span></div>
           </div>
           <div style={{ cursor: 'pointer' }} onClick={props.phase !== 'title' ? props.onClickProfileMenu : null}>
             <PlayerPortrait
-              size='calc(var(--header-height) - 1.25rem)'
+              size={portraitSize}
               imagePath={props.user.imagePath}
               sheetCoords={{ ...props.user.sheetCoords }}
             />
@@ -74,11 +80,11 @@ function Header(props) {
         props.user.email === 'guest@guest.guest' && showUserInfo ?
           <div className='user-info-area'>
             <div>
-              <div style={{ fontSize: '100%', fontWeight: 'bold' }}>{props.user.displayName}</div>
+              <div style={{ fontSize: displayNameFontSize, fontWeight: 'bold' }}>{props.user.displayName}</div>
             </div>
             <div style={{ cursor: 'pointer' }} onClick={props.phase !== 'title' ? props.onClickProfileMenu : null}>
               <PlayerPortrait
-                size='calc(var(--header-height) - 1.5rem)'
+                size={portraitSize}
                 imagePath={props.user.imagePath}
                 sheetCoords={{ ...props.user.sheetCoords }}
               />

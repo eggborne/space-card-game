@@ -59,8 +59,15 @@ function GameScreen(props) {
     props.onClickEndGame();
   }
 
+  const debug = true;
+
   return (
     <>
+      {debug && 
+        <div style={{ position: 'fixed', zIndex: '3', backgroundColor: '#000000aa', top: '0', left: '0', padding: '0.5rem 1.5rem' }}>
+          {props.currentGame.turnPhase} - {props[props.currentGame.currentTurn].displayName}
+        </div>
+      }
       <HamburgerMenu
         open={props.hamburgerOpen}
         user={props.user}
@@ -97,6 +104,14 @@ function GameScreen(props) {
             />
           )}
         </GameBoard>
+        <Modal
+          showing={props.currentGame.turnPhase === 'showing-results'}
+          headline={'SET WINNER'}
+          color='maroon'
+          buttonLabel='OK'
+          bodyComponent={<>winner here</>}
+          onClickOK={() => null}
+        />
       </StyledGameScreen>
       <Modal
         showing={endGameModalShowing}

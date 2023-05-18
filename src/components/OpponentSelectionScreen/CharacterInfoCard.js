@@ -14,7 +14,7 @@ const StyledCharacterInfoCard = styled.div`
   width: calc((var(--main-width) - 4rem));
   padding: 2rem;
   
-  background-color: darksalmon;
+  background-color: gray;
   -webkit-transform: perspective(var(--main-width)) rotateX(3deg) scale(0.9);
   opacity: 0.8;
 
@@ -58,8 +58,9 @@ const StyledCharacterInfoCard = styled.div`
   }
 
   & > .opponent-strategy-display {
-    color: darkgray;
-    font-size: 1.1rem;
+    text-align: center;
+    color: #ddd;
+    font-size: 85%;
     margin: 1rem 0;
   }
   
@@ -82,7 +83,8 @@ function CharacterInfoCard(props) {
         <div>Origin: {char.placeOfOrigin}</div>
         <div>Skill level: {char.skillLevel}</div>
         <div className='prize-display'>
-          <div>Prize: {char.prize.credits} credits</div>
+          <div>Prize: <span style={{ color: 'lightgreen' }}>{char.prize.credits} credits</span></div>
+          <div>Prize Cards:</div>
           <div className='prize-card-display'>
             {char.prize.cards.map(cardObj => 
               <Card key={cardObj.id} scale={0.75} {...cardObj} />

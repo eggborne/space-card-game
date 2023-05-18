@@ -575,35 +575,54 @@ function App() {
   function handleClickEndGame() {
     setHamburgerOpen(false);
     document.getElementById('starfield').play();
+    setCurrentGame(initialGameState);
+    setGameStarted(false);
     setPhase('title');
   }
 
   function handlePlayingCard(card) {
     currentGame.playCard(card);
-    setCurrentGame(currentGame);
+    setCurrentGame({...currentGame});
   }
 
   async function handleClickEndTurn() {
-    console.warn('clicked END TURN!');
-    currentGame.currentTurn = currentGame.currentTurn === 'user' ? 'opponent' : 'user';
+    console.warn('called handleClickEndTurn!');
+    const endingPlayer = currentGame.currentTurn;
+    currentGame.currentTurn = endingPlayer === 'user' ? 'opponent' : 'user';
     currentGame.turnPhase = 'waiting';
     await pause(1000);
     setCurrentGame({...currentGame});
     currentGame.dealCard();
     await pause(500);
     if (currentGame.currentTurn === 'opponent') {
-      currentGame.playBestCPUCard();
-      await pause(1000);
+      if (currentGame.opponentStatus.hand.length) {
+        const standAt = opponent.strategy.stand.standAt;
+        if (currentGame.opponentStatus.matchScore > 20) {
+          console.warn('//////////////////////////////// BUSTED /////////////////////////////////////////////')
+        } else if (currentGame.opponentStatus.matchScore < standAt) {
+          console.warn('*********** CPU IS PLAYING BEST CARD due to score', currentGame.opponentStatus.matchScore, 'being < standAt', standAt)
+          currentGame.playBestCPUCard();
+          await pause(1000);
+        } else {
+          console.warn('*********** CPU IS STANDING due to score', currentGame.opponentStatus.matchScore, 'being >= standAt', standAt)
+          handleClickStand();
+        }
+      }
       setCurrentGame({...currentGame});
-      if (true) {
+      const playerBusted = currentGame.opponentStatus.matchScore > 20;
+      if (!playerBusted) {
+        await pause(500);
         handleClickEndTurn();
+      } else {
+
       }
     }
   }
 
   function handleClickStand() {
     console.warn('clicked STAND!');
-
+    currentGame.turnPhase = 'player-stood';
+    currentGame.currentTurn = currentGame.currentTurn === 'user' ? 'opponent' : 'user';
   }
 
   return (
@@ -663,6 +682,7 @@ function App() {
           <OptionsScreen
             showing={phase === 'options'}
             user={user}
+            userLoggedIn={userLoggedIn}
             uiThemes={uiThemes}
             handleUpdatingAppliedTheme={handleUpdatingAppliedTheme}
             handleSavingTheme={handleSavingTheme}

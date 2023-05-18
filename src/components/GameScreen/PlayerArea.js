@@ -4,10 +4,9 @@ import PropTypes from 'prop-types';
 import styled from 'styled-components';
 import CardBack from '../CardBack';
 import ScoreArea from './ScoreArea';
-import { v4 } from 'uuid'
+import { v4 } from 'uuid';
 
 const StyledPlayerArea = styled.div`
-  
   width: 100%;
   height: 100%;
   display: flex;
@@ -16,23 +15,12 @@ const StyledPlayerArea = styled.div`
   justify-content: space-between;
 
   &:first-of-type {
-    border-bottom: 0.25rem groove #00000044;
+    border-bottom: 0.25rem groove #00ff0066;
   }
 
   & .current-turn {
     animation: pulse infinite alternate 600ms ease;
-    border-radius: calc(var(--border-radius) / 2);
-    
-    &.top {
-      border-top-left-radius: 0;
-      border-top-right-radius: 0;
-    }
-    
-    &.bottom {
-      border-bottom-left-radius: 0;
-      border-bottom-right-radius: 0;
-    }
-
+    border-radius: calc(var(--border-radius) / 6);
   }
 
   @keyframes pulse {
@@ -93,21 +81,30 @@ const DealArea = styled.div`
   }
 `;
 
+const StyledCardBack = styled(CardBack)`
+  scale: 0.5 !important;
+  position: fixed !important;
+  top: 0;
+  left: 0;
+  outline: 2px solid blue;
+`;
+
 function PlayerArea(props) {
   console.warn('PlayerArea props', props);
 
   const [selectedCard, setSelectedCard] = useState(undefined);
 
-  const isCPU = !props.playerObject.email;
+  const isCPU = !props.playerObject.email; // not ideal but the easiest way to check for now
 
+  // create hand array
   const playerHand = [...props.playerStatus.hand];
-
   const handRow = playerHand;
   const emptyHandSpaces = 4 - playerHand.length;
   for (let i = 0; i < emptyHandSpaces; i++) {
     handRow.push({ id: v4(), value: 0 });
   }
 
+  // create deal row arrays
   const cardsInPlay = [...props.playerStatus.cardsInPlay];
   const firstDealRow = cardsInPlay.slice(0, 4);
   const emptyFirstRowSpaces = 4 - firstDealRow.length;
@@ -117,11 +114,11 @@ function PlayerArea(props) {
   const secondDealRow = cardsInPlay.slice(4, 9);
   const emptySecondRowSpaces = 5 - secondDealRow.length;
   for (let i = 0; i < emptySecondRowSpaces; i++) {
-    secondDealRow.push({ id: v4(), value: 0, type: 'main', usableSpace: (selectedCard && !isCPU && (i + 5) === (cardsInPlay.length - 1)) });
+    secondDealRow.push({ id: v4(), value: 0, type: 'main', usableSpace: (cardsInPlay.length > 4 && selectedCard && !isCPU && i === 0) });
   }
 
   function handleClickPlaySpace() {
-    props.playCard(selectedCard); 
+    props.playCard(selectedCard);
     setSelectedCard(null);
   }
 
@@ -131,36 +128,31 @@ function PlayerArea(props) {
         flexDirection: isCPU ? 'column-reverse' : 'column',
       }}
     >
-      {!isCPU && <div style={{ position: 'fixed', zIndex: '3', backgroundColor: 'black', top: '7.5rem', left: '8.5rem' }}>{props.turnPhase}</div>}
       <DealArea style={{ flexDirection: isCPU ? 'column' : 'column-reverse' }}>
-        {[secondDealRow, firstDealRow].map((row, r) => 
+        {[secondDealRow, firstDealRow].map((row, r) =>
           <div key={r} className='deal-row'>
             {row.map(cardData =>
-              <Card 
-                key={cardData.id} 
-                value={cardData.value} 
-                type={cardData.type} 
+              <Card
+                key={cardData.id}
+                value={cardData.value}
+                type={cardData.type}
                 usableSpace={cardData.usableSpace}
                 onClick={cardData.usableSpace ? () => handleClickPlaySpace() : null}
               />
             )}
             {r === 1 && <ScoreArea playerObject={props.playerObject} playerStatus={props.playerStatus} />}
-          </div> 
+          </div>
         )}
       </DealArea>
       <HandArea
-        className={props.isTurn ? 'current-turn' : ''} 
+        className={props.isTurn ? 'current-turn' : ''}
         style={
-          isCPU ? { 
-            flexDirection: 'row-reverse', 
+          isCPU ? {
+            flexDirection: 'row-reverse',
             paddingRight: `calc(var(--main-padding) * 2)`,
-            borderTopLeftRadius: '0',
-            borderTopRightRadius: '0',
-          } : { 
-            flexDirection: 'row', 
+          } : {
+            flexDirection: 'row',
             paddingLeft: `calc(var(--main-padding) * 2)`,
-            borderBottomLeftRadius: '0',
-            borderBottomRightRadius: '0',
           }
         }
       >
@@ -168,12 +160,8 @@ function PlayerArea(props) {
         <HandCards>
           {isCPU ?
             <>
-              {/* <CardBack />
-              <CardBack />
-              <CardBack />
-              <CardBack /> */}
-              {Object.values(props.playerStatus.hand).map(card => // for testing
-                <Card key={card.id} value={card.value} />
+              {handRow.map(card =>
+                card.value ? <StyledCardBack key={card.id} /> : <Card key={v4()} value={0} />
               )}
             </>
             :
@@ -183,7 +171,11 @@ function PlayerArea(props) {
                   key={card.id}
                   value={card.value}
                   selected={card === selectedCard}
-                  onClick={props.turnPhase === 'waiting' ? () => setSelectedCard(selectedCard === card ? undefined : card) : null}
+                  onClick={props.isTurn && props.turnPhase === 'waiting' ?
+                    () => setSelectedCard(selectedCard === card ? undefined : card)
+                    :
+                    null
+                  }
                 />
               )}
             </>

@@ -10,7 +10,7 @@ const StyledButton = styled.button`
   font-weight: bold;
   padding: 1.25rem;
   font-family: inherit;
-  min-width: 6rem;
+  min-width: 8rem;
   cursor: pointer;
   transition: opacity 200ms ease;
 
@@ -22,6 +22,7 @@ const StyledButton = styled.button`
   &.main-footer {
     padding: 0;
     min-width: 35%;
+    min-width: calc(var(--main-width) / 3.5);
     height: calc(var(--expanded-footer-height) * 0.7);
     font-size: 1.75rem !important;
   }

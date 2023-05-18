@@ -190,7 +190,7 @@ export const characters = {
     },
     strategy: {
       stand: {
-        description: 'Stands at 17',
+        description: 'Stands at 20',
         standAt: 20
       },
       handCards: {
@@ -222,9 +222,9 @@ export const characters = {
     displayName: 'Yoda',
     species: 'Unknown',
     placeOfOrigin: 'Dagobah',
-    skillLevel: 500,
+    skillLevel: 5,
     prize: {
-      credits: 5,
+      credits: 500,
       cards: [
         { id: 82, value: -6, type: '-' },
         { id: 81, value: 1, type: '±' },
@@ -232,7 +232,7 @@ export const characters = {
     },
     strategy: {
       stand: {
-        description: 'Stands at ???'
+        description: '???'
       },
       handCards: {
         description: 'Plays hand cards strategically',
@@ -264,9 +264,9 @@ export const characters = {
     displayName: 'The Emperor',
     species: 'Human',
     placeOfOrigin: 'Naboo',
-    skillLevel: 750,
+    skillLevel: 6,
     prize: {
-      credits: 10,
+      credits: 750,
       cards: [
         { id: 80, value: 2, type: '±' },
         { id: 79, value: 3, type: '±' },
@@ -475,7 +475,7 @@ export const characters = {
     placeOfOrigin: 'Earth',
     skillLevel: 11,
     prize: {
-      credits: 1000,
+      credits: 10000,
       cards: [
         { id: 71, value: 2, type: '±' },
         { id: 70, value: 3, type: '±' },
@@ -517,7 +517,7 @@ export const characters = {
     placeOfOrigin: 'Mars',
     skillLevel: 12,
     prize: {
-      credits: 2000,
+      credits: 20000,
       cards: [
         { id: 69, value: 4, type: '±' },
         { id: 68, value: 5, type: '±' },
@@ -559,7 +559,7 @@ export const characters = {
     placeOfOrigin: 'Mid-World',
     skillLevel: 13,
     prize: {
-      credits: 5000,
+      credits: 50000,
       cards: [
         { id: 67, value: 3, type: '±' },
         { id: 66, value: 4, type: '±' },
@@ -601,7 +601,7 @@ export const characters = {
     placeOfOrigin: 'Earth',
     skillLevel: 14,
     prize: {
-      credits: 10000,
+      credits: 100000,
       cards: [
         { id: 65, value: 5, type: '±' },
         { id: 64, value: 6, type: '±' },
@@ -643,7 +643,7 @@ export const characters = {
     placeOfOrigin: 'PaRappa Town',
     skillLevel: 15,
     prize: {
-      credits: 50000,
+      credits: 500000,
       cards: [
         { id: 63, value: 4, type: '±' },
         { id: 62, value: 5, type: '±' },

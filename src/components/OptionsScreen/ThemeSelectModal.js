@@ -68,6 +68,11 @@ const StyledThemeSelectModal = styled.div`
         align-items: center;
         gap: 0.5rem;
         padding: 1rem;
+        font-size: 85%;
+
+        & > div {
+          text-align: center;
+        }
       }
     }
   }
@@ -146,16 +151,28 @@ function ThemeSelectModal(props) {
         </ClickableThemeContainer>
         )}
       </div>
-      <div className='bottom-button-area'>
-        <Button onClick={() => handleApplyTheme(selectedTheme)} color='green' label='OK!' />
-      </div>
-      <Button onClick={props.onClickCancel} label='Cancel' />
+      {props.userLoggedIn ? 
+        <>
+          <div className='bottom-button-area'>
+            <Button onClick={() => handleApplyTheme(selectedTheme)} color='green' label='OK!' />
+          </div>
+          <Button onClick={props.onClickCancel} label='Cancel' />
+        </>
+        :
+        <>
+           <div className='bottom-button-area'>
+           <Button onClick={props.onClickCancel} color='orange' label='OK!' />
+          </div>
+        </>
+      }
+      
     </StyledThemeSelectModal>
   );
 }
 
 ThemeSelectModal.propTypes = {
   showing: PropTypes.bool,
+  userLoggedIn: PropTypes.bool,
   uid: PropTypes.string,
   uiThemes: PropTypes.object,
   applyUserPreferences: PropTypes.func,

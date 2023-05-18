@@ -46,6 +46,7 @@ const StyledOptionsScreen = styled.div`
       left: 50%;
       transform: translate(-50%, -50%);
       padding: 0 0.75rem;
+      width: max-content;
     }
   }
   
@@ -121,7 +122,7 @@ function OptionsScreen(props) {
     <StyledOptionsScreen
       className={props.showing ? 'menu-style' : 'menu-style hidden'}
     >
-      <ScreenVeil showing={themeSelectModalShowing || saveThemeModalShowing} />
+      {/* <ScreenVeil showing={themeSelectModalShowing || saveThemeModalShowing} /> */}
       <div className='scroll-container'>
         <h1>Options</h1>
         <section style={{ borderColor: props.user.preferences.appliedUITheme['--menu-border-color'] + '44' }} className='option-section'>
@@ -134,11 +135,12 @@ function OptionsScreen(props) {
           <OptionsDisplay location='options-screen' user={props.user} ui={props.user.preferences.appliedUITheme} handleUpdatingAppliedTheme={props.handleUpdatingAppliedTheme} />
           <div className='theme-button-area'>
             <Button onClick={handleClickBrowseThemes} color='orange' label='Browse themes' />
-            <Button onClick={() => setSaveThemeModalShowing(true)} color='green' label='Save theme' />
+            {props.userLoggedIn && <Button onClick={() => setSaveThemeModalShowing(true)} color='green' label='Save theme' />}
           </div>
         </section>
       </div>
       <ThemeSelectModal 
+        userLoggedIn={props.userLoggedIn}
         uid={props.user.id}
         uiThemes={props.uiThemes} 
         showing={themeSelectModalShowing}
@@ -154,6 +156,7 @@ function OptionsScreen(props) {
 
 OptionsScreen.propTypes = {
   showing: PropTypes.bool,
+  userLoggedIn: PropTypes.bool,
   user: PropTypes.object,
   opponent: PropTypes.object,
   gameMode: PropTypes.string,
