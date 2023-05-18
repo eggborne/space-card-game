@@ -10,7 +10,6 @@ const StyledScreenVeil = styled.div`
   background-color: #000000cc;
   z-index: 2;
   transition: opacity 400ms ease;
-  will-change: opacity;
 `;
 
 function ScreenVeil(props) {

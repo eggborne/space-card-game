@@ -64,7 +64,7 @@ function OpponentSelectionScreen(props) {
             portraitComponent={
               <PlayerPortrait
                 size={portraitSize}
-                imagePath='images/opponentsheet.jpg'
+                imagePath='images/opponentsheethq.jpg'
                 sheetCoords={coordsForIndex(c)}
               />
             }

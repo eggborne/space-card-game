@@ -44,6 +44,8 @@ const StyledCharacterInfoCard = styled.div`
 
     & > .quote {
       font-style: italic;
+      font-size: 90%;
+      text-align: center;
     }
 
     & > .prize-display {
@@ -67,7 +69,7 @@ const StyledCharacterInfoCard = styled.div`
   &.selected {
     -webkit-transform: perspective(var(--main-width)) rotateX(0deg) scale(1);
     outline: 0.5rem solid lightgreen;
-    background-color: darkgreen;
+    background-color: var(--secondary-color);
     opacity: 1;
   }
 `;

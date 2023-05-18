@@ -102,10 +102,9 @@ function LoginArea(props) {
         <>
         <div style={{ margin: '0 1rem' }}>
           <UserProfileDisplay 
-            user={props.user}
             userLoggedIn={props.userLoggedIn}
+            user={props.user}
             currentUser={props.authUser}
-            phase={props.phase}
             onClickLogOut={props.onClickLogOut}
           />
         </div>

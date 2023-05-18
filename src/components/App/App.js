@@ -23,6 +23,7 @@ import { randomInt, pause } from '../../util.js';
 import NameGenerator from '../../namegenerator.js';
 import DeckCreationScreen from '../DeckCreationScreen/DeckCreationScreen';
 import OpponentSelectionScreen from '../OpponentSelectionScreen/OpponentSelectionScreen';
+import HallOfFameScreen from '../HallOfFameScreen/HallOfFameScreen';
 
 let clickFunction = window.PointerEvent ? 'onPointerDown' : window.TouchEvent ? 'onTouchStart' : 'onClick';
 
@@ -75,7 +76,7 @@ function App() {
   const defaultUserState = {
     email: '',
     displayName: '',
-    imagePath: 'images/avatarsheet.jpg',
+    imagePath: 'images/avatarsheethq.jpg',
     sheetCoords: { x: 0, y: 0 },
     deck: [],
     startingCards: [
@@ -114,7 +115,7 @@ function App() {
 
   const defaultOpponentState = {
     ...defaultOpponent,
-    imagePath: 'images/opponentsheet.jpg',
+    imagePath: 'images/opponentsheethq.jpg',
     sheetCoords: { x: randomInt(0, 7), y: randomInt(0, 2) },
   };
 
@@ -199,6 +200,7 @@ function App() {
     }
   };
 
+  const [userList, setUserList] = useState([]);
   const [loaded, setLoaded] = useState(false);
   const [userLoggedIn, setUserLoggedIn] = useState(false);
   const [uiThemes, setUIThemes] = useState({ public: [], private: [] });
@@ -289,7 +291,7 @@ function App() {
         ...user,
         email: 'guest@guest.guest',
         displayName: user.displayName,
-        imagePath: 'images/avatarsheet.jpg',
+        imagePath: 'images/avatarsheethq.jpg',
       });
 
       setAvatarChoiceModalShowing(true);
@@ -320,7 +322,7 @@ function App() {
         ...user,
         email: auth.currentUser.email,
         displayName: auth.currentUser.displayName,
-        imagePath: 'images/avatarsheet.jpg',
+        imagePath: 'images/avatarsheethq.jpg',
         sheetCoords: newSheetCoords,
         id: auth.currentUser.uid,
       };
@@ -369,13 +371,18 @@ function App() {
     setPhase('options');
   }
 
+  async function handleClickHallOfFame() {
+    await getUsers();
+    setPhase('hall-of-fame');
+  }
+
   function getRandomCharacterOpponent() {
-    const randomX = randomInt(0, 5);
+    const randomX = randomInt(0, 7);
     const characterData = Object.values(randomOpponents)[randomX];
     return {
       ...characterData,
-      imagePath: 'images/opponentsheet.jpg',
-      sheetCoords: { x: randomX, y: 3 },
+      imagePath: 'images/randomcharactersheethq.jpg',
+      sheetCoords: { x: randomX, y: 2 },
     };
   }
 
@@ -387,8 +394,8 @@ function App() {
     return {
       ...characterData,
       displayName: randomName,
-      imagePath: 'images/opponentsheet.jpg',
-      sheetCoords: { x: randomX, y: 2 },
+      imagePath: 'images/randomcharactersheethq.jpg',
+      sheetCoords: { x: randomX, y: 0 },
     };
   }
 
@@ -527,7 +534,6 @@ function App() {
     const querySnapshot = await getDocs(q);
     const newThemes = [];
     querySnapshot.forEach((doc) => {
-      // doc.data() is never undefined for query doc snapshots
       const themeObj = { ...doc.data(), id: doc.id };
       newThemes.push(themeObj);
     });
@@ -541,6 +547,17 @@ function App() {
       };
     }
     setUIThemes(newThemes);
+  }
+
+  async function getUsers() {
+    const q = query(collection(db, "userData"));
+    const querySnapshot = await getDocs(q);
+    const newUserList = [];
+    querySnapshot.forEach((doc) => {
+      const userObj = { ...doc.data(), id: doc.id };
+      newUserList.push(userObj);
+    });
+    setUserList(newUserList);
   }
 
   async function getUserById(id) {
@@ -652,6 +669,7 @@ function App() {
             handleClickLogIn={handleClickLogIn}
             handleClickPlay={handleClickPlay}
             handleClickOptions={handleClickOptions}
+            handleClickHallOfFame={handleClickHallOfFame}
             onClickLogOut={handleClickLogOut}
             handleClickRegister={handleClickRegister}
             handleChooseAvatar={handleChooseAvatar}
@@ -687,6 +705,10 @@ function App() {
             showing={phase === 'opponent-selection'}
             characters={characters}
             onSelectOpponent={handleSelectOpponent}
+          />
+          <HallOfFameScreen
+            showing={phase === 'hall-of-fame'}
+            userList={userList}
           />
           {phase === 'game-board-showing' &&
             <GameScreen

@@ -96,7 +96,7 @@ export const characters = {
     name: 'c3po',
     displayName: 'C-3PO',
     species: 'Droid',
-    placeOfOrigin: 'Tattoine',
+    placeOfOrigin: 'Tatooine',
     skillLevel: 2,
     prize: {
       credits: 75,
@@ -426,11 +426,12 @@ export const characters = {
       panel: '"And to think I hesitated."'
     }
   },
-  joecamel: {
-    name: 'joecamel',
-    displayName: 'Joe Camel',
+  chopchop: {
+    name: 'chopchop',
+    displayName: 'Chop Chop Master Onion',
     species: 'Toon',
-    placeOfOrigin: 'Earth',
+    placeOfOrigin: 'PaRappa Town',
+    
     skillLevel: 10,
     prize: {
       credits: 7500,
@@ -465,7 +466,7 @@ export const characters = {
       { id: 9, value: 5, type: '±' }
     ],
     quotes: {
-      panel: '"Better be careful. I\'m the geniune article."'
+      panel: '"Stand, draw, it\'s all in the mind."'
     }
   },
   caiaphas: {
@@ -636,11 +637,11 @@ export const characters = {
       panel: '"I wouldn\'t trade my supreme Pazaak skills for all the riches in Zamunda."'
     }
   },
-  chopchop: {
-    name: 'chopchop',
-    displayName: 'Chop Chop Master Onion',
-    species: 'Toon',
-    placeOfOrigin: 'PaRappa Town',
+  sutterCane: {
+    name: 'sutterCane',
+    displayName: 'Sutter Cane',
+    species: 'Human',
+    placeOfOrigin: 'Earth',
     skillLevel: 15,
     prize: {
       credits: 500000,
@@ -675,7 +676,7 @@ export const characters = {
       { id: 9, value: 5, type: '±' }
     ],
     quotes: {
-      panel: '"Stand, draw, it\'s all in the mind."'
+      panel: '"Do you want to know the problem with Pazaak, in general? It\'s never known how to convey the anatomy of horror."'
     }
   },
   nu: {
@@ -721,46 +722,6 @@ export const characters = {
       panel: '"All matches begin with Nu and end with Nu."'
     }
   },
-  // 'random|yoda': {
-  //   name: 'random',
-  //   displayName: 'random',
-  //   strategy: defaultStrategy
-  // },
-  // 'random|poe': {
-  //   name: 'random2',
-  //   displayName: 'random2',
-  //   strategy: defaultStrategy
-  // },
-  // 'random|han': {
-  //   name: 'random3',
-  //   displayName: 'random3',
-  //   strategy: defaultStrategy
-  // },
-  // 'random|mace': {
-  //   name: 'random4',
-  //   displayName: 'random4',
-  //   strategy: defaultStrategy
-  // },
-  // 'random|jar-jar': {
-  //   name: 'random5',
-  //   displayName: 'random5',
-  //   strategy: defaultStrategy
-  // },
-  // 'random|obi-wan': {
-  //   name: 'random6',
-  //   displayName: 'random6',
-  //   strategy: defaultStrategy
-  // },
-  // 'random|jabba': {
-  //   name: 'random7',
-  //   displayName: 'random7',
-  //   strategy: defaultStrategy
-  // },
-  // 'random|kylo': {
-  //   name: 'random8',
-  //   displayName: 'random8',
-  //   strategy: defaultStrategy
-  // },
 };
 
 export const defaultOpponent = {
@@ -774,14 +735,14 @@ export const randomOpponents = {
     displayName: 'Bennett from Commando',
     strategy: defaultStrategy,
   },
-  masan: {
-    id: 'masan',
-    displayName: 'Ma-san',
+  reptile: {
+    id: 'reptile',
+    displayName: 'Reptile',
     strategy: defaultStrategy,
   },
   acarrot: {
     id: 'acarrot',
-    displayName: 'A Carrot',
+    displayName: 'A carrot',
     strategy: defaultStrategy,
   },
   davidbowie1970s: {
@@ -797,6 +758,16 @@ export const randomOpponents = {
   poochie: {
     id: 'poochie',
     displayName: 'Poochie',
+    strategy: defaultStrategy,
+  },
+  jane: {
+    id: 'jane',
+    displayName: 'Jane from Daria',
+    strategy: defaultStrategy,
+  },
+  bull: {
+    id: 'bull',
+    displayName: 'Bull from Night Court',
     strategy: defaultStrategy,
   },
 }

@@ -30,6 +30,10 @@ const StyledFooter = styled.footer`
     gap: 2%;
     flex-grow: 1;
   }
+
+  & button {
+    max-height: 80%;
+  }
 `;
 
 const FooterBackButton = styled(Button)`
@@ -69,7 +73,7 @@ function Footer(props) {
               </div>
               <Hamburger onClickToggle={props.handleToggleHamburger} />
             </>
-            : props.phase === 'options' ?
+            : props.phase === 'options' || props.phase === 'hall-of-fame' ?
               <>
                 <Button onClick={props.onClickBackToTitle} label='Back' />
               </>

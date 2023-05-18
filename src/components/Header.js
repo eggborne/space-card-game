@@ -31,11 +31,13 @@ const StyledHeader = styled.header`
   }
 
   & > h1 {
-    font-size: 1.4rem;
+    font-family: var(--main-font);
+    font-size: 1.65rem;
     color: lightgreen;
   }
 
   & > .user-info-area {
+    color: #ddd;
     display: flex;
     gap: 0.5rem;
     text-shadow: 0 0 1px #000000ff;

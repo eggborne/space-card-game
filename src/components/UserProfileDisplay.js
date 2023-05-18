@@ -13,6 +13,17 @@ const StyledUserProfileDisplay = styled.div`
   gap: 1rem;
   padding: 1rem;
 
+  &.hall-of-fame {
+    & h3 {
+      color: green;
+    }
+  }
+
+  & h1 {
+    font-family: var(--main-font);
+    color: lightgreen;
+  }
+
   & > button {
     grid-row-start: 2;
     grid-column-start: 1;
@@ -41,13 +52,15 @@ const StyledUserProfileDisplay = styled.div`
     flex-direction: column;
     gap: 0.5rem;
     font-size: 0.8rem;
+
   }
 `;
 
 function UserProfileDisplay(props) {
   const isGuest = props.user.email === 'guest@guest.guest';
+  const isHOFEntry = !props.onClickLogOut;
   return (
-    <StyledUserProfileDisplay style={{ padding: props.phase === 'title' ? '1rem' : '1rem'}}>
+    <StyledUserProfileDisplay className={props.onClickLogOut ? '' : 'hall-of-fame'} style={{ padding: props.phase === 'title' ? '1rem' : '1rem'}}>
         <PlayerPortrait
           size='calc(var(--header-height) * 2)'
           imagePath={props.user.imagePath}
@@ -57,7 +70,7 @@ function UserProfileDisplay(props) {
           <h1 className='stat-row'>{props.user.displayName}</h1>
           {(props.userLoggedIn || isGuest) &&
             <>
-              {!isGuest && <div className='stat-row'>{props.user.email}</div>}
+              {!isGuest && !isHOFEntry && <div className='stat-row'>{props.user.email}</div>}
               <div className='stat-row'>{props.user.progress.credits} credits</div>
               <div className='stat-row'>{props.user.statistics.setWins} / {props.user.statistics.totalSets} sets won</div>
               <div className='stat-row'>{props.user.statistics.matchWins} / {props.user.statistics.totalMatches} matches won</div>
@@ -68,7 +81,7 @@ function UserProfileDisplay(props) {
         </div>
         {props.userLoggedIn &&
         <>
-          <Button onClick={props.onClickLogOut} label='Log out'/>
+          {props.onClickLogOut && <Button onClick={props.onClickLogOut} label='Log out'/>}
           {/* <div className='footer-area'>
             <div className='stat-row'>{props.currentUser.metadata.createdAt}</div>
             <div className='stat-row'>Account created: {props.currentUser.metadata.creationTime}</div>

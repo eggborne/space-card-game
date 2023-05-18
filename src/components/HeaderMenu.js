@@ -9,17 +9,21 @@ const StyledHeaderMenu = styled.div`
   width: var(--main-width);
   color: #bbb;
   padding: 1rem;
-  // padding-top: 0;
   transform-origin: top;
   transform: translateY(calc(-100% - var(--header-height)));
   // -webkit-transform: scaleY(0) perspective(var(--main-width)) rotateX(-60deg); 
   transition: transform 300ms ease-in;
   margin: 0 !important;
   z-index: 1;
+  will-change: transform;
 
   &.open {
     transform: translateY(0);
     // -webkit-transform: scaleY(1) perspective(var(--main-width)) rotateX(0deg); 
+  }
+
+  &.open.slide {
+    
   }
 
   & .PlayerPortrait {

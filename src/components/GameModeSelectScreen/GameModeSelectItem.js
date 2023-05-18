@@ -5,7 +5,8 @@ const StyledGameModeSelectItem = styled.div`
   height: 9rem;
   width: 20rem;
   padding: 2rem 1rem;
-  background-color: rgb(50, 51, 93);
+  background-color: var(--secondary-color);
+  border-radius: var(--border-radius) !important;
   color: #eee;
   display: flex;
   flex-direction: column;
@@ -21,6 +22,7 @@ function GameModeSelectItem(props) {
   return (
     <StyledGameModeSelectItem 
     onClick={props.onClick} 
+    className='menu-style'
     style={{
       filter: props.selected ? 'none' : 'brightness(75%)',
       scale: props.selected ? '1' : '0.9',
