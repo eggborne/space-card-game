@@ -661,7 +661,6 @@ function App() {
         opacity: loaded ? '1' : '0',
         scale: loaded ? '1' : '0.75'
       }}>
-
         <Header
           authUser={auth.currentUser}
           user={user}

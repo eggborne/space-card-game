@@ -95,7 +95,7 @@ function GameScreen(props) {
                 playCard={props.playCard}
                 portrait={
                   <PlayerPortrait
-                    size='5rem'
+                    size='calc(var(--section-height) / 1.25)'
                     displayName={props[player].displayName}
                     imagePath={props[player].imagePath}
                     sheetCoords={props[player].sheetCoords}

@@ -28,6 +28,7 @@ function PlayerPortrait(props) {
   let labelFontSize = '1';
   if (props.displayName) {
     let portraitSize = parseInt(props.size);
+    console.log('port sized', portraitSize)
     let wordsInName = props.displayName.split(' ').length;
     let totalLength = props.displayName.length;
     if ((wordsInName <= 2 && totalLength > 10) || (wordsInName > 2 && totalLength > 12)) {

@@ -1,6 +1,7 @@
 @import url('https://fonts.googleapis.com/css2?family=Bangers&display=swap');
 
 :root {
+  --theme-color: salmon;
   --actual-height: 100vh;
   --main-width: 100vw;
   --header-height: 4rem;
@@ -196,19 +197,6 @@ button {
   min-width: max-content;
 }
 
-/* .menu-style::before {
-  content: '';
-  position: absolute;
-  top: calc(var(--menu-padding) / 2);
-  left: calc(var(--menu-padding) / 2);
-  background-color: var(--menu-border-color);
-  width: calc(100% - var(--menu-padding));
-  height: calc(100% - var(--menu-padding));
-  border-radius: calc(var(--border-radius) / 1);
-  z-index: -1;
-  transition: inherit;
-} */
-
 @media screen and (max-width: 540px) {
   #starfield {
     height: var(--actual-height);
@@ -216,10 +204,11 @@ button {
   }
 }
 
-
 @media screen and (min-width: 540px) {
   :root {
-    --main-width: 30rem;
+    --main-width: 24rem;
+    --expanded-footer-height: calc(var(--actual-height) / 8);
+    --hamburger-height: calc(var(--expanded-footer-height) / 1.35);
   }
 
   #root {
