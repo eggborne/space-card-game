@@ -154,7 +154,7 @@ function LoginRegisterForm(props) {
           tabIndex={props.loginShowing === 'register' ? -1 : 1} 
           name='email' 
           type='text' 
-          placeholder='Email' 
+          placeholder='Username or Email' 
           autoComplete='email' 
           /></div>
         <div><input 

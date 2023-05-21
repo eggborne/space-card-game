@@ -280,6 +280,19 @@ function App() {
     }
   }
 
+  async function getEmailForUsername(username) {
+    // const q = query(collection(db, "cities"), where("capital", "==", true));
+    const q = query(collection(db, "userData"), where("displayName", "==", username));
+    const querySnapshot = await getDocs(q);
+    let result;
+    querySnapshot.forEach((doc) => {
+      // doc.data() is never undefined for query doc snapshots
+      console.log(doc.data().email)
+      result = doc.data().email;
+    });
+    return result;
+  }
+
   function handleClickLogIn(incomingUser) {
     if (incomingUser.password) {
       signInWithEmailAndPassword(auth, incomingUser.email, incomingUser.password)
@@ -288,8 +301,20 @@ function App() {
           await setUserDataForId(userCredential.user.uid);
           setPhase('game-mode-select');
         })
-        .catch((error) => {
-          console.log(`There was an error signing in: ${error.message}!`);
+        .catch(async (error) => {
+          console.log(`Email ${incomingUser.email} not found: ${error.message}!`);
+          const userEmail = await getEmailForUsername(incomingUser.email);
+          console.warn('got userEmail:', userEmail);
+          signInWithEmailAndPassword(auth, userEmail, incomingUser.password)
+            .then(async (userCredential) => {
+              console.log(`You've successfully signed in as ${userCredential.user.email}!`);
+              await setUserDataForId(userCredential.user.uid);
+              setPhase('game-mode-select');
+            })
+            .catch((error) => {
+              console.log(`Neither email nor username found! ${error.message}!`);
+              
+            });
         });
     } else {
       console.warn('----------------- user is GUEST');
