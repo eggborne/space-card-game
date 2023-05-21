@@ -32,7 +32,7 @@ const StyledHeader = styled.header`
 
   & > h1 {
     font-family: var(--main-font);
-    font-size: 1.65rem;
+    font-size: calc(var(--header-height) / 2.5);
     color: lightgreen;
   }
 

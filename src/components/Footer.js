@@ -14,7 +14,7 @@ const StyledFooter = styled.footer`
   display: flex;
   align-items: center;
   justify-content: space-between;
-  font-size: 90%;
+  font-size: calc(var(--footer-height) / 2.75);
   padding: 0 calc(0.75rem + (var(--border-radius) / 6));
   transition: all 200ms ease;
   z-index: 2;

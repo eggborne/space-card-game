@@ -208,6 +208,8 @@ button {
   :root {
     --main-width: 24rem;
     --expanded-footer-height: calc(var(--actual-height) / 8);
+      --header-height: 2.5rem;
+      --footer-height: 1.75rem;
     --hamburger-height: calc(var(--expanded-footer-height) / 1.35);
   }
 

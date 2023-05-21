@@ -11,9 +11,10 @@ const StyledHamburgerMenu = styled.div`
   display: flex;
   flex-direction: column;
   align-items: stretch;
-  justify-content: flex-end;
+  // justify-content: flex-end;
   max-height: calc(var(--actual-height) - var(--expanded-footer-height));
   padding: 1.5rem var(--menu-padding);
+  padding-top: 0;
  
   border-right: none !important;
   border-top-right-radius: unset;
@@ -24,7 +25,11 @@ const StyledHamburgerMenu = styled.div`
   transition: transform 250ms ease-in;
   will-change: transform;
 
+  font-size: 0.75rem;
+
   z-index: 2;
+
+  overflow-y: auto;
 
   & > h1, h4 {
     text-align: center;
@@ -53,7 +58,10 @@ const StyledHamburgerMenu = styled.div`
 `;
 
 const StyledOptionsDisplay = styled(OptionsDisplay)`
+  position: absolute !important;
+  top: 200px;
   margin: 1rem 0;
+
 `;
 
 function HamburgerMenu(props) {
@@ -68,7 +76,9 @@ function HamburgerMenu(props) {
       className={props.open ? 'menu-style open' : 'menu-style'}
     >
       <StyledOptionsDisplay location='hamburger-menu' user={props.user} ui={props.user.preferences.appliedUITheme} handleUpdatingAppliedTheme={props.handleUpdatingAppliedTheme} />
-      <Button color='red' onClick={handleClickEndGame} label="End Game" />
+      <div style={{ display: 'flex', justifyContent: 'center'}}>
+        <Button color='red' onClick={handleClickEndGame} label="End Game" />
+      </div>
     </StyledHamburgerMenu>
   );
 }

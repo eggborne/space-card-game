@@ -9,8 +9,10 @@ const StyledOptionsDisplay = styled.div`
   align-items: center;
   justify-content: center;
   gap: 1rem;
+  margin-top: 2rem;
   margin-bottom: 2rem;
-  flex-grow: 1;
+
+  // flex-grow: 1;
 
   & .option-row {
     position: relative;
