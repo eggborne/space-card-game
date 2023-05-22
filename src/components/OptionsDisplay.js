@@ -67,7 +67,11 @@ function OptionsDisplay(props) {
 
   useEffect(() => {
     if (props.user) {
-      document.getElementById(`menu-color-${props.location}`).addEventListener('input', (e) => { document.documentElement.style.setProperty('--menu-color', e.target.value); });
+      document.getElementById(`menu-color-${props.location}`).addEventListener('input', (e) => { 
+        document.documentElement.style.setProperty('--menu-color', e.target.value);
+        document.querySelector('meta[name="theme-color"]').setAttribute('content', e.target.value);
+
+      });
       document.getElementById(`menu-color-${props.location}`).addEventListener('change', (e) => { props.handleUpdatingAppliedTheme({...props.user.preferences.appliedUITheme, '--menu-color': e.target.value}); });
       document.getElementById(`menu-border-color-${props.location}`).addEventListener('input', (e) => { document.documentElement.style.setProperty('--menu-border-color', e.target.value + '66') });
       document.getElementById(`menu-border-color-${props.location}`).addEventListener('change', (e) => { props.handleUpdatingAppliedTheme({...props.user.preferences.appliedUITheme, '--menu-border-color': e.target.value}) });

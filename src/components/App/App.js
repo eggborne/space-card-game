@@ -263,6 +263,8 @@ function App() {
     ROOT.style.setProperty('--border-radius', roundness + 'rem');
     ROOT.style.setProperty('--portrait-border-radius', portraitRoundness + '%');
 
+    document.querySelector('meta[name="theme-color"]').setAttribute('content',  menuColor);
+
     setUser(retrievedData);
   }
 
