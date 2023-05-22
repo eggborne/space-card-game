@@ -1,4 +1,5 @@
 import styled from 'styled-components';
+import { getAdjustedFontSize } from '../util';
 import PropTypes from 'prop-types';
 
 const PortraitContainer = styled.div`
@@ -27,22 +28,7 @@ const PortraitNameLabel = styled.div`
 function PlayerPortrait(props) {
   let labelFontSize = '0.9rem';
   if (props.displayName) {
-    let portraitSize = isNaN(parseInt(props.size)) ? props.size : parseInt(props.size);
-    let wordsInName = props.displayName.split(' ').length;
-    let totalLength = props.displayName.length;
-    let modifier = 1;
-    console.log('portraitSize', portraitSize, props.displayName, 'wordsInName', wordsInName, 'totalLength', totalLength);
-    if ((wordsInName <= 2 && totalLength > 10) || (wordsInName > 2 && totalLength > 12)) {
-      modifier = 0.9;
-      if (totalLength > 18) {
-        modifier = 0.7;
-      }
-    }
-    if (wordsInName === 1 && totalLength > 7) {
-      modifier = 0.8;
-    }
-    console.warn(props.displayName, 'size', labelFontSize);
-    labelFontSize = `calc(${labelFontSize} * ${modifier}`;
+    getAdjustedFontSize(labelFontSize, props.displayName)
   }
 
   return (

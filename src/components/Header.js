@@ -1,5 +1,6 @@
 import styled from 'styled-components';
 import PlayerPortrait from './PlayerPortrait';
+import { getAdjustedFontSize } from '../util';
 import PropTypes from 'prop-types';
 
 const StyledHeader = styled.header`
@@ -54,7 +55,8 @@ const StyledHeader = styled.header`
 function Header(props) {
   const showUserInfo = props.phase !== 'game-board-showing';
   const portraitSize = `calc(var(--header-height) - 0.75rem - var(--menu-border-width))`;
-  const displayNameFontSize = props.user.displayName.length < 12 ? '100%' : '85%';
+  // const displayNameFontSize = props.user.displayName.length < 12 ? '100%' : '85%';
+  const displayNameFontSize = getAdjustedFontSize('1rem', props.user.displayName);
   
   return (
     <StyledHeader className='menu-style' style={{
