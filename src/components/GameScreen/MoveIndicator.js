@@ -24,7 +24,7 @@ const StyledMoveIndicator = styled.div`
   }
 
   &.hidden {
-    scale: 1.1;
+    scale: 1.1 1;
     opacity: 0;
 
     & > h1 {

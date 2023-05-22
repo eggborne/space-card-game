@@ -6,6 +6,7 @@ import ThemeSelectModal from './ThemeSelectModal';
 import { useEffect, useState } from 'react';
 import SaveThemeModal from './SaveThemeModal';
 import ScreenVeil from '../ScreenVeil';
+import LoadingIndicator from '../LoadingIndicator';
 
 const StyledOptionsScreen = styled.div`
   position: absolute;
@@ -110,10 +111,10 @@ function OptionsScreen(props) {
   }
   
   async function handleClickBrowseThemes() {
-    await props.getUIThemes();
     setThemeSelectModalShowing(true);
+    props.getUIThemes();
   }
-
+  const dataReady = !props.uiThemes.public; // not at all the right way
   const ownTheme = props.user.preferences.appliedUITheme.creatorId === props.user.id;
 
   return (
@@ -137,11 +138,14 @@ function OptionsScreen(props) {
           </div>
         </section>
       </div>
+      {/* <LoadingIndicator showing={themeSelectModalShowing && !dataReady} /> */}
+      <LoadingIndicator showing={themeSelectModalShowing && !dataReady} />
       <ThemeSelectModal 
+        showing={themeSelectModalShowing}
+        dataReady={dataReady}
         userLoggedIn={props.userLoggedIn}
         uid={props.user.id}
         uiThemes={props.uiThemes} 
-        showing={themeSelectModalShowing}
         applyUserPreferences={props.applyUserPreferences}
         handleUpdatingAppliedTheme={props.handleUpdatingAppliedTheme}
         onClickOK={() => setThemeSelectModalShowing(false)} 

@@ -12,7 +12,7 @@ const StyledThemeSelectModal = styled.div`
   width: calc(var(--main-width) - 4rem);
   height: unset;
   max-height: calc(var(--actual-height) * 0.75);
-  min-height: unset;
+  min-height: 50%;
   border-radius: var(--border-radius);
   display: flex;
   flex-direction: column;
@@ -87,7 +87,7 @@ const StyledThemeSelectModal = styled.div`
     gap: 1rem;
   }
   `;
-  
+
 const ClickableThemeContainer = styled.div`
   padding: 1rem;
   border: 0.25rem solid var(--menu-border-color);
@@ -100,7 +100,8 @@ const ClickableThemeContainer = styled.div`
   }
 `;
 
-function ThemeSelectModal(props) { 
+function ThemeSelectModal(props) {
+  console.warn(`ThemeSelectModal props`, props);
 
   const [selectedTheme, setSelectedTheme] = useState(null);
 
@@ -115,44 +116,44 @@ function ThemeSelectModal(props) {
   }
 
   return (
-    <StyledThemeSelectModal 
+    <StyledThemeSelectModal
       style={{
-        opacity: props.showing ? '1' : '0',
-        pointerEvents: props.showing ? 'all' : 'none',
-        scale: props.showing ? '1' : '1.1',
+        opacity: (props.showing && props.dataReady) ? '1' : '0',
+        pointerEvents: (props.showing && props.dataReady) ? 'all' : 'none',
+        scale: (props.showing && props.dataReady) ? '1' : '1.1',
       }}
       className='menu-style'
     >
       <h2>Choose Theme</h2>
       <div className='theme-list'>
-        {props.uiThemes && props.uiThemes.length && props.uiThemes.map(theme => 
-        <ClickableThemeContainer 
-          key={theme.id}
-          className={selectedTheme === theme.id ? 'selected' : ''} 
-          onClick={() => handleClickTheme(theme)} 
-          style={{ 
-            backgroundColor: theme['--menu-color'],
-            borderRadius: theme['--border-radius'] + 'rem',
-          }}
-        >
-          <div className='theme-list-item'>
-            <h2>{theme.name}</h2>
-            <div className='secondary-panel' style={{ borderColor: theme['--menu-border-color'] + '44', borderRadius: theme['--border-radius'] + 'rem', backgroundColor: theme['--secondary-color'] }} >
-              <div>by {theme.creatorData.displayName} {theme.creatorId === props.uid && '(you!)'}</div>
-              <PlayerPortrait
-                size='calc(var(--header-height))'
-                imagePath={theme.creatorData.imagePath}
-                sheetCoords={{ ...theme.creatorData.sheetCoords }}
-                borderRadius={theme['--portrait-border-radius'] + '%'}
-              />
+        {props.uiThemes && props.uiThemes.length && props.uiThemes.map(theme =>
+          <ClickableThemeContainer
+            key={theme.id}
+            className={selectedTheme === theme.id ? 'selected' : ''}
+            onClick={() => handleClickTheme(theme)}
+            style={{
+              backgroundColor: theme['--menu-color'],
+              borderRadius: theme['--border-radius'] + 'rem',
+            }}
+          >
+            <div className='theme-list-item'>
+              <h2>{theme.name}</h2>
+              <div className='secondary-panel' style={{ borderColor: theme['--menu-border-color'] + '44', borderRadius: theme['--border-radius'] + 'rem', backgroundColor: theme['--secondary-color'] }} >
+                <div>by {theme.creatorData.displayName} {theme.creatorId === props.uid && '(you!)'}</div>
+                <PlayerPortrait
+                  size='calc(var(--header-height))'
+                  imagePath={theme.creatorData.imagePath}
+                  sheetCoords={{ ...theme.creatorData.sheetCoords }}
+                  borderRadius={theme['--portrait-border-radius'] + '%'}
+                />
+              </div>
+              {/* <div>{theme.public ? 'Public' : 'Private'}</div> */}
+              {/* <div style={{fontSize: '60%'}}>{theme.id}</div> */}
             </div>
-            {/* <div>{theme.public ? 'Public' : 'Private'}</div> */}
-            {/* <div style={{fontSize: '60%'}}>{theme.id}</div> */}
-          </div>
-        </ClickableThemeContainer>
+          </ClickableThemeContainer>
         )}
       </div>
-      {props.userLoggedIn ? 
+      {props.userLoggedIn ?
         <>
           <div className='bottom-button-area'>
             <Button onClick={() => handleApplyTheme(selectedTheme)} color='green' label='OK!' />
@@ -161,18 +162,18 @@ function ThemeSelectModal(props) {
         </>
         :
         <>
-           <div className='bottom-button-area'>
-           <Button onClick={props.onClickCancel} color='orange' label='OK!' />
+          <div className='bottom-button-area'>
+            <Button onClick={props.onClickCancel} color='orange' label='OK!' />
           </div>
         </>
       }
-      
     </StyledThemeSelectModal>
   );
 }
 
 ThemeSelectModal.propTypes = {
   showing: PropTypes.bool,
+  dataReady: PropTypes.bool,
   userLoggedIn: PropTypes.bool,
   uid: PropTypes.string,
   uiThemes: PropTypes.object,
