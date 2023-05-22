@@ -25,11 +25,11 @@ const StyledScoreArea = styled.div`
     & > div {
       border-radius: 50%;
       border: 1px solid gold;
-      min-width: calc(var(--card-width) / 4);
-      min-height: calc(var(--card-width) / 4);
+      min-width: calc(var(--card-height) / 5.25);
+      min-height: calc(var(--card-height) / 5.25);
       
-      max-width: 30%;
-      max-height: 30%;
+      max-width: calc(var(--card-width) / 5);
+      max-height: calc(var(--card-width) / 5);
 
       @media screen and (min-width: 540px) {
         min-width: calc(var(--card-height) / 6);
