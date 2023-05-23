@@ -19,10 +19,10 @@ const StyledLoadingIndicator = styled.div`
   justify-content: center;
   pointer-events: none;
   z-index: 2;
-  transition: all 500ms ease;
+  transition: all 300ms ease;
   scale: 0.8;
 
-  & > .loading-legend {
+  & > .legend {
     position: absolute;
     font-family: var(--block-font);
     line-height: 120%;
@@ -131,12 +131,12 @@ function LoadingIndicator(props) {
     <StyledLoadingIndicator
       id={`loading-indicator-${props.location}`}
       style={{
-        scale: props.showing ? 0.8 : 0.5,
+        scale: props.showing ? '0.8' : '0.5',
         opacity: props.showing ? '1' : '0',
         backgroundColor: props.location === 'page-load' ? 'transparent' : 'black',
       }}
     >
-      <h2 className='loading-legend text-shadow'>{props.legend}</h2>
+      <h2 className='legend text-shadow'>{props.legend}</h2>
     </StyledLoadingIndicator>
   );
 }

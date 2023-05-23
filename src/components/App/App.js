@@ -26,6 +26,7 @@ import OpponentSelectionScreen from '../OpponentSelectionScreen/OpponentSelectio
 import HallOfFameScreen from '../HallOfFameScreen/HallOfFameScreen';
 import MoveIndicator from '../GameScreen/MoveIndicator';
 import LoadingIndicator from '../LoadingIndicator';
+import SaveIndicator from '../SaveIndicator';
 
 let clickFunction = window.PointerEvent ? 'onPointerDown' : window.TouchEvent ? 'onTouchStart' : 'onClick';
 
@@ -203,6 +204,7 @@ function App() {
     }
   };
 
+  const [recentlySaved, setRecentlySaved] = useState(false);
   const [busyLoggingIn, setBusyLoggingIn] = useState(false);
   const [busyRegistering, setBusyRegistering] = useState(false);
   const [busyGettingUsers, setBusyGettingUsers] = useState(false);
@@ -398,15 +400,23 @@ function App() {
     await updateDoc(doc(db, "userData", newUserData.id), {
       deck: newValue
     });
-    // await setDoc(doc(db, "userData", newUserData.id), newUserData);
     setUser(newUserData);
+  }
+
+  async function flashSavedMessage(duration) {
+    setRecentlySaved(true);
+    await pause(duration);
+    setRecentlySaved(false);
   }
 
   async function handleUpdatingAppliedTheme(newValue, guest) {
     console.warn('applying ui theme!', newValue);
     const newUserData = { ...user };
     newUserData.preferences.appliedUITheme = newValue;
-    !guest && await updateDoc(doc(db, "userData", newUserData.id), newUserData);
+    if (!guest) {
+      await updateDoc(doc(db, "userData", newUserData.id), newUserData);
+      flashSavedMessage(1000);
+    }
     setUser(newUserData);
   }
 
@@ -704,6 +714,7 @@ function App() {
       {loaded && <video id='starfield' loop={true} muted={true}>
         <source src="/images/starfield.mp4" type="video/mp4" />
       </video>}
+      <SaveIndicator legend="SAVED!" showing={recentlySaved} />
       {phase !== 'game-board-showing' &&
         <>
           <LoadingIndicator legend='LOADING...' showing={!returningUserChecked} location='page-load' />
