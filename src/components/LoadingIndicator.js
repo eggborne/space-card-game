@@ -133,7 +133,7 @@ function LoadingIndicator(props) {
       style={{
         scale: props.showing ? 0.8 : 0.5,
         opacity: props.showing ? '1' : '0',
-        backgroundColor: props.location === 'page-load' ? 'transparent' : 'black'
+        backgroundColor: props.location === 'page-load' ? 'transparent' : 'black',
       }}
     >
       <h2 className='loading-legend text-shadow'>{props.legend}</h2>

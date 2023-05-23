@@ -704,10 +704,14 @@ function App() {
       {loaded && <video id='starfield' loop={true} muted={true}>
         <source src="/images/starfield.mp4" type="video/mp4" />
       </video>}
-      <LoadingIndicator legend='LOADING...' showing={!returningUserChecked} location='page-load' />
-      <LoadingIndicator legend='LOGGING IN...' showing={busyLoggingIn} location='log-in' />
-      <LoadingIndicator legend='CREATING ACCOUNT...' showing={busyRegistering} location='register' />
-      <LoadingIndicator legend='LOADING USERS...' showing={busyGettingUsers} location='get-users' />
+      {phase !== 'game-board-showing' &&
+        <>
+          <LoadingIndicator legend='LOADING...' showing={!returningUserChecked} location='page-load' />
+          <LoadingIndicator legend='LOGGING IN...' showing={busyLoggingIn} location='log-in' />
+          <LoadingIndicator legend='CREATING ACCOUNT...' showing={busyRegistering} location='register' />
+          <LoadingIndicator legend='LOADING USERS...' showing={busyGettingUsers} location='get-users' />
+        </>
+      }
       <StyledApp style={{
         opacity: returningUserChecked ? '1' : '0',
         scale: returningUserChecked ? '1' : '0.75'
