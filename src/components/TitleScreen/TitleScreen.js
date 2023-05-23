@@ -15,6 +15,7 @@ const StyledTitleScreen = styled.div`
   grid-template-rows: min-content 0.1fr 0.1fr;
   gap: 1rem;
   padding-top: calc(var(--header-height) + 1rem);
+  transition: opacity 300ms ease;
 `;
 
 const WideButton = styled(Button)`
@@ -26,10 +27,15 @@ function TitleScreen(props) {
   return (
     <>
       <ScreenVeil showing={props.avatarChoiceModalShowing} onClickClose={props.handleCloseAvatarModal} />
-      <StyledTitleScreen style={{ display: props.showing ? 'grid' : 'none'}} >
+      <StyledTitleScreen style={{ 
+        display: props.showing ? 'grid' : 'none',
+        opacity: props.busyLoggingIn ? 0 : 1
+      }} >
         <LoginArea 
           user={props.user}
           authUser={props.authUser}
+          badCredentials={props.badCredentials}
+          clearCredentialsWarning={props.clearCredentialsWarning}
           userLoggedIn={props.userLoggedIn}
           handleClickLogIn={props.handleClickLogIn} 
           onClickPlay={props.handleClickPlay} 
@@ -43,7 +49,7 @@ function TitleScreen(props) {
       </StyledTitleScreen>
       <AvatarChoiceModal 
         playingAsGuest={!props.userLoggedIn}
-        showing={props.avatarChoiceModalShowing}
+        showing={props.avatarChoiceModalShowing && !props.busyLoggingIn}
         getName={props.getName} 
         onClickOK={props.handleChooseAvatar} 
       />
@@ -55,7 +61,10 @@ TitleScreen.propTypes = {
   userLoggedIn: PropTypes.bool,
   user: PropTypes.object,
   authUser: PropTypes.object,
+  badCredentials: PropTypes.bool,
   showing: PropTypes.bool,
+  busyLoggingIn: PropTypes.bool,
+  clearCredentialsWarning: PropTypes.func,
   handleClickLogIn: PropTypes.func,
   handleClickPlay: PropTypes.func,
   handleClickOptions: PropTypes.func,

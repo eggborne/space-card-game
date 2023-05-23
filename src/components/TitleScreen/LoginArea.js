@@ -92,6 +92,8 @@ function LoginArea(props) {
             handleClickLogIn={props.handleClickLogIn}
             handleClickRegister={props.handleClickRegister}
             setAvatarChoiceModalShowing={props.setAvatarChoiceModalShowing}
+            badCredentials={props.badCredentials}
+            clearCredentialsWarning={props.clearCredentialsWarning}
           />
           <div className='bottom-button-area'>
             <div onClick={() => setLoginShowing('login')} className={loginShowing === 'login' ? 'tab-button selected' : 'tab-button'}>Log In</div>
@@ -126,7 +128,9 @@ function LoginArea(props) {
 LoginArea.propTypes = {
   user: PropTypes.object,
   authUser: PropTypes.object,
+  badCredentials: PropTypes.bool,
   loginShowing: PropTypes.string,
+  clearCredentialsWarning: PropTypes.func,
   onClickPlay: PropTypes.func,
   handleClickLogIn: PropTypes.func,
   handleClickRegister: PropTypes.func,

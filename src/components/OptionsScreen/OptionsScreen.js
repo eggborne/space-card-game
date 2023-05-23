@@ -31,7 +31,7 @@ const StyledOptionsScreen = styled.div`
 
   & .option-section {
     position: relative;
-    padding: 2.5rem 0;
+    padding-bottom: 2.5rem;
     border: 0.1rem solid #ffffff44;
     border-radius: var(--border-radius);
     display: flex;
@@ -139,7 +139,11 @@ function OptionsScreen(props) {
         </section>
       </div>
       {/* <LoadingIndicator showing={themeSelectModalShowing && !dataReady} /> */}
-      <LoadingIndicator showing={themeSelectModalShowing && !dataReady} />
+      <LoadingIndicator 
+        showing={themeSelectModalShowing && !dataReady}
+        legend='LOADING THEMES...'
+        location='theme-select-modal'
+      />
       <ThemeSelectModal 
         showing={themeSelectModalShowing}
         dataReady={dataReady}

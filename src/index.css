@@ -13,6 +13,7 @@
   --main-font: 'Nova Flat';
   --regular-font: 'Open Sans';
   --block-font: 'Bungee';
+  --loading-indicator-size: var(--main-width);
   
   --menu-color: #8b0000;
   --menu-border-color: #61e5cb66;
@@ -105,8 +106,25 @@ video.showing {
 input, select {
   font-family: inherit;
   font-size: inherit;
-  border-radius: calc(var(--border-radius) / 4);
+  border-radius: calc(var(--border-radius) / 1);
   width: 14rem;
+}
+
+input[type="color"] {
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none;
+  background-color: transparent;
+  border: none;
+}
+
+input::-webkit-color-swatch {
+  border-radius: calc(var(--border-radius) / 1);;
+  /* border: none; */
+}
+input::-moz-color-swatch {
+  border-radius: calc(var(--border-radius) / 1);;
+  /* border: none; */
 }
 
 h1, h2, h3, h4 {
@@ -194,6 +212,7 @@ button {
   align-items: center;
   justify-content: center;
   min-width: max-content;
+  border-radius: var(--border-radius) !important;
 }
 
 @media screen and (max-width: 540px) {

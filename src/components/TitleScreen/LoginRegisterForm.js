@@ -33,6 +33,25 @@ const StyledLoginRegisterForm = styled.div`
     min-width: 18rem;
     transition: transform 300ms ease;
 
+    & > .bad-credentials {
+      position: relative;
+      outline: 0.1rem solid red;
+
+      &::after {
+        content: 'WRONG PASSWORD';
+        position: absolute;
+        text-align: center;
+        width: 100%;
+        bottom: -75%;
+        left: 50%;
+        translate: -50%;
+        color: #ff9999;
+        font-weight: bold;
+        z-index: 1;
+
+      }
+    }
+
     & input {
       padding: 0.5rem;
       font-style: inherit;
@@ -47,7 +66,6 @@ const StyledLoginRegisterForm = styled.div`
       align-items: center;
       justify-content: flex-end;
       margin-top: 2rem;
-      
     }
   }
 
@@ -106,6 +124,7 @@ function LoginRegisterForm(props) {
 
   function handlePasswordInputChange(e) {
     setPlayingAsGuest(!e.target.value);
+    props.clearCredentialsWarning();
   }
 
   function handleLogIn(e) {
@@ -157,9 +176,10 @@ function LoginRegisterForm(props) {
           placeholder='Username or Email' 
           autoComplete='email' 
           /></div>
-        <div><input 
+        <div className={props.badCredentials ? 'bad-credentials' : ''}><input 
           onChange={handlePasswordInputChange} 
           tabIndex={props.loginShowing === 'register' ? -1 : 1} 
+          id='password-input'
           name='password' 
           type='password' 
           placeholder='Password' 
@@ -238,6 +258,8 @@ function LoginRegisterForm(props) {
 
 LoginRegisterForm.propTypes = {
   loginShowing: PropTypes.string,
+  badCredentials: PropTypes.bool,
+  clearCredentialsWarning: PropTypes.func,
   handleClickLogIn: PropTypes.func,
   handleClickRegister: PropTypes.func,
   setAvatarChoiceModalShowing: PropTypes.func,

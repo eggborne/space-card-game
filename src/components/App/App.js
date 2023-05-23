@@ -25,6 +25,7 @@ import DeckCreationScreen from '../DeckCreationScreen/DeckCreationScreen';
 import OpponentSelectionScreen from '../OpponentSelectionScreen/OpponentSelectionScreen';
 import HallOfFameScreen from '../HallOfFameScreen/HallOfFameScreen';
 import MoveIndicator from '../GameScreen/MoveIndicator';
+import LoadingIndicator from '../LoadingIndicator';
 
 let clickFunction = window.PointerEvent ? 'onPointerDown' : window.TouchEvent ? 'onTouchStart' : 'onClick';
 
@@ -202,6 +203,10 @@ function App() {
     }
   };
 
+  const [busyLoggingIn, setBusyLoggingIn] = useState(false);
+  const [busyRegistering, setBusyRegistering] = useState(false);
+  const [busyGettingUsers, setBusyGettingUsers] = useState(false);
+  const [returningUserChecked, setReturningUserChecked] = useState(false);
   const [userList, setUserList] = useState([]);
   const [loaded, setLoaded] = useState(false);
   const [userLoggedIn, setUserLoggedIn] = useState(false);
@@ -220,6 +225,7 @@ function App() {
     player: undefined,
     message: undefined,
   });
+  const [badCredentials, setBadCredentials] = useState(false);
 
   useEffect(() => {
     if (!loaded) {
@@ -246,6 +252,11 @@ function App() {
         // applyUserPreferences(guestTheme)
       }
     }
+    if (!alreadyLoggedIn && !userLoggedIn) {
+      if (!returningUserChecked) {
+        setReturningUserChecked(true);
+      } 
+    }
   });
 
   function applyUserPreferences(newPreferences = user.preferences, retrievedData = user) {
@@ -266,6 +277,9 @@ function App() {
     document.querySelector('meta[name="theme-color"]').setAttribute('content',  menuColor);
 
     setUser(retrievedData);
+    if (!returningUserChecked) {
+      setReturningUserChecked(true);
+    } 
   }
 
   async function setUserDataForId(uid) {
@@ -276,46 +290,49 @@ function App() {
       console.warn('SETTING RETRIEVED DB USERDATA FOR USER!! --------------------', docSnap.data().displayName);
       const retrievedData = docSnap.data();
       applyUserPreferences(retrievedData.preferences, retrievedData);
-      // setUser(retrievedData);
+      
     } else {
       console.error("No such userData document!");
     }
   }
 
   async function getEmailForUsername(username) {
-    // const q = query(collection(db, "cities"), where("capital", "==", true));
     const q = query(collection(db, "userData"), where("displayName", "==", username));
     const querySnapshot = await getDocs(q);
     let result;
-    querySnapshot.forEach((doc) => {
-      // doc.data() is never undefined for query doc snapshots
-      console.log(doc.data().email)
-      result = doc.data().email;
+    querySnapshot.forEach((doc) => { // this needs to acknowledge if it finds multiple users with same displayName (calling func should try each one?)
+      result = doc.data().email; 
     });
     return result;
   }
 
   function handleClickLogIn(incomingUser) {
+    console.log('handleClickLogIn', incomingUser);
     if (incomingUser.password) {
+      setBusyLoggingIn(true);
       signInWithEmailAndPassword(auth, incomingUser.email, incomingUser.password)
         .then(async (userCredential) => {
           console.log(`You've successfully signed in as ${userCredential.user.email}!`);
           await setUserDataForId(userCredential.user.uid);
           setPhase('game-mode-select');
+          setBusyLoggingIn(false);
         })
         .catch(async (error) => {
           console.log(`Email ${incomingUser.email} not found: ${error.message}!`);
           const userEmail = await getEmailForUsername(incomingUser.email);
-          console.warn('got userEmail:', userEmail);
           signInWithEmailAndPassword(auth, userEmail, incomingUser.password)
             .then(async (userCredential) => {
               console.log(`You've successfully signed in as ${userCredential.user.email}!`);
               await setUserDataForId(userCredential.user.uid);
               setPhase('game-mode-select');
+              setBusyLoggingIn(false);
             })
             .catch((error) => {
               console.log(`Neither email nor username found! ${error.message}!`);
-              
+              document.getElementById('password-input').value = '';
+              setBusyLoggingIn(false);
+              setBadCredentials(true);
+              // try other users with same username, if they exist?
             });
         });
     } else {
@@ -326,12 +343,12 @@ function App() {
         displayName: user.displayName,
         imagePath: 'images/avatarsheethq.jpg',
       });
-
       setAvatarChoiceModalShowing(true);
     }
   }
 
   async function handleClickRegister(newUser) {
+    setBusyRegistering(true);
     createUserWithEmailAndPassword(auth, newUser.email, newUser.password)
       .then(async (userCredential) => {
         // User successfully signed up 
@@ -340,12 +357,13 @@ function App() {
         }).then(() => {
           // actual creation occurs in handleCreatingNewUser via handleChooseAvatar
           setAvatarChoiceModalShowing(true);
+          setBusyRegistering(false);
         }).catch((error) => {
-          console.log('profile not updated :(');
+          console.log('profile not updated :(', error);
         });
       })
       .catch((error) => {
-        console.log('ERROR', error);
+        console.log('ERROR REGISTERING:', error);
       });
   }
 
@@ -582,6 +600,7 @@ function App() {
   }
 
   async function getUsers() {
+    setBusyGettingUsers(true);
     const q = query(collection(db, "userData"));
     const querySnapshot = await getDocs(q);
     const newUserList = [];
@@ -590,6 +609,7 @@ function App() {
       newUserList.push(userObj);
     });
     setUserList(newUserList);
+    setBusyGettingUsers(false);
   }
 
   async function getUserById(id) {
@@ -684,9 +704,13 @@ function App() {
       {loaded && <video id='starfield' loop={true} muted={true}>
         <source src="/images/starfield.mp4" type="video/mp4" />
       </video>}
+      <LoadingIndicator legend='LOADING...' showing={!returningUserChecked} location='page-load' />
+      <LoadingIndicator legend='LOGGING IN...' showing={busyLoggingIn} location='log-in' />
+      <LoadingIndicator legend='CREATING ACCOUNT...' showing={busyRegistering} location='register' />
+      <LoadingIndicator legend='LOADING USERS...' showing={busyGettingUsers} location='get-users' />
       <StyledApp style={{
-        opacity: loaded ? '1' : '0',
-        scale: loaded ? '1' : '0.75'
+        opacity: returningUserChecked ? '1' : '0',
+        scale: returningUserChecked ? '1' : '0.75'
       }}>
         <Header
           authUser={auth.currentUser}
@@ -707,7 +731,7 @@ function App() {
           onClickCancel={() => setLogOutModalShowing(false)}
         />
         <div className='scroll-container'>
-          {(phase !== 'title' && (userLoggedIn || user.displayName === 'Guest')) &&
+          {(phase !== 'title' && userLoggedIn) &&
             <HeaderMenu
               open={profileMenuOpen}
               userLoggedIn={userLoggedIn}
@@ -721,7 +745,10 @@ function App() {
             userLoggedIn={userLoggedIn}
             user={user}
             authUser={auth.currentUser}
+            badCredentials={badCredentials}
             showing={phase === 'title'}
+            busyLoggingIn={busyLoggingIn}
+            clearCredentialsWarning={() => setBadCredentials(false)}
             handleClickLogIn={handleClickLogIn}
             handleClickPlay={handleClickPlay}
             handleClickOptions={handleClickOptions}
