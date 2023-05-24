@@ -93,8 +93,7 @@ const StyledCardBack = styled(CardBack)`
 `;
 
 function PlayerArea(props) {
-
-  const [selectedCard, setSelectedCard] = useState(undefined);
+  console.log('PlayerArea selectedCard', props.selectedCard)
 
   const isCPU = !props.playerObject.email; // not ideal but the easiest way to check for now
 
@@ -111,17 +110,17 @@ function PlayerArea(props) {
   const firstDealRow = cardsInPlay.slice(0, 4);
   const emptyFirstRowSpaces = 4 - firstDealRow.length;
   for (let i = 0; i < emptyFirstRowSpaces; i++) {
-    firstDealRow.push({ id: v4(), value: 0, type: 'main', usableSpace: (selectedCard && !isCPU && i === 0) });
+    firstDealRow.push({ id: v4(), value: 0, type: 'main', usableSpace: (props.selectedCard && !isCPU && i === 0) });
   }
   const secondDealRow = cardsInPlay.slice(4, 9);
   const emptySecondRowSpaces = 5 - secondDealRow.length;
   for (let i = 0; i < emptySecondRowSpaces; i++) {
-    secondDealRow.push({ id: v4(), value: 0, type: 'main', usableSpace: (cardsInPlay.length > 4 && selectedCard && !isCPU && i === 0) });
+    secondDealRow.push({ id: v4(), value: 0, type: 'main', usableSpace: (cardsInPlay.length > 4 && props.selectedCard && !isCPU && i === 0) });
   }
 
   function handleClickPlaySpace() {
-    props.playCard(selectedCard);
-    setSelectedCard(null);
+    props.playCard();
+    props.handleClickSelectCard(undefined);
   }
 
   return (
@@ -139,7 +138,7 @@ function PlayerArea(props) {
                 value={cardData.value}
                 type={cardData.type}
                 usableSpace={cardData.usableSpace}
-                onClick={cardData.usableSpace ? () => handleClickPlaySpace() : null}
+                onClick={() => handleClickPlaySpace()}
               />
             )}
             {r === 1 && <ScoreArea playerObject={props.playerObject} playerStatus={props.playerStatus} />}
@@ -172,9 +171,9 @@ function PlayerArea(props) {
                 <Card
                   key={card.id}
                   value={card.value}
-                  selected={card === selectedCard}
+                  selected={card === props.selectedCard}
                   onClick={props.isTurn && props.turnPhase === 'waiting' ?
-                    () => setSelectedCard(selectedCard === card ? undefined : card)
+                    () => props.handleClickSelectCard(props.selectedCard === card ? undefined : card)
                     :
                     null
                   }
@@ -193,6 +192,8 @@ PlayerArea.propTypes = {
   playerStatus: PropTypes.object,
   isTurn: PropTypes.bool,
   turnPhase: PropTypes.string,
+  selectedCard: PropTypes.object,
+  handleClickSelectCard: PropTypes.func,
   playCard: PropTypes.func,
 };
 

@@ -6,7 +6,6 @@ import PlayerArea from './PlayerArea';
 import PlayerPortrait from '../PlayerPortrait';
 import HamburgerMenu from '../HamburgerMenu';
 import Modal from '../Modal';
-import MoveIndicator from './MoveIndicator';
 import { pause } from '../../util.js';
 
 const StyledGameScreen = styled.div`
@@ -88,6 +87,8 @@ function GameScreen(props) {
           {['opponent', 'user'].map((player, p) => 
             <div key={p}>
               <PlayerArea
+                selectedCard={props.currentGame.selectedCard}
+                handleClickSelectCard={props.handleSelectingCard}
                 playerObject={props[player]}
                 playerStatus={props.currentGame[player + 'Status']}
                 isTurn={props.currentGame.currentTurn === player}
@@ -134,6 +135,7 @@ GameScreen.propTypes = {
   showing: PropTypes.bool,
   hamburgerOpen: PropTypes.bool,
   gameMode: PropTypes.string,
+  handleSelectingCard: PropTypes.func,
   handleUpdatingAppliedTheme: PropTypes.func,
   onClickEndGame: PropTypes.func,
   playCard: PropTypes.func,

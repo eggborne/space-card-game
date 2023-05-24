@@ -136,6 +136,7 @@ function App() {
       matchScore: 0,
       setsWon: 0,
     },
+    selectedCard: undefined,
     currentTurn: 'user',
     turnPhase: 'waiting',
     deck: [
@@ -183,22 +184,22 @@ function App() {
       { id: 9999999, value: 9, type: 'main' },
       { id: 10003, value: 10, type: 'main' },
     ],
-    playCard: function(card) {
+    playCard: function (card) {
       this.turnPhase = 'played-card';
       const currentPlayer = this[this.currentTurn + 'Status'];
       currentPlayer.cardsInPlay.push(card);
       currentPlayer.hand.splice(currentPlayer.hand.indexOf(card), 1);
       currentPlayer.matchScore += card.value;
     },
-    dealCard: function() {
+    dealCard: function () {
       const currentPlayer = this[this.currentTurn + 'Status'];
-      const randomCardIndex = randomInt(0, this.deck.length -1);
+      const randomCardIndex = randomInt(0, this.deck.length - 1);
       const randomCard = this.deck[randomCardIndex];
       currentPlayer.cardsInPlay.push(randomCard);
       this.deck.splice(randomCardIndex, 1);
       currentPlayer.matchScore += randomCard.value;
     },
-    playBestCPUCard: function() {
+    playBestCPUCard: function () {
       const bestCard = this.opponentStatus.hand[this.opponentStatus.hand.length - 1];
       this.playCard(bestCard);
     }
@@ -248,7 +249,7 @@ function App() {
           await setUserDataForId(alreadyLoggedIn.uid);
         }
       } else {
-        console.log('user just logged out! --------------------------------------------------')
+        console.log('user just logged out! --------------------------------------------------');
         // setUserLoggedIn(false);
         // const guestTheme = {appliedUITheme: defaultUITheme};
         // applyUserPreferences(guestTheme)
@@ -257,7 +258,7 @@ function App() {
     if (!alreadyLoggedIn && !userLoggedIn) {
       if (!returningUserChecked) {
         setReturningUserChecked(true);
-      } 
+      }
     }
   });
 
@@ -276,12 +277,12 @@ function App() {
     ROOT.style.setProperty('--border-radius', roundness + 'rem');
     ROOT.style.setProperty('--portrait-border-radius', portraitRoundness + '%');
 
-    document.querySelector('meta[name="theme-color"]').setAttribute('content',  menuColor);
+    document.querySelector('meta[name="theme-color"]').setAttribute('content', menuColor);
 
     setUser(retrievedData);
     if (!returningUserChecked) {
       setReturningUserChecked(true);
-    } 
+    }
   }
 
   async function setUserDataForId(uid) {
@@ -292,7 +293,7 @@ function App() {
       console.warn('SETTING RETRIEVED DB USERDATA FOR USER!! --------------------', docSnap.data().displayName);
       const retrievedData = docSnap.data();
       applyUserPreferences(retrievedData.preferences, retrievedData);
-      
+
     } else {
       console.error("No such userData document!");
     }
@@ -303,7 +304,7 @@ function App() {
     const querySnapshot = await getDocs(q);
     let result;
     querySnapshot.forEach((doc) => { // this needs to acknowledge if it finds multiple users with same displayName (calling func should try each one?)
-      result = doc.data().email; 
+      result = doc.data().email;
     });
     return result;
   }
@@ -564,7 +565,7 @@ function App() {
     const newUser = { ...user };
     const userRandomCards = newUser.startingCards.sort(() => 0.5 - Math.random()).slice(0, 4);
     const opponentRandomCards = newUser.startingCards.sort(() => 0.5 - Math.random()).slice(0, 4);
-        
+
     currentGame.userStatus.hand = userRandomCards;
     currentGame.opponentStatus.hand = opponentRandomCards;
     currentGame.gameStarted = true;
@@ -587,6 +588,7 @@ function App() {
 
     const dbRef = doc(db, 'uiThemes', v4());
     await setDoc(dbRef, newThemeDoc);
+    flashSavedMessage(1000);
   }
 
   async function getUIThemes() {
@@ -638,24 +640,27 @@ function App() {
     setMoveIndicatorShowing({
       player: undefined,
       message: undefined,
-    })
+    });
     setCurrentGame(initialGameState);
     setGameStarted(false);
     setPhase('title');
   }
 
-  function handlePlayingCard(card) {
-    currentGame.playCard(card);
-    setCurrentGame({...currentGame});
+  function handlePlayingCard() {
+    currentGame.playCard(currentGame.selectedCard);
+    setCurrentGame({ ...currentGame });
   }
 
   async function handleClickEndTurn() {
+    if (currentGame.selectedCard) {
+      currentGame.selectedCard = undefined;
+    }
     const endingPlayer = currentGame.currentTurn;
     flashMoveIndicator(endingPlayer, 'END TURN');
     await pause(1000);
     currentGame.currentTurn = endingPlayer === 'user' ? 'opponent' : 'user';
     currentGame.turnPhase = 'waiting';
-    setCurrentGame({...currentGame});
+    setCurrentGame({ ...currentGame });
     currentGame.dealCard();
     await pause(500);
     if (currentGame.currentTurn === 'opponent') {
@@ -663,17 +668,17 @@ function App() {
         const standAt = opponent.strategy.stand.standAt;
         if (currentGame.opponentStatus.matchScore > 20) {
           console.warn('//////////////////////////////// BUSTED /////////////////////////////////////////////');
-          flashMoveIndicator('opponent', 'BUST :(', true)
+          flashMoveIndicator('opponent', 'BUST :(', true);
         } else if (currentGame.opponentStatus.matchScore < standAt) {
-          console.warn('*********** CPU IS PLAYING BEST CARD due to score', currentGame.opponentStatus.matchScore, 'being < standAt', standAt)
+          console.warn('*********** CPU IS PLAYING BEST CARD due to score', currentGame.opponentStatus.matchScore, 'being < standAt', standAt);
           currentGame.playBestCPUCard();
           await pause(1000);
         } else {
-          console.warn('*********** CPU IS STANDING due to score', currentGame.opponentStatus.matchScore, 'being >= standAt', standAt)
+          console.warn('*********** CPU IS STANDING due to score', currentGame.opponentStatus.matchScore, 'being >= standAt', standAt);
           return handleClickStand();
         }
       }
-      setCurrentGame({...currentGame});
+      setCurrentGame({ ...currentGame });
       const playerBusted = currentGame.opponentStatus.matchScore > 20;
       if (!playerBusted) {
         await pause(500);
@@ -684,13 +689,19 @@ function App() {
     }
   }
 
+  function handleSelectingCard(card) {
+    const newCurrentGame = { ...currentGame };
+    newCurrentGame.selectedCard = card;
+    setCurrentGame(newCurrentGame);
+  }
+
   function handleClickStand() {
     console.warn('clicked STAND!');
     const standingPlayer = currentGame.currentTurn;
     flashMoveIndicator(standingPlayer, 'STAND', true);
     currentGame.turnPhase = 'other-player-stood';
     currentGame.currentTurn = currentGame.currentTurn === 'user' ? 'opponent' : 'user';
-    setCurrentGame({...currentGame});
+    setCurrentGame({ ...currentGame });
   }
 
   async function flashMoveIndicator(player, message, persist) {
@@ -810,27 +821,28 @@ function App() {
             userList={userList}
           />
           {phase === 'game-board-showing' &&
-          <>
-            <MoveIndicator 
-              player={'opponent'} 
-              showing={moveIndicatorShowing.player === 'opponent'} 
-              message={moveIndicatorShowing.message}
-            />
-            <MoveIndicator 
-              player={'user'} 
-              showing={moveIndicatorShowing.player === 'user'} 
-              message={moveIndicatorShowing.message}
-            />
-            <GameScreen
-              showing={phase === 'game-board-showing'}
-              gameStarted={gameStarted}
-              hamburgerOpen={hamburgerOpen}
-              currentGame={currentGame}
-              user={user}
-              opponent={opponent}
-              handleUpdatingAppliedTheme={handleUpdatingAppliedTheme}
-              onClickEndGame={handleClickEndGame}
-              playCard={handlePlayingCard}
+            <>
+              <MoveIndicator
+                player={'opponent'}
+                showing={moveIndicatorShowing.player === 'opponent'}
+                message={moveIndicatorShowing.message}
+              />
+              <MoveIndicator
+                player={'user'}
+                showing={moveIndicatorShowing.player === 'user'}
+                message={moveIndicatorShowing.message}
+              />
+              <GameScreen
+                showing={phase === 'game-board-showing'}
+                gameStarted={gameStarted}
+                hamburgerOpen={hamburgerOpen}
+                currentGame={currentGame}
+                user={user}
+                opponent={opponent}
+                handleUpdatingAppliedTheme={handleUpdatingAppliedTheme}
+                handleSelectingCard={handleSelectingCard}
+                onClickEndGame={handleClickEndGame}
+                playCard={handlePlayingCard}
               />
             </>
           }
