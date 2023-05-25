@@ -34,14 +34,9 @@ const StyledSaveIndicator = styled.div`
 `;
 
 function SaveIndicator(props) {
-  console.warn('SaveIndicator props', props);
   return (
     <StyledSaveIndicator
       className={props.showing ? '' : 'hidden'}
-      // style={{
-      //   scale: props.showing ? '1 1' : '1 0.5',
-      //   opacity: props.showing ? '1' : '0',
-      // }}
     >
       <h2 className='legend text-shadow'>{props.legend}</h2>
     </StyledSaveIndicator>

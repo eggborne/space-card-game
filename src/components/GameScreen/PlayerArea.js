@@ -93,8 +93,7 @@ const StyledCardBack = styled(CardBack)`
 `;
 
 function PlayerArea(props) {
-  console.log('PlayerArea selectedCard', props.selectedCard)
-
+  
   const isCPU = !props.playerObject.email; // not ideal but the easiest way to check for now
 
   // create hand array

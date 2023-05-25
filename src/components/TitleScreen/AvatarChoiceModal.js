@@ -110,8 +110,6 @@ function AvatarChoiceModal(props) {
     setUserAvatarChoice(randomSheetCoords)
   }
 
-  console.warn('av choice props', props)
-
   return (
     <StyledAvatarChoiceModal style={{
       opacity: props.showing ? '1' : '0',

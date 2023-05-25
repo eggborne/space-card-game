@@ -245,9 +245,9 @@ export default class NameGenerator {
 
     this.getRules = async () => {
       const retrievedRules = await getNameRules();
-      console.log('retrieved', retrievedRules);
+      // console.log('retrieved', retrievedRules);
       const ruleSet = retrievedRules.data[0];
-      console.log('ruleSet', ruleSet);
+      // console.log('ruleSet', ruleSet);
       for (let item in ruleSet) {
         if (item[0] === '[' || item[0] === '{') {
           item = JSON.parse(item);
@@ -261,8 +261,8 @@ export default class NameGenerator {
           nameRules[rule] = ruleValue;
         }
       }
-      console.warn('GOT NAME RULES');
-      console.log(nameRules);
+      // console.warn('GOT NAME RULES');
+      // console.log(nameRules);
     }
 
     this.produceName = (pattern) => {

@@ -98,7 +98,6 @@ const StyledLoadingIndicator = styled.div`
 `;
 
 function LoadingIndicator(props) {
-  console.warn('LoadingIndicator props', props)
   const [knobsCreated, setKnobsCreated] = useState(false);
 
   useEffect(() => {
@@ -110,7 +109,6 @@ function LoadingIndicator(props) {
 
   function createKnobs(knobAmount) {
     for (let i=0; i < knobAmount; i++) {
-      console.log('knob', i)
       if (i < (knobAmount - 1)) {
         document.getElementById(`loading-indicator-${props.location}`).innerHTML += `
           <div class='knob-container' style="
