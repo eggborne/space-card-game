@@ -126,7 +126,7 @@ function OptionsScreen(props) {
         <h1>Options</h1>
         <section style={{ borderColor: props.user.preferences.appliedUITheme['--menu-border-color'] + '44' }} className='option-section'>
           <h3 className='section-label'>User Interface</h3>
-          {props.user.preferences.appliedUITheme.name && 
+          {false && props.user.preferences.appliedUITheme.name && 
           <h4>using theme 
             <div>{props.user.preferences.appliedUITheme.name}</div>
              by {props.user.preferences.appliedUITheme.creatorData.displayName} {ownTheme && '(you!)'}
