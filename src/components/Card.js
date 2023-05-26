@@ -1,4 +1,5 @@
 import PropTypes from 'prop-types';
+import { useEffect, useState } from 'react';
 import styled from 'styled-components';
 
 // main deck: YELLOW 1-10 (4 sets)
@@ -21,9 +22,14 @@ const StyledCard = styled.div`
   color: black;
   z-index: 0;
   transform-origin: 50% 30%;
+  opacity: 0.2;
   transition: all 200ms ease;
   
   border-radius: var(--card-border-radius);
+
+  &.flipped {
+    opacity: 1;
+  }
   
   & > .knob-container {
     padding: var(--card-padding);
@@ -45,12 +51,14 @@ const StyledCard = styled.div`
     }
   }
 
-  @keyframes pulse-border {
+  @keyframes flash-space {
     from {
       border: 0.25rem solid #00ff0022;
+      background-color: transparent;
     }
     to {
-      border: 0.25rem solid #00ff0077;
+      border: 0.25rem solid #00ff0099;
+      background-color: #00ff00aa;
     }
   }
 
@@ -94,26 +102,33 @@ const ValueDisplay = styled.div`
 `;
 
 function Card(props) {
+  const [flipped, setFlipped] = useState(false);
   const colorForValue = props.type === 'main' ? 'yellow' : props.value > 0 ? 'blue' : 'red';
   const knobColors = [
     `var(--card-${colorForValue})`,
     `var(--card-${colorForValue})`,
     `var(--card-${colorForValue})`,
   ];
+
+  useEffect(() =>{
+    if (props.value && !flipped) {
+      setFlipped(true);
+    }
+  }, [flipped]);
   return (
     <StyledCard
       onClick={props.onClick}
       className={
-        props.value ? '' : 'placeholder'
+        props.value ? flipped ? 'flipped' : '' : 'placeholder'
       }
       style={{ 
         width: `calc(var(--card-width) * ${props.scale || 1})`,
         height: `calc(var(--card-height) * ${props.scale || 1})`,
         outline: props.won ? '0.25rem solid green' : 'none',
-        scale: props.selected ? '1.1' : '1',
+        scale: props.selected ? '1.1' : flipped ? '1' : !props.value ? '1' : '1.35',
         boxShadow: props.selected ? '0 0 1rem 0.5rem #00000077' : 'none',
         zIndex: props.selected ? '2' : '1',
-        animation: props.usableSpace ? 'pulse-border infinite alternate 750ms ease' : 'none'
+        animation: props.usableSpace ? 'flash-space infinite alternate 750ms ease' : 'none'
       }}
     >
       <div className='knob-container'>

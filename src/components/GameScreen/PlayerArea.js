@@ -28,10 +28,10 @@ const StyledPlayerArea = styled.div`
 
   @keyframes pulse {
     from {
-      background-color: #00ff0022;
+      background-color: #00ff0011;
     }
     to {
-      background-color: #00ff0055;
+      background-color: #00ff0033;
     }
   }
 `;
@@ -137,7 +137,7 @@ function PlayerArea(props) {
                 value={cardData.value}
                 type={cardData.type}
                 usableSpace={cardData.usableSpace}
-                onClick={() => handleClickPlaySpace()}
+                onClick={props.selectedCard ? () => handleClickPlaySpace() : null}
               />
             )}
             {r === 1 && <ScoreArea playerObject={props.playerObject} playerStatus={props.playerStatus} />}

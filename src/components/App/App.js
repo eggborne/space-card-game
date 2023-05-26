@@ -27,7 +27,6 @@ import HallOfFameScreen from '../HallOfFameScreen/HallOfFameScreen';
 import MoveIndicator from '../GameScreen/MoveIndicator';
 import LoadingIndicator from '../LoadingIndicator';
 import SaveIndicator from '../SaveIndicator';
-import { game } from '../../game';
 
 let clickFunction = window.PointerEvent ? 'onPointerDown' : window.TouchEvent ? 'onTouchStart' : 'onClick';
 
@@ -124,7 +123,87 @@ function App() {
     sheetCoords: { x: randomInt(0, 7), y: randomInt(0, 2) },
   };
 
-  const initialGameState = game;
+  const initialGameState = {
+    userStatus: {
+      hand: [],
+      cardsInPlay: [],
+      matchScore: 0,
+      setsWon: 0,
+    },
+    opponentStatus: {
+      hand: [],
+      cardsInPlay: [],
+      matchScore: 0,
+      setsWon: 0,
+    },
+    selectedCard: undefined,
+    currentTurn: 'user',
+    turnPhase: 'waiting',
+    deck: [
+      { id: 1111, value: 1, type: 'main' },
+      { id: 2222, value: 2, type: 'main' },
+      { id: 3333, value: 3, type: 'main' },
+      { id: 4444, value: 4, type: 'main' },
+      { id: 5555, value: 5, type: 'main' },
+      { id: 6666, value: 6, type: 'main' },
+      { id: 7777, value: 7, type: 'main' },
+      { id: 8888, value: 8, type: 'main' },
+      { id: 9999, value: 9, type: 'main' },
+      { id: 10000, value: 10, type: 'main' },
+  
+      { id: 11111, value: 1, type: 'main' },
+      { id: 22222, value: 2, type: 'main' },
+      { id: 33333, value: 3, type: 'main' },
+      { id: 44444, value: 4, type: 'main' },
+      { id: 55555, value: 5, type: 'main' },
+      { id: 66666, value: 6, type: 'main' },
+      { id: 77777, value: 7, type: 'main' },
+      { id: 88888, value: 8, type: 'main' },
+      { id: 99999, value: 9, type: 'main' },
+      { id: 10001, value: 10, type: 'main' },
+  
+      { id: 111111, value: 1, type: 'main' },
+      { id: 222222, value: 2, type: 'main' },
+      { id: 333333, value: 3, type: 'main' },
+      { id: 444444, value: 4, type: 'main' },
+      { id: 555555, value: 5, type: 'main' },
+      { id: 666666, value: 6, type: 'main' },
+      { id: 777777, value: 7, type: 'main' },
+      { id: 888888, value: 8, type: 'main' },
+      { id: 999999, value: 9, type: 'main' },
+      { id: 10002, value: 10, type: 'main' },
+  
+      { id: 1111111, value: 1, type: 'main' },
+      { id: 2222222, value: 2, type: 'main' },
+      { id: 3333333, value: 3, type: 'main' },
+      { id: 4444444, value: 4, type: 'main' },
+      { id: 5555555, value: 5, type: 'main' },
+      { id: 6666666, value: 6, type: 'main' },
+      { id: 7777777, value: 7, type: 'main' },
+      { id: 8888888, value: 8, type: 'main' },
+      { id: 9999999, value: 9, type: 'main' },
+      { id: 10003, value: 10, type: 'main' },
+    ],
+    playCard: function(card) {
+      this.turnPhase = 'played-card';
+      const currentPlayerStatus = this[this.currentTurn + 'Status'];
+      currentPlayerStatus.cardsInPlay.push(card);
+      currentPlayerStatus.hand.splice(currentPlayerStatus.hand.indexOf(card), 1);
+      currentPlayerStatus.matchScore += card.value;
+    },
+    dealCard: function() {
+      const currentPlayerStatus = this[this.currentTurn + 'Status'];
+      const randomCardIndex = randomInt(0, this.deck.length - 1);
+      const randomCard = this.deck[randomCardIndex];
+      currentPlayerStatus.cardsInPlay.push(randomCard);
+      this.deck.splice(randomCardIndex, 1);
+      currentPlayerStatus.matchScore += randomCard.value;
+    },
+    playBestCPUCard: function() {
+      const bestCard = this.opponentStatus.hand[this.opponentStatus.hand.length - 1];
+      this.playCard(bestCard);
+    }
+  };
 
   const [recentlySaved, setRecentlySaved] = useState(false);
   const [busyLoggingIn, setBusyLoggingIn] = useState(false);
@@ -497,7 +576,9 @@ function App() {
     setPhase('game-board-showing');
     await pause(4500); // total time for versus screen to show and game board to zoom in? should be 2750??
     console.warn('>>>>>>>>> READY TO DEAL');
+    await pause(750);
     setGameStarted(true);
+    console.warn('>>>>>>>>> DEALING AFTER PAUSE 500');
     currentGame.dealCard();
   }
 
@@ -583,6 +664,7 @@ function App() {
     await pause(1000);
     currentGame.currentTurn = endingPlayer === 'user' ? 'opponent' : 'user';
     currentGame.turnPhase = 'waiting';
+    await pause(750);
     setCurrentGame({ ...currentGame });
     currentGame.dealCard();
     await pause(500);
@@ -592,6 +674,8 @@ function App() {
         if (currentGame.opponentStatus.matchScore > 20) {
           console.warn('//////////////////////////////// BUSTED /////////////////////////////////////////////');
           flashMoveIndicator('opponent', 'BUST :(', true);
+          currentGame.turnPhase = 'showing-results';
+          setCurrentGame({ ...currentGame });
         } else if (currentGame.opponentStatus.matchScore < standAt) {
           console.warn('*********** CPU IS PLAYING BEST CARD due to score', currentGame.opponentStatus.matchScore, 'being < standAt', standAt);
           currentGame.playBestCPUCard();
@@ -607,8 +691,15 @@ function App() {
         await pause(500);
         handleClickEndTurn();
       } else {
-
+        if (currentGame.userStatus.matchScore > 20) {
+          console.warn('//////////////////////////////// BUSTED /////////////////////////////////////////////');
+          flashMoveIndicator('user', 'BUST :(', true);
+          currentGame.turnPhase = 'showing-results';
+          setCurrentGame({ ...currentGame });
+        }
       }
+    } else { // turn is user
+
     }
   }
 
@@ -780,11 +871,14 @@ function App() {
           onClickConfirmOpponent={handleConfirmOpponent}
           userDeck={user.deck}
           currentTurn={currentGame.currentTurn}
+          turnPhase={currentGame.turnPhase}
           handleToggleHamburger={handleToggleHamburger}
           hamburgerOpen={hamburgerOpen}
           onClickEndTurn={handleClickEndTurn}
           onClickStand={handleClickStand}
           flashMoveIndicator={flashMoveIndicator}
+          moveIndicatorShowing={moveIndicatorShowing}
+          gameStarted={gameStarted}
         />
       </StyledApp>
     </>

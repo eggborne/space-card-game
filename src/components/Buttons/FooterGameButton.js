@@ -19,6 +19,15 @@ const StyledFooterGameButton = styled.button`
   padding-left: 0 !important;
   padding-right: 0 !important;
 
+  &.highlighted {
+    animation flash-border 1200ms infinite alternate;
+    border: 0.5rem solid orange;
+  }
+
+  &.highlighted:last-of-type {
+    animation-delay: 1200ms;
+  }
+
   &:hover {
     border-color: #00ff00aa;
     filter: brightness(150%);
@@ -27,6 +36,15 @@ const StyledFooterGameButton = styled.button`
   :disabled {
     opacity: 0.5;
     pointer-events: none;
+  }
+
+  @keyframes flash-border {
+    from {
+      border-width: calc(var(--expanded-footer-height) / 8);
+    }
+    to {
+      border-width: 0;
+    }
   }
 `;
 
@@ -39,7 +57,7 @@ function FooterGameButton(props) {
       style={{
         backgroundColor: `var(--button-${props.color || 'standard'})`
       }}
-      className={props.className} // needs this for 'const WideFooterGameButton' in TitleScreen to work ??
+      className={ props.highlighted ? `${props.className} highlighted` : props.className }
     >
       {props.label}
     </StyledFooterGameButton>
@@ -53,6 +71,7 @@ FooterGameButton.propTypes = {
   color: PropTypes.string,
   onClick: PropTypes.func,
   disabled: PropTypes.bool,
+  highlighted: PropTypes.bool,
 };
 
 export default FooterGameButton;

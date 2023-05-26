@@ -111,7 +111,13 @@ function GameScreen(props) {
           headline={'SET WINNER'}
           color='maroon'
           buttonLabel='OK'
-          bodyComponent={<>winner here</>}
+          bodyComponent={<>
+            {
+              (props.currentGame.userStatus.matchScore <= 20 && props.currentGame.userStatus.matchScore > props.currentGame.opponentStatus.matchScore) || props.currentGame.opponentStatus.matchScore > 20 ? props.user.displayName : 
+              (props.currentGame.opponentStatus.matchScore <= 20 && props.currentGame.opponentStatus.matchScore > props.currentGame.userStatus.matchScore) || props.currentGame.userStatus.matchScore > 20 ?
+              props.opponent.displayName : null
+            }
+          </>}
           onClickOK={() => null}
         />
       </StyledGameScreen>

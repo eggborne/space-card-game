@@ -49,6 +49,7 @@ const FooterBackButton = styled(Button)`
 `;
 
 function Footer(props) {
+  console.log('footer turnPhase', props.turnPhase);
   return (
     <StyledFooter 
       className='menu-style' 
@@ -65,11 +66,11 @@ function Footer(props) {
             <FooterBackButton onClick={props.onClickBackToTitle} label='<' />
             <Button className='main-footer' onClick={props.onClickAcceptGameMode} color='green' label='OK' />
           </>
-          : props.phase === 'game-board-showing' ?
+          : (props.phase === 'game-board-showing') ?
             <>
               <div className='game-button-area' style={{ opacity: props.hamburgerOpen ? '0.4' : '1', pointerEvents: props.hamburgerOpen ? 'none' : 'all'}}>
-                <FooterGameButton disabled={props.currentTurn === 'opponent'} onClick={props.onClickEndTurn} color='green' label='End Turn' />
-                <FooterGameButton disabled={props.currentTurn === 'opponent'} onClick={props.onClickStand}  color='orange' label='Stand' />
+                <FooterGameButton highlighted={!props.moveIndicatorShowing.player && props.currentTurn === 'user' && props.turnPhase === 'played-card'} disabled={props.currentTurn === 'opponent' || !props.gameStarted} onClick={props.onClickEndTurn} color='green' label='End Turn' />
+                <FooterGameButton highlighted={!props.moveIndicatorShowing.player && props.currentTurn === 'user' && props.turnPhase === 'played-card'} disabled={props.currentTurn === 'opponent' || !props.gameStarted} onClick={props.onClickStand}  color='orange' label='Stand' />
               </div>
               <Hamburger onClickToggle={props.handleToggleHamburger} />
             </>
@@ -88,9 +89,9 @@ function Footer(props) {
                 <Button className='main-footer' onClick={props.onClickConfirmOpponent} color='green' label='START!' />
               </>
               :
-              <>
-                end of conditionals
-              </>
+              <div>
+                something should be here, probably
+              </div>
 
       }
     </StyledFooter>
@@ -98,6 +99,8 @@ function Footer(props) {
 }
 
 Footer.propTypes = {
+  gameStarted: PropTypes.bool,
+  moveIndicatorShowing: PropTypes.object,
   onClickBackToTitle: PropTypes.func,
   onClickBackToGameSelect: PropTypes.func,
   onClickAcceptGameMode: PropTypes.func,
@@ -106,6 +109,7 @@ Footer.propTypes = {
   onClickConfirmOpponent: PropTypes.func,
   userDeck: PropTypes.arrayOf(PropTypes.object),
   currentTurn: PropTypes.string,
+  turnPhase: PropTypes.string,
   handleToggleHamburger: PropTypes.func,
   hamburgerOpen: PropTypes.bool,
   onClickEndTurn: PropTypes.func,
