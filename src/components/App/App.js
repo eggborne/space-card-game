@@ -195,6 +195,7 @@ function App() {
       const currentPlayerStatus = this[this.currentTurn + 'Status'];
       const randomCardIndex = randomInt(0, this.deck.length - 1);
       const randomCard = this.deck[randomCardIndex];
+      console.log(currentPlayerStatus, 'playing', randomCard)
       currentPlayerStatus.cardsInPlay.push(randomCard);
       this.deck.splice(randomCardIndex, 1);
       currentPlayerStatus.matchScore += randomCard.value;
@@ -223,7 +224,7 @@ function App() {
   const [profileMenuOpen, setProfileMenuOpen] = useState(false);
   const [hamburgerOpen, setHamburgerOpen] = useState(false);
   const [gameStarted, setGameStarted] = useState(false);
-  const [currentGame, setCurrentGame] = useState(initialGameState);
+  const [currentGame, setCurrentGame] = useState({ ...initialGameState });
   const [moveIndicatorShowing, setMoveIndicatorShowing] = useState({
     player: undefined,
     message: undefined,
@@ -562,17 +563,21 @@ function App() {
     startGame();
   }
 
-  async function startGame() {
-    console.warn('---------------- GAME STARTED ----------------');
+  function resetHands(game = currentGame) {
     const newUser = { ...user };
     const userRandomCards = newUser.startingCards.sort(() => 0.5 - Math.random()).slice(0, 4);
     const opponentRandomCards = newUser.startingCards.sort(() => 0.5 - Math.random()).slice(0, 4);
 
-    currentGame.userStatus.hand = userRandomCards;
-    currentGame.opponentStatus.hand = opponentRandomCards;
-    currentGame.gameStarted = true;
-    setCurrentGame(currentGame);
+    const nextCurrentGame = { ...game };
+    nextCurrentGame.userStatus.hand = userRandomCards;
+    nextCurrentGame.opponentStatus.hand = opponentRandomCards;
+    nextCurrentGame.gameStarted = true;
+    setCurrentGame(nextCurrentGame);
+  }
 
+  async function startGame() {
+    console.warn('---------------- GAME STARTED ----------------');
+    resetHands();
     setPhase('game-board-showing');
     await pause(4500); // total time for versus screen to show and game board to zoom in? should be 2750??
     console.warn('>>>>>>>>> READY TO DEAL');
@@ -589,7 +594,6 @@ function App() {
       name: newThemeName,
       public: true,
     };
-
     const dbRef = doc(db, 'uiThemes', v4());
     await setDoc(dbRef, newThemeDoc);
     flashSavedMessage(1000);
@@ -645,7 +649,7 @@ function App() {
       player: undefined,
       message: undefined,
     });
-    setCurrentGame(initialGameState);
+    setCurrentGame({ ...initialGameState });
     setGameStarted(false);
     setPhase('title');
   }
@@ -656,51 +660,96 @@ function App() {
   }
 
   async function handleClickEndTurn() {
+    const endingPlayer = currentGame.currentTurn;
+    flashMoveIndicator(endingPlayer, 'END TURN');
     if (currentGame.selectedCard) {
       currentGame.selectedCard = undefined;
     }
-    const endingPlayer = currentGame.currentTurn;
-    flashMoveIndicator(endingPlayer, 'END TURN');
+    const endingPlayerStatus = currentGame[endingPlayer + 'Status'];
+    const endingMatchScore = endingPlayerStatus.matchScore;
+    const newPlayerTurn = endingPlayer === 'user' ? 'opponent' : 'user';
+    console.warn('endingPlayerStatus -', endingPlayerStatus)
+    console.warn('endingMatchScore -', endingMatchScore)
+    console.warn('newPlayerTurn -', newPlayerTurn)
     await pause(1000);
-    currentGame.currentTurn = endingPlayer === 'user' ? 'opponent' : 'user';
+
+    currentGame.currentTurn = newPlayerTurn;
     currentGame.turnPhase = 'waiting';
     await pause(750);
     setCurrentGame({ ...currentGame });
-    currentGame.dealCard();
+    enactNewTurn();
+  }
+
+  async function enactNewTurn(game = currentGame) {
+    console.log('currentGame when enactNewTurn', currentGame)
+    console.log('game arg when enactNewTurn', game)
+    game.dealCard();
     await pause(500);
-    if (currentGame.currentTurn === 'opponent') {
-      if (currentGame.opponentStatus.hand.length) {
-        const standAt = opponent.strategy.stand.standAt;
-        if (currentGame.opponentStatus.matchScore > 20) {
+    if (game.currentTurn === 'opponent') {
+      if (game.opponentStatus.hand.length) {
+        // const standAt = opponent.strategy.stand.standAt;
+        const standAt = 33;
+        if (game.opponentStatus.matchScore > 20) {
           console.warn('//////////////////////////////// BUSTED /////////////////////////////////////////////');
           flashMoveIndicator('opponent', 'BUST :(', true);
-          currentGame.turnPhase = 'showing-results';
-          setCurrentGame({ ...currentGame });
-        } else if (currentGame.opponentStatus.matchScore < standAt) {
-          console.warn('*********** CPU IS PLAYING BEST CARD due to score', currentGame.opponentStatus.matchScore, 'being < standAt', standAt);
-          currentGame.playBestCPUCard();
+          game.turnPhase = 'showing-results';
+          setCurrentGame({ ...game });
+        } else if (game.opponentStatus.matchScore < standAt) {
+          console.warn('*********** CPU IS PLAYING BEST CARD due to score', game.opponentStatus.matchScore, 'being < standAt', standAt);
+          game.playBestCPUCard();
           await pause(1000);
         } else {
-          console.warn('*********** CPU IS STANDING due to score', currentGame.opponentStatus.matchScore, 'being >= standAt', standAt);
+          console.warn('*********** CPU IS STANDING due to score', game.opponentStatus.matchScore, 'being >= standAt', standAt);
           return handleClickStand();
         }
       }
-      setCurrentGame({ ...currentGame });
-      const playerBusted = currentGame.opponentStatus.matchScore > 20;
+      setCurrentGame({ ...game });
+      const playerBusted = game.opponentStatus.matchScore > 20;
       if (!playerBusted) {
         await pause(500);
         handleClickEndTurn();
       } else {
-        if (currentGame.userStatus.matchScore > 20) {
+        if (game.userStatus.matchScore > 20) {
           console.warn('//////////////////////////////// BUSTED /////////////////////////////////////////////');
           flashMoveIndicator('user', 'BUST :(', true);
-          currentGame.turnPhase = 'showing-results';
-          setCurrentGame({ ...currentGame });
+          game.turnPhase = 'showing-results';
+          setCurrentGame({ ...game });
         }
       }
     } else { // turn is user
+      if (game.userStatus.matchScore > 20) {
+        console.warn('//////////////////////////////// BUSTED /////////////////////////////////////////////');
+        flashMoveIndicator('user', 'BUST :(', true);
+        game.turnPhase = 'showing-results';
+        setCurrentGame({ ...game });
+      } else {
 
+      }
     }
+  }
+
+  async function handleClickNextSet(winner) {
+    console.log('clicked next set! winner is', winner);
+    setMoveIndicatorShowing({
+      player: undefined,
+      message: undefined,
+    });
+    const setData = {
+      user: currentGame.userStatus.setsWon,
+      opponent: currentGame.opponentStatus.setsWon,
+    }
+    setData[winner] += 1;
+    let nextCurrentGame = { ...initialGameState };
+    nextCurrentGame.userStatus.setsWon = setData.user;
+    nextCurrentGame.opponentStatus.setsWon = setData.opponent;
+    nextCurrentGame.currentTurn = winner === 'user' ? 'opponent' : 'user';
+    setGameStarted(false);
+    await pause(1000);
+    resetHands(nextCurrentGame);
+    setGameStarted(true);
+    setCurrentGame(nextCurrentGame);
+    enactNewTurn(nextCurrentGame);
+    // nextCurrentGame.dealCard();
   }
 
   function handleSelectingCard(card) {
@@ -760,7 +809,7 @@ function App() {
           avatarChoiceModalShowing={avatarChoiceModalShowing}
           onClickProfileMenu={handleToggleProfileMenu}
         />
-        <ScreenVeil showing={hamburgerOpen || (logOutModalShowing && userLoggedIn)} onClickClose={hamburgerOpen ? () => setHamburgerOpen(false) : handleCloseAvatarModal} />
+        <ScreenVeil showing={currentGame.turnPhase === 'showing-results' || hamburgerOpen || (logOutModalShowing && userLoggedIn)} onClickClose={hamburgerOpen ? () => setHamburgerOpen(false) : handleCloseAvatarModal} />
         <Modal
           showing={logOutModalShowing && userLoggedIn}
           headline={'Log out?'}
@@ -856,6 +905,7 @@ function App() {
                 handleUpdatingAppliedTheme={handleUpdatingAppliedTheme}
                 handleSelectingCard={handleSelectingCard}
                 onClickEndGame={handleClickEndGame}
+                onClickNextSet={handleClickNextSet}
                 playCard={handlePlayingCard}
               />
             </>

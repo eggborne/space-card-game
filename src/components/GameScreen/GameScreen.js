@@ -60,6 +60,21 @@ function GameScreen(props) {
 
   const debug = true;
 
+  const matchWinner =
+    // determine the winner
+    // if one is over 20, other is winner
+    // if neither are over 20, higher score is winner
+    // BOTH SHOULD NEVER BE OVER 20
+    (props.currentGame.userStatus.matchScore <= 20 && props.currentGame.userStatus.matchScore > props.currentGame.opponentStatus.matchScore) || props.currentGame.opponentStatus.matchScore > 20 
+    ? 
+    { displayName: props.user.displayName, type: 'user' }
+    : 
+    (props.currentGame.opponentStatus.matchScore <= 20 && props.currentGame.opponentStatus.matchScore > props.currentGame.userStatus.matchScore) || props.currentGame.userStatus.matchScore > 20 
+    ?
+    { displayName: props.opponent.displayName, type: 'opponent' }
+    : // should never be
+    'winner is null?!'
+
   return (
     <>
       {debug && 
@@ -110,15 +125,14 @@ function GameScreen(props) {
           showing={props.currentGame.turnPhase === 'showing-results'}
           headline={'SET WINNER'}
           color='maroon'
-          buttonLabel='OK'
-          bodyComponent={<>
-            {
-              (props.currentGame.userStatus.matchScore <= 20 && props.currentGame.userStatus.matchScore > props.currentGame.opponentStatus.matchScore) || props.currentGame.opponentStatus.matchScore > 20 ? props.user.displayName : 
-              (props.currentGame.opponentStatus.matchScore <= 20 && props.currentGame.opponentStatus.matchScore > props.currentGame.userStatus.matchScore) || props.currentGame.userStatus.matchScore > 20 ?
-              props.opponent.displayName : null
-            }
-          </>}
-          onClickOK={() => null}
+          buttonLabel='NEXT SET'
+          noCancelButton
+          bodyComponent={
+            <>
+              {matchWinner.displayName}
+            </>
+          }
+          onClickOK={() => props.onClickNextSet(matchWinner.type)}
         />
       </StyledGameScreen>
       <Modal
@@ -144,6 +158,7 @@ GameScreen.propTypes = {
   handleSelectingCard: PropTypes.func,
   handleUpdatingAppliedTheme: PropTypes.func,
   onClickEndGame: PropTypes.func,
+  onClickNextSet: PropTypes.func,
   playCard: PropTypes.func,
 };
 

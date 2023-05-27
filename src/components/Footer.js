@@ -49,7 +49,7 @@ const FooterBackButton = styled(Button)`
 `;
 
 function Footer(props) {
-  console.log('footer turnPhase', props.turnPhase);
+  // console.log('footer turnPhase', props.turnPhase);
   return (
     <StyledFooter 
       className='menu-style' 

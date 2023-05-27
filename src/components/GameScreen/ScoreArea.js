@@ -31,6 +31,8 @@ const StyledScoreArea = styled.div`
       max-width: calc(var(--card-width) / 5);
       max-height: calc(var(--card-width) / 5);
 
+      transition: background-color 200ms ease;
+
       @media screen and (min-width: 540px) {
         min-width: calc(var(--card-height) / 6);
         min-height: calc(var(--card-height) / 6);
@@ -58,9 +60,9 @@ function ScoreArea(props) {
         {props.playerStatus.matchScore}
       </ScoreDisplay>
       <div className='set-win-display'>
-        <div style={{ backgroundColor: 'transparent' }}></div>
-        <div style={{ backgroundColor: 'transparent' }}></div>
-        <div style={{ backgroundColor: 'transparent' }}></div>
+        <div style={{ backgroundColor: props.playerStatus.setsWon >= 1 ? 'gold' : 'transparent' }}></div>
+        <div style={{ backgroundColor: props.playerStatus.setsWon >= 2 ? 'gold' : 'transparent' }}></div>
+        <div style={{ backgroundColor: props.playerStatus.setsWon === 3 ? 'gold' : 'transparent' }}></div>
       </div>
     </StyledScoreArea>
   );
@@ -68,6 +70,7 @@ function ScoreArea(props) {
 
 ScoreArea.propTypes = {
   playerObject: PropTypes.object,
+  playerStatus: PropTypes.object,
 };
 
 export default ScoreArea;

@@ -66,7 +66,7 @@ function Modal(props) {
       <div>{props.bodyComponent}</div>
       <div className='bottom-button-area'>
         <Button color='red' onClick={props.onClickOK} label={props.buttonLabel} />
-        <Button onClick={props.onClickCancel} label='Cancel' />
+        {!props.noCancelButton && <Button onClick={props.onClickCancel} label='Cancel' />}
       </div>
     </StyledModal>
   );
@@ -77,6 +77,7 @@ Modal.propTypes = {
   headline: PropTypes.string,
   color: PropTypes.string,
   buttonLabel: PropTypes.string,
+  noCancelButton: PropTypes.bool,
   bodyComponent: PropTypes.object,
   onClickOK: PropTypes.func,
   onClickCancel: PropTypes.func,
